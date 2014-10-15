@@ -68,8 +68,13 @@
     var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
     la(isValidNgDescribe(options), 'invalid input options', options);
 
-    var suiteFn = options.only ? root.ddescribe : root.describe;
-    la(check.fn(suiteFn), 'missing describe function');
+    var suiteFn = root.describe;
+    if (options.only) {
+      // run only this describe block using Jasmine or Mocha
+      // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
+      suiteFn = root.ddescribe || root.describe.only;
+    }
+    la(check.fn(suiteFn), 'missing describe function', options);
 
     suiteFn(options.name, function () {
       root.beforeEach(function mockModules() {

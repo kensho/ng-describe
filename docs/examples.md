@@ -115,7 +115,8 @@ ngDescribe({
 });
 ```
 
-This could be useful for setting up additional mocks, like `$httpBackend`.
+This could be useful for setting up additional mocks, like `$httpBackend` (this example uses `la` assertion from
+[lazy-ass](https://github.com/bahmutov/lazy-ass) library).
 
 ```js
 angular.module('apiCaller', [])

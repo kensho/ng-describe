@@ -33,13 +33,19 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        '../ng-describe.js': ['coverage']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['nested'],
+    reporters: ['nested', 'coverage'],
+
+    coverageReporter: {
+        type : 'lcov',
+        dir : 'coverage/'
+    },
 
 
     // web server port
@@ -71,7 +77,8 @@ module.exports = function(config) {
     plugins: [
         'karma-nested-reporter',
         'karma-mocha',
-        'karma-phantomjs-launcher'
+        'karma-phantomjs-launcher',
+        'karma-coverage'
     ]
   });
 };

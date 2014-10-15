@@ -1,4 +1,4 @@
-# ng-describe v0.1.1
+# ng-describe v0.1.2
 
 > Convenient BDD specs for Angular
 
@@ -102,6 +102,44 @@ ngDescribe({
     it('appends value of foo to any string', function () {
       var result = deps.addFoo('x');
       expect(result).toEqual('xbar');
+    });
+  }
+});
+```
+
+### Mock value provided by a module
+
+Often during testing we need to mock something provided by a module, even if it is 
+passed via dependency injection. ng-describe makes it very simple. List all modules with values 
+to be mocked in `mocks` object property.
+
+```js
+// C.js
+angular.module('C', ['A'])
+  .service('getFoo', function (foo) {
+    // foo is provided by module A
+    return function getFoo() {
+      return foo;
+    };
+  });
+// C-spec.js
+ngDescribe({
+  name: 'test C with mocking top level',
+  modules: ['C'],
+  inject: ['getFoo'],
+  mocks: {
+    // replace C.getFoo with mock function that returns 11
+    C: {
+      getFoo: function () {
+        return 11;
+      }
+    }
+  },
+  verbose: false,
+  tests: function (deps) {
+    it('has mock injected value', function () {
+      var result = deps.getFoo();
+      la(result === 11, 'we got back mock value', result);
     });
   }
 });

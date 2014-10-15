@@ -1,4 +1,4 @@
-# ng-describe v0.1.2
+# ng-describe v0.1.3
 
 > Convenient BDD specs for Angular
 
@@ -10,7 +10,6 @@
 [![Code Climate][ng-describe-code-climate-image] ][ng-describe-code-climate-url]
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
-![issue](http://issuestats.com/github/kensho/ng-describe/badge/issue)
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe

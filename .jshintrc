@@ -71,6 +71,7 @@
 
   "globals"       : {
     "angular": true,
-    "la": true
+    "la": true,
+    "check": true
   }
 }

@@ -20,6 +20,8 @@ module.exports = function(config) {
         '../node_modules/lazy-ass/index.js',
         '../node_modules/angular/angular.js',
         '../node_modules/angular-mocks/angular-mocks.js',
+        '../node_modules/lazy-ass-helpful/lazy-ass-helpful-browser.js',
+        '../node_modules/lazy-ass-helpful/lazy-ass-helpful-bdd.js',
         '../ng-describe.js',
         './*-spec.js'
     ],

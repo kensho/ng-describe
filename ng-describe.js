@@ -1,5 +1,4 @@
 (function setupNgDescribe(root) {
-  /* global check, la, angular */
   // check - kensho/check-more-types
   // la - bahmutov/lazy-ass
   la(check.object(root), 'missing root');
@@ -12,7 +11,8 @@
     tests: function () {},
     only: false,
     verbose: false,
-    mocks: {}
+    mocks: {},
+    helpful: false
   };
 
   function defaults(opts) {
@@ -27,31 +27,10 @@
     inject: check.arrayOfStrings,
     tests: check.fn,
     only: check.bool,
-    mocks: check.object
+    mocks: check.object,
+    helpful: check.bool
   };
 
-  /*
-    callback function cb will be called with all dependencies in one object (by name)
-
-    // mock modules A and B
-    // inject serviceAdd
-    ngDescribe({
-      name: 'my suite',
-      modules: ['A', 'B'],
-      inject: ['serviceAdd'],
-      // object of configs following config module pattern
-      // see http://bahmutov.calepin.co/inject-valid-constants-into-angular.html
-      configs: {},
-      only: false, // use ddescribe
-      verbose: false, // console.log modules and injected names
-      tests: function (deps) {
-        // multiple specs here
-        it('can add numbers', function () {
-          expect(deps.serviceAdd(2, 3)).toBe(5);
-        });
-      }
-    });
-  */
   function ngDescribe(options) {
     la(check.defined(angular), 'missing angular');
     options = defaults(options);
@@ -74,9 +53,13 @@
       // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
       suiteFn = root.ddescribe || root.describe.only;
     }
+    if (options.helpful) {
+      suiteFn = root.helpDescribe;
+    }
     la(check.fn(suiteFn), 'missing describe function', options);
 
-    suiteFn(options.name, function () {
+    function ngSpecs() {
+
       root.beforeEach(function mockModules() {
         log('loading modules', options.modules);
 
@@ -115,7 +98,9 @@
           delete dependencies[dependencyName];
         });
       });
-    });
+    }
+
+    suiteFn(options.name, ngSpecs);
   }
 
   root.ngDescribe = ngDescribe;

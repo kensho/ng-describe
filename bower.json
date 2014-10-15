@@ -1,0 +1,27 @@
+{
+  "name": "ng-describe",
+  "main": "ng-describe.js",
+  "version": "0.1.1",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "docs",
+    "Gruntfile.js",
+    "package.json",
+    "index.html"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "testing",
+    "unit",
+    "bdd",
+    "describe"
+  ],
+  "homepage": "https://github.com/kensho/ng-describe"
+}

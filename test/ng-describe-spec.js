@@ -1,0 +1,51 @@
+/* global ngDescribe, it, la, describe */
+ngDescribe({
+  name: 'ng-describe test',
+  only: false,
+  verbose: false,
+  tests: function () {
+    it('loads and runs', function () {
+      la(true, 'everything is fine');
+    });
+  }
+});
+
+ngDescribe({
+  name: 'ng-describe test 2',
+  only: false,
+  tests: function (deps) {
+    la(typeof deps === 'object', 'missing injected object');
+    it('loads and runs', function () {
+      la(true, 'everything is fine');
+    });
+  }
+});
+
+ngDescribe({
+  name: 'ng-describe empty modules',
+  only: false,
+  modules: [],
+  inject: [],
+  tests: function (deps) {
+    la(typeof deps === 'object', 'missing injected object');
+    it('loads and runs', function () {
+      la(true, 'everything is fine');
+    });
+  }
+});
+
+angular.module('foo', [])
+  .value('bar', 'baz');
+
+describe('value tests', function () {
+  ngDescribe({
+    name: 'test foo',
+    modules: 'foo',
+    inject: 'bar',
+    tests: function (deps) {
+      it('has correct bar', function () {
+        la(deps.bar === 'baz');
+      });
+    }
+  });
+});

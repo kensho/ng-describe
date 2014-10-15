@@ -55,6 +55,30 @@ Load ng-describe.js after angular, [lazy-ass](https://github.com/bahmutov/lazy-a
     ],
 
 
+## API
+
+ng-describe provides a single function `ngDescribe` that takes an options object.
+
+```js
+ngDescribe({
+  // your options
+});
+```
+
+**name** - a string name for the spec, similar to BDD `describe(name, ...)`
+
+**modules** - list of modules to inject
+
+```js
+angular.module('A', []);
+angular.module('B', []);
+ngDescribe({
+  name: 'modules example',
+  modules: ['A', 'B']
+});
+```
+
+
 ## Examples
 
 ### Test value provided by a module

@@ -9,6 +9,7 @@ simple modules a breeze. Just list which modules you would like to load, which v
 you would like to inject and then start testing.
 
 {%= _.doc("./docs/install.md") %}
+{%= _.doc("./docs/api.md") %}
 {%= _.doc("./docs/examples.md") %}
 {%= _.doc("./docs/footer.md") %}
 

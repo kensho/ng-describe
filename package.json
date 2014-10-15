@@ -14,6 +14,7 @@
   "devDependencies": {
     "angular": "1.3.0",
     "angular-mocks": "1.3.0",
+    "coveralls": "2.11.2",
     "grunt": "0.4.5",
     "grunt-contrib-jshint": "0.10.0",
     "grunt-contrib-watch": "0.6.1",
@@ -51,6 +52,7 @@
     "url": "git@bitbucket.org:kensho/ng-describe.git"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "coveralls": "cat test/coverage/P*/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   }
 }

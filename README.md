@@ -145,6 +145,35 @@ ngDescribe({
 });
 ```
 
+### beforeEach and afterEach
+
+You can use multiple `beforeEach` and `afterEach` inside `tests` function.
+This could be useful for setting up additional mocks, like `$httpBackend`.
+
+```js
+ngDescribe({
+  name: 'before and after example',
+  modules: ['A'],
+  inject: ['foo'],
+  tests: function (deps) {
+    var localFoo;
+    beforeEach(function () {
+      // dependencies are already injected
+      la(deps.foo === 'bar');
+      localFoo = deps.foo;
+    });
+    it('has correct value foo', function () {
+      la(localFoo === 'bar');
+    });
+    afterEach(function () {
+      la(localFoo === 'bar');
+      // dependencies are still available
+      la(deps.foo === 'bar');
+    });
+  }
+});
+```
+
 
 ### Small print
 

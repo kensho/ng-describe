@@ -31,3 +31,40 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'several before and after blocks',
+  modules: 'apiCaller',
+  inject: 'getIt',
+  tests: function (deps) {
+    beforeEach(function before1() {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+
+    beforeEach(function before2() {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+
+    it('test 1', function () {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+
+    it('test 2', function () {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+
+    afterEach(function after1() {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+
+    afterEach(function after2() {
+      la(check.object(deps));
+      la(check.has(deps, 'getIt'));
+    });
+  }
+});

@@ -176,6 +176,12 @@ ngDescribe({
 });
 ```
 
+**configs** - object with modules that have provider that can be used to inject
+run time settings. 
+See *Update 1* in 
+[Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
+blog post and examples below.
+
 ### Secondary options
 
 **verbose** - flag to print debug messages during execution
@@ -344,6 +350,54 @@ ngDescribe({
   }
 });
 ```
+
+### Configure module
+
+If you use a separate module with namesake provider to pass configuration into the modules
+(see [Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)),
+you can easily configure these modules.
+
+```js
+angular.module('App', ['AppConfig'])
+  .service('foo', function (AppConfig) {
+    return function foo() {
+      return GConfig.bar;
+    };
+  });
+// config module has provider with same name
+angular.module('AppConfig', [])
+  .provider('AppConfig', function () {
+    var config = {};
+    return {
+      set: function (settings) {
+        config = settings;
+      },
+      $get: function () {
+        return config;
+      }
+    };
+  });
+// spec file
+ngDescribe({
+  name: 'config module example',
+  modules: 'App',
+  inject: 'foo',
+  configs: {
+    // every config module will be loaded automatically
+    AppConfig: {
+      bar: 'boo!'
+    }
+  },
+  tests: function (deps) {
+    it('foo has configured bar value', function () {
+      expect(deps.foo()).toEqual('boo!');
+    });
+  }
+});
+```
+
+You can configure multiple modules at the same time. Note that during the configuration
+Angular is yet to be loaded. Thus you cannot use Angular services inside the configuration blocks.
 
 
 ### Small print

@@ -119,6 +119,12 @@ ngDescribe({
 });
 ```
 
+**configs** - object with modules that have provider that can be used to inject
+run time settings. 
+See *Update 1* in 
+[Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
+blog post and examples below.
+
 ## Secondary options
 
 **verbose** - flag to print debug messages during execution

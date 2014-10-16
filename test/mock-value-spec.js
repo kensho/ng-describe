@@ -60,3 +60,22 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'mocked modules are loaded automatically',
+  inject: ['getFoo'],
+  mocks: {
+    // mock getFoo from module C
+    C: {
+      getFoo: function () {
+        return 11;
+      }
+    }
+  },
+  tests: function (deps) {
+    it('has mock injected value', function () {
+      var result = deps.getFoo();
+      la(result === 11, 'we got back mock value', result);
+    });
+  }
+});

@@ -65,6 +65,11 @@
       options.inject.push('$controller');
       options.inject.push('$rootScope');
     }
+    // auto inject mocked modules
+    options.modules = options.modules.concat(Object.keys(options.mocks));
+    // auto inject configured modules
+    options.modules = options.modules.concat(Object.keys(options.configs));
+
     options.modules = uniq(options.modules);
     options.inject = uniq(options.inject);
     options.controllers = uniq(options.controllers);
@@ -94,7 +99,7 @@
       root.beforeEach(function mockModules() {
         log('loading modules', options.modules);
 
-        options.modules.forEach(function (moduleName) {
+        options.modules.forEach(function loadAngularModules(moduleName) {
           if (options.configs[moduleName]) {
             var m = angular.module(moduleName);
             m.config([moduleName + 'Provider', function (provider) {

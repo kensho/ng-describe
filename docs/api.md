@@ -8,6 +8,8 @@ ngDescribe({
 });
 ```
 
+## Primary options
+
 **name** - a string name for the spec, similar to BDD `describe(name, ...)`
 
 **modules** - list of modules to inject
@@ -45,11 +47,34 @@ ngDescribe({
       expect(deps.foo).toEqual(42);
     });
     it('has timeout service', function () {
-      expect(typeof $timeout).toEqual('function');
+      expect(typeof deps.$timeout).toEqual('function');
     });
   }
 });
 ```
+
+**tests** - callback function that contains actual specs. This of this as `describe` equivalent with
+all necessary Angular dependencies taken care of.
+
+```js
+ngDescribe({
+  inject: ['$q', '$rootScope'],
+  tests: function (deps) {
+    it('injects $q', function () {
+      expect(typeof deps.$q).toEqual('function');
+    });
+    it('can be resolved', function () {
+      deps.$q.when(42).then(function (value) {
+        expect(value).toEqual(42);
+      });
+      // move promises along
+      deps.$rootScope.$digest();
+    });
+  }
+});
+```
+
+## Secondary options
 
 **verbose** - flag to print debug messages during execution
 

@@ -24,3 +24,15 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'verbose spec',
+  modules: ['A'],
+  inject: 'foo',
+  verbose: true,
+  tests: function (deps) {
+    it('has correct value foo', function () {
+      la(deps.foo === 'bar');
+    });
+  }
+});

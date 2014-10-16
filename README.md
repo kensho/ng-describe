@@ -1,4 +1,4 @@
-# ng-describe v0.2.0
+# ng-describe v0.3.0
 
 > Convenient BDD specs for Angular
 
@@ -189,6 +189,8 @@ ngDescribe({
   only: true
 });
 ```
+
+**skip** - flag to skip this group of specs. Equivalent to `xdescribe` or `describe.skip`.
 
 
 ## Examples

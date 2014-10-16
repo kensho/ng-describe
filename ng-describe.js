@@ -4,16 +4,19 @@
   la(check.object(root), 'missing root');
 
   var _defaults = {
+    // primary options
     name: 'default tests',
     modules: [],
     configs: {},
     inject: [],
     tests: function () {},
-    only: false,
-    verbose: false,
     mocks: {},
     helpful: false,
-    controllers: []
+    controllers: [],
+    // secondary options
+    only: false,
+    verbose: false,
+    skip: false
   };
 
   function defaults(opts) {
@@ -22,15 +25,19 @@
   }
 
   var ngDescribeSchema = {
+    // primary options
     name: check.unemptyString,
     modules: check.arrayOfStrings,
     configs: check.object,
     inject: check.arrayOfStrings,
     tests: check.fn,
-    only: check.bool,
     mocks: check.object,
     helpful: check.bool,
-    controllers: check.arrayOfStrings
+    controllers: check.arrayOfStrings,
+    // secondary options
+    only: check.bool,
+    verbose: check.bool,
+    skip: check.bool
   };
 
   function uniq(a) {
@@ -75,6 +82,10 @@
     }
     if (options.helpful) {
       suiteFn = root.helpDescribe;
+    }
+    if (options.skip) {
+      la(!options.only, 'skip and only are exclusive options', options);
+      suiteFn = root.xdescribe || root.describe.skip;
     }
     la(check.fn(suiteFn), 'missing describe function', options);
 

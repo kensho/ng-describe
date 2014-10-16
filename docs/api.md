@@ -132,3 +132,5 @@ ngDescribe({
   only: true
 });
 ```
+
+**skip** - flag to skip this group of specs. Equivalent to `xdescribe` or `describe.skip`.

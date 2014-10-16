@@ -36,3 +36,13 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'skip specs',
+  skip: true,
+  tests: function () {
+    it('this is skipped', function () {
+      la(false, 'all tests here should have been skipped');
+    });
+  }
+});

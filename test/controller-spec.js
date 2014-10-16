@@ -45,4 +45,22 @@ ngDescribe({
   }
 });
 
+ngDescribe({
+  name: 'auto $controller and $rootScope injection',
+  modules: 'D',
+  controllers: 'dController',
+  tests: function (deps) {
+    it('has dController scope', function () {
+      la(check.has(deps, 'dController'));
+    });
+
+    it('is an object', function () {
+      la(check.object(deps.dController));
+    });
+
+    it('has correct properties', function () {
+      la(deps.dController.foo === 'foo');
+    });
+  }
+});
 

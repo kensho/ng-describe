@@ -33,6 +33,13 @@
     controllers: check.arrayOfStrings
   };
 
+  function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+      return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+  }
+
   function ngDescribe(options) {
     la(check.defined(angular), 'missing angular');
     options = defaults(options);
@@ -46,6 +53,14 @@
     if (check.string(options.controllers)) {
       options.controllers = [options.controllers];
     }
+
+    if (options.controllers.length) {
+      options.inject.push('$controller');
+      options.inject.push('$rootScope');
+    }
+    options.modules = uniq(options.modules);
+    options.inject = uniq(options.inject);
+    options.controllers = uniq(options.controllers);
 
     var log = options.verbose ? console.log : angular.noop;
 

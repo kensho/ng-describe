@@ -13,3 +13,14 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'inject same module multiple times',
+  modules: ['A', 'A', 'A'],
+  inject: 'foo',
+  tests: function (deps) {
+    it('has correct value foo', function () {
+      la(deps.foo === 'bar');
+    });
+  }
+});

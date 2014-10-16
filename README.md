@@ -1,4 +1,4 @@
-# ng-describe v0.1.4
+# ng-describe v0.2.0
 
 > Convenient BDD specs for Angular
 
@@ -152,6 +152,29 @@ ngDescribe({
 ```
 
 For more information see examples below.
+
+**controllers** - list of controllers by name that be injected. Each controller
+is created with a new `$rootScope` instance.
+
+**NOTE: For each created controller, its SCOPE instance will be in the dependencies object.**
+
+```js
+angular.module('D', [])
+  .controller('dController', function ($scope) {
+    $scope.foo = 'foo';
+  });
+ngDescribe({
+  modules: 'D',
+  controllers: 'dController',
+  tests: function (deps) {
+    it('is a scope for controller', function () {
+      expect(typeof deps.dController).toEqual('object');
+      // deps.dController is the $scope object injected into dController
+      expect(deps.dController.foo).toEqual('foo');
+    });
+  }
+});
+```
 
 ### Secondary options
 

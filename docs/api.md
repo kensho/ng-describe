@@ -74,6 +74,28 @@ ngDescribe({
 });
 ```
 
+**mocks** - top level mocks to be substituted into the tests. 
+The mocks override *any* injected dependencies among modules.
+
+```js
+ngDescribe({
+  mocks: {
+    // each module to mock by name
+    moduleName1: {
+      // each dependency from moduleName1 to mock
+      dependencyName1: mockValue1,
+      dependencyName2: mockValue2
+      // the rest of moduleName1 is unchanged
+    },
+    moduleName2: {
+      // dependencies to mock in moduleName2
+    }
+  }
+});
+```
+
+For more information see examples below.
+
 ## Secondary options
 
 **verbose** - flag to print debug messages during execution

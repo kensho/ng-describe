@@ -12,7 +12,8 @@
     only: false,
     verbose: false,
     mocks: {},
-    helpful: false
+    helpful: false,
+    controllers: []
   };
 
   function defaults(opts) {
@@ -28,7 +29,8 @@
     tests: check.fn,
     only: check.bool,
     mocks: check.object,
-    helpful: check.bool
+    helpful: check.bool,
+    controllers: check.arrayOfStrings
   };
 
   function ngDescribe(options) {
@@ -40,6 +42,9 @@
     }
     if (check.string(options.inject)) {
       options.inject = [options.inject];
+    }
+    if (check.string(options.controllers)) {
+      options.controllers = [options.controllers];
     }
 
     var log = options.verbose ? console.log : angular.noop;
@@ -90,6 +95,19 @@
           dependencies[dependencyName] = $injector.get(dependencyName);
         });
       }));
+
+      root.beforeEach(function setupControllers() {
+        log('setting up controllers', options.controllers);
+        options.controllers.forEach(function (controllerName) {
+          la(check.fn(dependencies.$controller), 'need $controller service', dependencies);
+          la(check.object(dependencies.$rootScope), 'need $rootScope service', dependencies);
+          var scope = dependencies.$rootScope.$new();
+          dependencies.$controller(controllerName, {
+            $scope: scope
+          });
+          dependencies[controllerName] = scope;
+        });
+      });
 
       options.tests(dependencies);
 

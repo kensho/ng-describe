@@ -13,8 +13,5 @@ you would like to inject and then start testing.
 {%= _.doc("./docs/api.md") %}
 {%= _.doc("./docs/examples.md") %}
 {%= _.doc("./docs/footer.md") %}
-
-## MIT License
-
 {%= _.doc("./LICENSE") %}
 

@@ -38,8 +38,7 @@
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
-  * [Small print](#small-print)
-* [MIT License](#mit-license)
+* [License](#license)
 
 
 
@@ -415,7 +414,7 @@ You can configure multiple modules at the same time. Note that during the config
 Angular is yet to be loaded. Thus you cannot use Angular services inside the configuration blocks.
 
 
-### Small print
+## License
 
 Author: Kensho &copy; 2014
 
@@ -425,9 +424,6 @@ Author: Kensho &copy; 2014
 Support: if you find any problems with this library,
 [open issue](https://github.com/kensho/ng-describe/issues) on Github
 
-
-
-## MIT License
 
 The MIT License (MIT)
 

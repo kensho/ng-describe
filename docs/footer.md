@@ -1,4 +1,4 @@
-## Small print
+# License
 
 Author: Kensho &copy; 2014
 

@@ -9,5 +9,4 @@
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
-  * [Small print](#small-print)
-* [MIT License](#mit-license)
+* [License](#license)

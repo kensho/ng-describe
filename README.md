@@ -80,6 +80,8 @@ ngDescribe({
 });
 ```
 
+You do not have to specify every option, there are reasonable defaults for each.
+
 ### Primary options
 
 **name** - a string name for the spec, similar to BDD `describe(name, ...)`

@@ -28,6 +28,21 @@
 
 
 
+* [Install](#install)
+* [API](#api)
+  * [Primary options](#primary-options)
+  * [Secondary options](#secondary-options)
+* [Examples](#examples)
+  * [Test value provided by a module](#test-value-provided-by-a-module)
+  * [Test a service](#test-a-service)
+  * [Mock value provided by a module](#mock-value-provided-by-a-module)
+  * [beforeEach and afterEach](#beforeeach-and-aftereach)
+  * [Configure module](#configure-module)
+  * [Small print](#small-print)
+* [MIT License](#mit-license)
+
+
+
 Unit testing and mocking AngularJs requires a lot of boilerplate code. ng-describe makes testing
 simple modules a breeze. Just list which modules you would like to load, which values / services / etc.
 you would like to inject and then start testing.

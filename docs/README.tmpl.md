@@ -3,6 +3,7 @@
 > {%= description %}
 
 {%= _.doc("./docs/badges.md") %}
+{%= _.doc("./docs/toc.md") %}
 
 Unit testing and mocking AngularJs requires a lot of boilerplate code. {%= name %} makes testing
 simple modules a breeze. Just list which modules you would like to load, which values / services / etc.

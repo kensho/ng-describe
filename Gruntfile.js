@@ -23,6 +23,17 @@ module.exports = function(grunt) {
       }
     },
 
+    toc: {
+      api: {
+        options: {
+          heading: '\n'
+        },
+        files: {
+          './docs/toc.md': './README.md'
+        }
+      }
+    },
+
     readme: {
       options: {
         readme: './docs/README.tmpl.md',
@@ -52,7 +63,7 @@ module.exports = function(grunt) {
   plugins.forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('test', ['karma']);
-  grunt.registerTask('doc', ['readme']);
+  grunt.registerTask('doc', ['readme', 'toc', 'readme']);
   grunt.registerTask('default',
     ['nice-package', 'deps-ok', 'sync', 'jshint', 'test', 'doc']);
 };

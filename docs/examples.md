@@ -235,3 +235,32 @@ ngDescribe({
 
 You can configure multiple modules at the same time. Note that during the configuration
 Angular is yet to be loaded. Thus you cannot use Angular services inside the configuration blocks.
+
+## Helpful failure messages
+
+{%= name %} works inside [helpDescribe function](https://github.com/bahmutov/lazy-ass-helpful#lazy-ass-helpful-bdd),
+producing meaningful error messages on failure (if you use [lazy assertions](https://github.com/bahmutov/lazy-ass)).
+
+```js
+helpDescribe('ngDescribe inside helpful', function () {
+  ngDescribe({
+    name: 'example',
+    tests: function () {
+      it('gives helpful error message', function () {
+        var foo = 2, bar = 3;
+        la(foo + bar === 4); // wrong on purpose
+      });
+    }
+  });
+});
+```
+when this test fails, it generates meaningful message with all relevant information: the expression
+that fails `foo + bar === 4` and runtime values of `foo` and `bar`.
+
+    PhantomJS 1.9.7 (Mac OS X) 
+    ட ngDescribe inside helpful 
+      ட example 
+        ட ✘ gives helpful error message FAILED
+      Error: condition [foo + bar === 4] foo: 2 bar: 3
+          at lazyAss (/ng-describe/node_modules/lazy-ass/index.js:57)
+    PhantomJS 1.9.7 (Mac OS X): Executed 37 of 38 (1 FAILED) (skipped 1) (0.053 secs / 0.002 secs)

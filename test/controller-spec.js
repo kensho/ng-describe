@@ -63,3 +63,31 @@ ngDescribe({
     });
   }
 });
+
+angular.module('S', [])
+  .controller('sample', function ($timeout, $scope) {
+    $scope.foo = 'foo';
+
+    $scope.update = function () {
+      $timeout(function () {
+        $scope.foo = 'bar';
+      }, 1000);
+    };
+  });
+ngDescribe({
+  name: 'timeout in controller',
+  modules: 'S',
+  inject: ['$timeout'],
+  controllers: 'sample',
+  tests: function (deps) {
+    it('has initial values', function () {
+      la(deps.sample.foo === 'foo');
+    });
+
+    it('updates after timeout', function () {
+      deps.sample.update();
+      deps.$timeout.flush();
+      la(deps.sample.foo === 'bar');
+    });
+  }
+});

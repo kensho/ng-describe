@@ -1,5 +1,9 @@
 # Examples
 
+Some examples use Jasmine matchers, others use `la` assertion from
+[lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
+from [Mocha](http://visionmedia.github.io/mocha/) testing framework.
+
 ## Test value provided by a module
 
 ```js
@@ -44,6 +48,40 @@ ngDescribe({
     it('appends value of foo to any string', function () {
       var result = deps.addFoo('x');
       expect(result).toEqual('xbar');
+    });
+  }
+});
+```
+
+## Test controller and scope
+
+We can easily create instances of controller functions and scope objects.
+
+```js
+angular.module('S', [])
+  .controller('sample', function ($timeout, $scope) {
+    $scope.foo = 'foo';
+    $scope.update = function () {
+      $timeout(function () {
+        $scope.foo = 'bar';
+      }, 1000);
+    };
+  });
+ngDescribe({
+  name: 'timeout in controller',
+  modules: 'S',
+  // inject $timeout so we can flush the timeout queue
+  inject: ['$timeout'],
+  controllers: 'sample',
+  tests: function (deps) {
+    // deps.sample = $scope object injected into sample controller
+    it('has initial values', function () {
+      la(deps.sample.foo === 'foo');
+    });
+    it('updates after timeout', function () {
+      deps.sample.update();
+      deps.$timeout.flush();
+      la(deps.sample.foo === 'bar');
     });
   }
 });
@@ -115,9 +153,7 @@ ngDescribe({
 });
 ```
 
-This could be useful for setting up additional mocks, like `$httpBackend` (this example uses `la` assertion from
-[lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
-from [Mocha](http://visionmedia.github.io/mocha/) testing framework).
+This could be useful for setting up additional mocks, like `$httpBackend`.
 
 ```js
 angular.module('apiCaller', [])

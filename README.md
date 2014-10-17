@@ -272,6 +272,8 @@ ngDescribe({
 ### Test controller and scope
 
 We can easily create instances of controller functions and scope objects.
+In this example we also inject `$timeout` service to speed up delayed actions
+(see [Testing Angular async stuff](http://bahmutov.calepin.co/testing-angular-async-stuff.html)).
 
 ```js
 angular.module('S', [])

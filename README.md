@@ -1,4 +1,4 @@
-# ng-describe v0.4.1
+# ng-describe v0.5.0
 
 > Convenient BDD specs for Angular
 
@@ -36,6 +36,7 @@
   * [Test value provided by a module](#test-value-provided-by-a-module)
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
+  * [Test directive](#test-directive)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
@@ -194,6 +195,17 @@ ngDescribe({
 });
 ```
 
+**element** - HTML fragment string for testing custom directives and DOM updates.
+
+```js
+ngDescribe({
+  element: '<my-foo bar="baz"></my-foo>'
+});
+```
+
+The compiled `angular.element` will be injected into dependencies object under `element` property.
+See examples below for more information. The compilation will create a new scope object too.
+
 **configs** - object with modules that have provider that can be used to inject
 run time settings. 
 See *Update 1* in 
@@ -303,6 +315,33 @@ ngDescribe({
       deps.sample.update();
       deps.$timeout.flush();
       la(deps.sample.foo === 'bar');
+    });
+  }
+});
+```
+
+### Test directive
+
+```js
+angular.module('MyFoo', [])
+  .directive('myFoo', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      template: '<span>{{ bar }}</span>'
+    };
+  });
+ngDescribe({
+  name: 'MyFoo directive',
+  modules: 'MyFoo',
+  element: '<my-foo></my-foo>',
+  tests: function (deps) {
+    it('can update DOM using binding', function () {
+      la(check.has(deps, 'element'), 'has compiled element');
+      var scope = deps.element.scope();
+      scope.bar = 'bar';
+      scope.$apply();
+      la(deps.element.html() === 'bar');
     });
   }
 });

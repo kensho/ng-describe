@@ -89,6 +89,33 @@ ngDescribe({
 });
 ```
 
+## Test directive
+
+```js
+angular.module('MyFoo', [])
+  .directive('myFoo', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      template: '<span>{{ bar }}</span>'
+    };
+  });
+ngDescribe({
+  name: 'MyFoo directive',
+  modules: 'MyFoo',
+  element: '<my-foo></my-foo>',
+  tests: function (deps) {
+    it('can update DOM using binding', function () {
+      la(check.has(deps, 'element'), 'has compiled element');
+      var scope = deps.element.scope();
+      scope.bar = 'bar';
+      scope.$apply();
+      la(deps.element.html() === 'bar');
+    });
+  }
+});
+```
+
 ## Mock value provided by a module
 
 Often during testing we need to mock something provided by a module, even if it is 

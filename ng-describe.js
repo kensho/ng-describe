@@ -13,6 +13,7 @@
     mocks: {},
     helpful: false,
     controllers: [],
+    element: '',
     // secondary options
     only: false,
     verbose: false,
@@ -34,6 +35,7 @@
     mocks: check.object,
     helpful: check.bool,
     controllers: check.arrayOfStrings,
+    element: check.string,
     // secondary options
     only: check.bool,
     verbose: check.bool,
@@ -65,6 +67,12 @@
       options.inject.push('$controller');
       options.inject.push('$rootScope');
     }
+
+    if (check.unemptyString(options.element)) {
+      options.inject.push('$rootScope');
+      options.inject.push('$compile');
+    }
+
     // auto inject mocked modules
     options.modules = options.modules.concat(Object.keys(options.mocks));
     // auto inject configured modules
@@ -139,6 +147,21 @@
           dependencies[controllerName] = scope;
         });
       });
+
+      if (check.unemptyString(options.element)) {
+        log('setting up element', options.element);
+        root.beforeEach(function setupElement() {
+          la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
+
+          var scope = dependencies.$rootScope.$new();
+          var element = angular.element(options.element);
+          var compiled = dependencies.$compile(element);
+          compiled(scope);
+          dependencies.$rootScope.$digest();
+
+          dependencies.element = element;
+        });
+      }
 
       options.tests(dependencies);
 

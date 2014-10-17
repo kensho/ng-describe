@@ -121,6 +121,17 @@ ngDescribe({
 });
 ```
 
+**element** - HTML fragment string for testing custom directives and DOM updates.
+
+```js
+ngDescribe({
+  element: '<my-foo bar="baz"></my-foo>'
+});
+```
+
+The compiled `angular.element` will be injected into dependencies object under `element` property.
+See examples below for more information. The compilation will create a new scope object too.
+
 **configs** - object with modules that have provider that can be used to inject
 run time settings. 
 See *Update 1* in 

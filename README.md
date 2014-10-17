@@ -80,7 +80,7 @@ ngDescribe({
 });
 ```
 
-You do not have to specify every option, there are reasonable defaults for each.
+You do not have to specify every option, there are reasonable defaults.
 
 ### Primary options
 

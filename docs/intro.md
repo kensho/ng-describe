@@ -33,3 +33,5 @@ ngDescribe({
     });
 });
 ```
+{%= name %} can inject dependencies, mock modules, set configs, create controllers, scopes, and
+even html fragments. For more details, continue reading.

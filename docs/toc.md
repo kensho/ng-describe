@@ -1,4 +1,5 @@
 
+* [Intro](#intro)
 * [Install](#install)
 * [API](#api)
   * [Primary options](#primary-options)

@@ -1,4 +1,4 @@
-# ng-describe v0.5.0
+# ng-describe v0.6.0
 
 > Convenient BDD specs for Angular
 
@@ -28,6 +28,7 @@
 
 
 
+* [Intro](#intro)
 * [Install](#install)
 * [API](#api)
   * [Primary options](#primary-options)
@@ -44,10 +45,42 @@
 * [License](#license)
 
 
+## Intro
 
-Unit testing and mocking AngularJs requires a lot of boilerplate code. ng-describe makes testing
-simple modules a breeze. Just list which modules you would like to load, which values / services / etc.
-you would like to inject and then start testing.
+Unit testing and mocking AngularJs requires a lot of boilerplate code:
+```js
+describe('typical test', function () {
+    var $rootScope, foo;
+    beforeEach(function () {
+        angular.mock.module('A');
+        // other modules
+    });
+    beforeEach(inject(function (_$rootScope_, _foo_) {
+        $rootScope = _$rootScope_;
+        foo = _foo_;
+    }));
+    it('finally a test', function () {
+        expect(foo).toEqual('bar');
+    });
+});
+```
+
+ng-describe makes testing simple modules a breeze. 
+Just list which modules you would like to load, which values / services / etc.
+you would like to inject and then start testing. Same test as above using ng-describe
+is much shorter and clearer:
+```js
+ngDescribe({
+    modules: 'A',
+    inject: ['$rootScope', 'foo'],
+    tests: function (deps) {
+        it('finally a test', function () {
+            expect(deps.foo).toEqual('bar');
+        });
+    });
+});
+```
+
 
 ## Install
 

@@ -116,6 +116,54 @@ ngDescribe({
 });
 ```
 
+## Test 2 way binding
+
+If a directive implements isolate scope, we can configure parent scope separately.
+
+```js
+angular.module('IsolateFoo', [])
+  .directive('aFoo', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        bar: '='
+      },
+      template: '<span>{{ bar }}</span>'
+    };
+  });
+```
+
+We can use `element` together with `parentScope` property to set initial values.
+
+```js
+ngDescribe({
+  modules: 'IsolateFoo',
+  element: '<a-foo bar="x"></a-foo>',
+  parentScope: {
+    x: 'initial'
+  },
+  tests: function (deps) {
+    it('has correct initial value', function () {
+      var scope = deps.element.isolateScope();
+      expect(scope.bar).toEqual('initial');
+    });
+  }
+});
+```
+
+We can change parent's values to observe propagation into the directive
+
+```js
+// same setup
+it('updates isolate scope', function () {
+  deps.parentScope.x = 42;
+  deps.$rootScope.$apply();
+  var scope = deps.element.isolateScope();
+  expect(scope.bar).toEqual(42);
+});
+```
+
 ## Mock value provided by a module
 
 Often during testing we need to mock something provided by a module, even if it is 

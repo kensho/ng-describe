@@ -9,6 +9,7 @@
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
+  * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)

@@ -138,6 +138,28 @@ See *Update 1* in
 [Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
 blog post and examples below.
 
+**parentScope** - when creating HTML fragment, copies properties from this object into the
+scope. The returned dependencies object will have `deps.parentScope` that is the new scope.
+
+```js
+// myFoo directive uses isolate scope for example
+ngDescribe({
+  element: '<my-foo bar="baz"></my-foo>',
+  parentScope: {
+    baz: 42
+  },
+  tests: function (deps) {
+    it('baz -> bar', function () {
+      deps.parentScope.baz = 100;
+      deps.$rootScope.$apply();
+      expect(deps.element.isolateScope().bar).toEqual(100);
+    });
+  }
+});
+```
+
+See "2 way binding" example below.
+
 ## Secondary options
 
 **verbose** - flag to print debug messages during execution

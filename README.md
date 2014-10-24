@@ -1,4 +1,4 @@
-# ng-describe v0.6.0
+# ng-describe v0.7.0
 
 > Convenient BDD specs for Angular
 
@@ -38,6 +38,7 @@
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
+  * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
@@ -247,6 +248,28 @@ See *Update 1* in
 [Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
 blog post and examples below.
 
+**parentScope** - when creating HTML fragment, copies properties from this object into the
+scope. The returned dependencies object will have `deps.parentScope` that is the new scope.
+
+```js
+// myFoo directive uses isolate scope for example
+ngDescribe({
+  element: '<my-foo bar="baz"></my-foo>',
+  parentScope: {
+    baz: 42
+  },
+  tests: function (deps) {
+    it('baz -> bar', function () {
+      deps.parentScope.baz = 100;
+      deps.$rootScope.$apply();
+      expect(deps.element.isolateScope().bar).toEqual(100);
+    });
+  }
+});
+```
+
+See "2 way binding" example below.
+
 ### Secondary options
 
 **verbose** - flag to print debug messages during execution
@@ -379,6 +402,54 @@ ngDescribe({
       la(deps.element.html() === 'bar');
     });
   }
+});
+```
+
+### Test 2 way binding
+
+If a directive implements isolate scope, we can configure parent scope separately.
+
+```js
+angular.module('IsolateFoo', [])
+  .directive('aFoo', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        bar: '='
+      },
+      template: '<span>{{ bar }}</span>'
+    };
+  });
+```
+
+We can use `element` together with `parentScope` property to set initial values.
+
+```js
+ngDescribe({
+  modules: 'IsolateFoo',
+  element: '<a-foo bar="x"></a-foo>',
+  parentScope: {
+    x: 'initial'
+  },
+  tests: function (deps) {
+    it('has correct initial value', function () {
+      var scope = deps.element.isolateScope();
+      expect(scope.bar).toEqual('initial');
+    });
+  }
+});
+```
+
+We can change parent's values to observe propagation into the directive
+
+```js
+// same setup
+it('updates isolate scope', function () {
+  deps.parentScope.x = 42;
+  deps.$rootScope.$apply();
+  var scope = deps.element.isolateScope();
+  expect(scope.bar).toEqual(42);
 });
 ```
 

@@ -17,7 +17,8 @@
     // secondary options
     only: false,
     verbose: false,
-    skip: false
+    skip: false,
+    parentScope: {}
   };
 
   function defaults(opts) {
@@ -39,7 +40,8 @@
     // secondary options
     only: check.bool,
     verbose: check.bool,
-    skip: check.bool
+    skip: check.bool,
+    parentScope: check.object
   };
 
   function uniq(a) {
@@ -154,12 +156,16 @@
           la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
 
           var scope = dependencies.$rootScope.$new();
+          angular.extend(scope, options.parentScope);
+          log('created element scope with values', options.parentScope);
+
           var element = angular.element(options.element);
           var compiled = dependencies.$compile(element);
           compiled(scope);
           dependencies.$rootScope.$digest();
 
           dependencies.element = element;
+          dependencies.parentScope = scope;
         });
       }
 

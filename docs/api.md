@@ -132,12 +132,6 @@ ngDescribe({
 The compiled `angular.element` will be injected into dependencies object under `element` property.
 See examples below for more information. The compilation will create a new scope object too.
 
-**configs** - object with modules that have provider that can be used to inject
-run time settings. 
-See *Update 1* in 
-[Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
-blog post and examples below.
-
 **parentScope** - when creating HTML fragment, copies properties from this object into the
 scope. The returned dependencies object will have `deps.parentScope` that is the new scope.
 
@@ -159,6 +153,12 @@ ngDescribe({
 ```
 
 See "2 way binding" example below.
+
+**configs** - object with modules that have provider that can be used to inject
+run time settings. 
+See *Update 1* in 
+[Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
+blog post and examples below.
 
 ## Secondary options
 

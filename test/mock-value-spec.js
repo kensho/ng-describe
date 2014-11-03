@@ -79,3 +79,20 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'mocking with injected services',
+  inject: ['getFoo'],
+  mocks: {
+    C: {
+      getFoo: function ($q) {
+        return $q.when(4);
+      }
+    }
+  },
+  tests: function (deps) {
+    it('has getFoo', function () {
+      la(check.fn(deps.getFoo));
+    });
+  }
+});

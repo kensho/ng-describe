@@ -140,3 +140,26 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'allow non-injected arguments',
+  inject: ['getFoo', '$rootScope'],
+  verbose: true,
+  skip: true,
+  mocks: {
+    C: {
+      getFoo: function ($q, value) {
+        return $q.when(value);
+      }
+    }
+  },
+  tests: function (deps) {
+    it('injects $q but leaves "value" parameter free', function (done) {
+      deps.getFoo(21).then(function (result) {
+        la(result === 21, 'resolved with correct value');
+        done();
+      });
+      deps.$rootScope.$apply();
+    });
+  }
+});

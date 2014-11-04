@@ -1,7 +1,7 @@
 {
   "name": "ng-describe",
   "description": "Convenient BDD specs for Angular",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"
@@ -25,6 +25,7 @@
     "grunt-readme": "0.4.5",
     "grunt-toc": "0.1.0",
     "karma": "0.12.24",
+    "karma-chrome-launcher": "0.1.5",
     "karma-coverage": "0.2.6",
     "karma-mocha": "0.1.9",
     "karma-nested-reporter": "0.1.3",

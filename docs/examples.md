@@ -202,6 +202,33 @@ ngDescribe({
 });
 ```
 
+## Angular services inside mocks
+
+You can use other injected dependencies inside mocked functions.
+
+```js
+ngDescribe({
+  inject: ['getFoo', '$rootScope'],
+  mocks: {
+    C: {
+      // use angular $q service in the mock function
+      getFoo: function ($q) {
+        return $q.when(4);
+      }
+    }
+  },
+  tests: function (deps) {
+    it('injected $q into mock', function (done) {
+      deps.getFoo().then(function (result) {
+        expect(result).toEqual(4);
+        done();
+      });
+      deps.$rootScope.$apply(); // resolve promise
+    });
+  }
+});
+```
+
 ## beforeEach and afterEach
 
 You can use multiple `beforeEach` and `afterEach` inside `tests` function.

@@ -1,4 +1,4 @@
-# ng-describe v0.7.0
+# ng-describe v0.8.0
 
 > Convenient BDD specs for Angular
 
@@ -40,6 +40,7 @@
   * [Test directive](#test-directive)
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
+  * [Angular services inside mocks](#angular-services-inside-mocks)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
@@ -486,6 +487,33 @@ ngDescribe({
     it('has mock injected value', function () {
       var result = deps.getFoo();
       la(result === 11, 'we got back mock value', result);
+    });
+  }
+});
+```
+
+### Angular services inside mocks
+
+You can use other injected dependencies inside mocked functions.
+
+```js
+ngDescribe({
+  inject: ['getFoo', '$rootScope'],
+  mocks: {
+    C: {
+      // use angular $q service in the mock function
+      getFoo: function ($q) {
+        return $q.when(4);
+      }
+    }
+  },
+  tests: function (deps) {
+    it('injected $q into mock', function (done) {
+      deps.getFoo().then(function (result) {
+        expect(result).toEqual(4);
+        done();
+      });
+      deps.$rootScope.$apply(); // resolve promise
     });
   }
 });

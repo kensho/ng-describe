@@ -35,7 +35,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        '../ng-describe.js': ['coverage']
+        '../ng-describe.js': []
     },
 
 
@@ -80,6 +80,7 @@ module.exports = function(config) {
         'karma-nested-reporter',
         'karma-mocha',
         'karma-phantomjs-launcher',
+        'karma-chrome-launcher',
         'karma-coverage'
     ]
   });

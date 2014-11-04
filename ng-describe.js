@@ -81,10 +81,9 @@
     options.modules = options.modules.concat(Object.keys(options.configs));
 
     options.modules = uniq(options.modules);
-    options.inject = uniq(options.inject);
     options.controllers = uniq(options.controllers);
 
-    var log = options.verbose ? console.log : angular.noop;
+    var log = options.verbose ? angular.bind(console, console.log) : angular.noop;
 
     var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
     la(isValidNgDescribe(options), 'invalid input options', options);
@@ -106,7 +105,10 @@
 
     function ngSpecs() {
 
+      var dependencies = {};
+
       root.beforeEach(function mockModules() {
+        log('ngDescribe', options.name);
         log('loading modules', options.modules);
 
         options.modules.forEach(function loadAngularModules(moduleName) {
@@ -116,12 +118,28 @@
               provider.set(options.configs[moduleName]);
             }]);
           } else {
-            angular.mock.module(moduleName, function ($provide) {
+            angular.mock.module(moduleName, function ($provide, $injector) {
               var mocks = options.mocks[moduleName];
               if (mocks) {
                 log('mocking', Object.keys(mocks));
                 Object.keys(mocks).forEach(function (mockName) {
-                  $provide.value(mockName, mocks[mockName]);
+                  var value = mocks[mockName], diNames;
+                  if (typeof value === 'function') {
+                    diNames = $injector.annotate(value);
+                    log('dinames for', mockName, diNames);
+                    options.inject.push.apply(options.inject, diNames);
+
+                    value = function injectedDependenciesIntoMockFunction() {
+                      var args = diNames.map(function (name) {
+                        la(check.has(dependencies, name),
+                          'cannot find value', name, 'to inject into mock', mockName, Object.keys(dependencies));
+                        var runtimeInjectedValue = dependencies[name];
+                        return runtimeInjectedValue;
+                      });
+                      return mocks[mockName].apply(mocks, args);
+                    };
+                  }
+                  $provide.value(mockName, value);
                 });
               }
             });
@@ -129,8 +147,9 @@
         });
       });
 
-      var dependencies = {};
       root.beforeEach(angular.mock.inject(function ($injector) {
+        // injected list might be extended by mock functions
+        options.inject = uniq(options.inject);
         log('injecting', options.inject);
         options.inject.forEach(function (dependencyName) {
           dependencies[dependencyName] = $injector.get(dependencyName);

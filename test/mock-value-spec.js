@@ -81,8 +81,18 @@ ngDescribe({
 });
 
 ngDescribe({
+  name: 'inject just $q',
+  inject: ['$q'],
+  tests: function (deps) {
+    it('has $q', function () {
+      la(check.has(deps, '$q'));
+    });
+  }
+});
+
+ngDescribe({
   name: 'mocking with injected services',
-  inject: ['getFoo'],
+  inject: ['getFoo', '$q', '$rootScope'],
   mocks: {
     C: {
       getFoo: function ($q) {
@@ -93,6 +103,40 @@ ngDescribe({
   tests: function (deps) {
     it('has getFoo', function () {
       la(check.fn(deps.getFoo));
+    });
+
+    it('injected $q into mock', function (done) {
+      deps.getFoo().then(function (result) {
+        la(result === 4, 'resolved with correct value');
+        done();
+      });
+      deps.$rootScope.$apply();
+    });
+  }
+});
+
+ngDescribe({
+  name: 'needed services in mocks are injected automatically',
+  inject: ['getFoo', '$rootScope'],
+  verbose: false,
+  mocks: {
+    C: {
+      getFoo: function ($q) {
+        return $q.when(4);
+      }
+    }
+  },
+  tests: function (deps) {
+    it('has getFoo', function () {
+      la(check.fn(deps.getFoo));
+    });
+
+    it('injected $q into mock automatically', function (done) {
+      deps.getFoo().then(function (result) {
+        la(result === 4, 'resolved with correct value');
+        done();
+      });
+      deps.$rootScope.$apply();
     });
   }
 });

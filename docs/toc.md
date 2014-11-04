@@ -11,6 +11,7 @@
   * [Test directive](#test-directive)
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
+  * [Angular services inside mocks](#angular-services-inside-mocks)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)

@@ -54,6 +54,8 @@
   function ngDescribe(options) {
     la(check.defined(angular), 'missing angular');
     options = defaults(options);
+    // list of services to inject into mock functions
+    var mockInjects = [];
 
     if (check.string(options.modules)) {
       options.modules = [options.modules];
@@ -80,6 +82,7 @@
     // auto inject configured modules
     options.modules = options.modules.concat(Object.keys(options.configs));
 
+    options.inject = uniq(options.inject);
     options.modules = uniq(options.modules);
     options.controllers = uniq(options.controllers);
 
@@ -127,7 +130,7 @@
                   if (typeof value === 'function') {
                     diNames = $injector.annotate(value);
                     log('dinames for', mockName, diNames);
-                    options.inject.push.apply(options.inject, diNames);
+                    mockInjects.push.apply(mockInjects, diNames);
 
                     value = function injectedDependenciesIntoMockFunction() {
                       var args = diNames.map(function (name) {
@@ -148,11 +151,15 @@
       });
 
       root.beforeEach(angular.mock.inject(function ($injector) {
-        // injected list might be extended by mock functions
-        options.inject = uniq(options.inject);
         log('injecting', options.inject);
         options.inject.forEach(function (dependencyName) {
           dependencies[dependencyName] = $injector.get(dependencyName);
+        });
+        log('injecting existing dependencies for mocks', mockInjects);
+        mockInjects.forEach(function (dependencyName) {
+          if ($injector.has(dependencyName)) {
+            dependencies[dependencyName] = $injector.get(dependencyName);
+          }
         });
       }));
 

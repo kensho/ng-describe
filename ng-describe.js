@@ -133,13 +133,18 @@
                     mockInjects.push.apply(mockInjects, diNames);
 
                     value = function injectedDependenciesIntoMockFunction() {
+                      var runtimeArguments = arguments;
+                      var k = 0;
+                      var fn = mocks[mockName];
                       var args = diNames.map(function (name) {
-                        la(check.has(dependencies, name),
-                          'cannot find value', name, 'to inject into mock', mockName, Object.keys(dependencies));
-                        var runtimeInjectedValue = dependencies[name];
-                        return runtimeInjectedValue;
+                        if (check.has(dependencies, name)) {
+                          // name is injected by dependency injection
+                          return dependencies[name];
+                        }
+                        // argument is runtime
+                        return runtimeArguments[k++];
                       });
-                      return mocks[mockName].apply(mocks, args);
+                      return fn.apply(mocks, args);
                     };
                   }
                   $provide.value(mockName, value);

@@ -1,4 +1,4 @@
-# ng-describe v0.8.0
+# ng-describe v0.8.1
 
 > Convenient BDD specs for Angular
 
@@ -494,7 +494,8 @@ ngDescribe({
 
 ### Angular services inside mocks
 
-You can use other injected dependencies inside mocked functions.
+You can use other injected dependencies inside mocked functions, using
+injected values and free parameters.
 
 ```js
 ngDescribe({
@@ -502,15 +503,16 @@ ngDescribe({
   mocks: {
     C: {
       // use angular $q service in the mock function
-      getFoo: function ($q) {
-        return $q.when(4);
+      // argument "value" remains free
+      getFoo: function ($q, value) {
+        return $q.when(value);
       }
     }
   },
   tests: function (deps) {
     it('injected $q into mock', function (done) {
-      deps.getFoo().then(function (result) {
-        expect(result).toEqual(4);
+      deps.getFoo('foo').then(function (result) {
+        expect(result).toEqual('foo');
         done();
       });
       deps.$rootScope.$apply(); // resolve promise

@@ -110,6 +110,30 @@
 
       var dependencies = {};
 
+      function partiallInjectMethod(owner, mockName, fn, $injector) {
+        la(check.unemptyString(mockName), 'expected mock name', mockName);
+        la(check.fn(fn), 'expected function for', mockName, 'got', fn);
+
+        var diNames = $injector.annotate(fn);
+        log('dinames for', mockName, diNames);
+        mockInjects.push.apply(mockInjects, diNames);
+
+        var wrappedFunction = function injectedDependenciesIntoMockFunction() {
+          var runtimeArguments = arguments;
+          var k = 0;
+          var args = diNames.map(function (name) {
+            if (check.has(dependencies, name)) {
+              // name is injected by dependency injection
+              return dependencies[name];
+            }
+            // argument is runtime
+            return runtimeArguments[k++];
+          });
+          return fn.apply(owner, args);
+        };
+        return wrappedFunction;
+      }
+
       root.beforeEach(function mockModules() {
         log('ngDescribe', options.name);
         log('loading modules', options.modules);
@@ -126,26 +150,10 @@
               if (mocks) {
                 log('mocking', Object.keys(mocks));
                 Object.keys(mocks).forEach(function (mockName) {
-                  var value = mocks[mockName], diNames;
-                  if (typeof value === 'function') {
-                    diNames = $injector.annotate(value);
-                    log('dinames for', mockName, diNames);
-                    mockInjects.push.apply(mockInjects, diNames);
+                  var value = mocks[mockName];
 
-                    value = function injectedDependenciesIntoMockFunction() {
-                      var runtimeArguments = arguments;
-                      var k = 0;
-                      var fn = mocks[mockName];
-                      var args = diNames.map(function (name) {
-                        if (check.has(dependencies, name)) {
-                          // name is injected by dependency injection
-                          return dependencies[name];
-                        }
-                        // argument is runtime
-                        return runtimeArguments[k++];
-                      });
-                      return fn.apply(mocks, args);
-                    };
+                  if (check.fn(value)) {
+                    value = partiallInjectMethod(mocks, mockName, value, $injector);
                   }
                   $provide.value(mockName, value);
                 });

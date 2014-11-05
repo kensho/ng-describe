@@ -144,7 +144,7 @@ ngDescribe({
 ngDescribe({
   name: 'allow non-injected arguments',
   inject: ['getFoo', '$rootScope'],
-  verbose: true,
+  verbose: false,
   only: false,
   mocks: {
     C: {
@@ -166,13 +166,18 @@ ngDescribe({
 
 ngDescribe({
   name: 'allow non-injected arguments mixed with injected',
-  inject: ['getFoo', '$rootScope'],
-  verbose: false,
-  only: false,
+  inject: ['getFoo', '$rootScope', 'mockObject'],
+  verbose: true,
+  only: true,
   mocks: {
     C: {
       getFoo: function (value, $q) {
         return $q.when(value);
+      },
+      mockObject: {
+        getBar: function ($q) {
+          return $q.when('bar');
+        }
       }
     }
   },
@@ -180,6 +185,16 @@ ngDescribe({
     it('injects $q but leaves "value" parameter free', function (done) {
       deps.getFoo(21).then(function (result) {
         la(result === 21, 'resolved with correct value');
+        done();
+      });
+      deps.$rootScope.$apply();
+    });
+
+    it('injects $q into method inside mocked object', function (done) {
+      la(check.has(deps, 'mockObject'));
+      la(check.has(deps.mockObject, 'getBar'));
+      deps.mockObject.getBar().then(function (result) {
+        la(result === 'bar');
         done();
       });
       deps.$rootScope.$apply();

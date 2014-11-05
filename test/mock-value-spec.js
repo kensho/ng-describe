@@ -175,8 +175,8 @@ ngDescribe({
         return $q.when(value);
       },
       mockObject: {
-        getBar: function ($q) {
-          return $q.when('bar');
+        getBar: function ($q, val) {
+          return $q.when(val);
         }
       }
     }
@@ -190,11 +190,30 @@ ngDescribe({
       deps.$rootScope.$apply();
     });
 
-    it('injects $q into method inside mocked object', function (done) {
+    it('test function again', function (done) {
+      deps.getFoo(22).then(function (result) {
+        la(result === 22);
+        done();
+      });
+      deps.$rootScope.$apply();
+    });
+
+    it('has mocked object', function () {
       la(check.has(deps, 'mockObject'));
       la(check.has(deps.mockObject, 'getBar'));
-      deps.mockObject.getBar().then(function (result) {
-        la(result === 'bar');
+    });
+
+    it('injects $q into method inside mocked object', function (done) {
+      deps.mockObject.getBar('bar').then(function (result) {
+        la(result === 'bar', 'bar value');
+        done();
+      });
+      deps.$rootScope.$apply();
+    });
+
+    it('injects mock object again', function (done) {
+      deps.mockObject.getBar('bar2').then(function (result) {
+        la(result === 'bar2', 'bar2 value');
         done();
       });
       deps.$rootScope.$apply();

@@ -171,10 +171,12 @@
                 Object.keys(mocks).forEach(function (mockName) {
                   var value = mocks[mockName];
 
-                  if (check.fn(value)) {
+                  if (check.fn(value) && !value.injected) {
                     value = partiallInjectMethod(mocks, mockName, value, $injector);
-                  } else if (check.object(value)) {
+                    value.injected = true; // prevent multiple wrapping
+                  } else if (check.object(value) && !value.injected) {
                     value = partiallyInjectObject(value, mockName, $injector);
+                    value.injected = true; // prevent multiple wrapping
                   }
                   $provide.value(mockName, value);
                 });
@@ -189,6 +191,8 @@
         options.inject.forEach(function (dependencyName) {
           dependencies[dependencyName] = $injector.get(dependencyName);
         });
+
+        mockInjects = uniq(mockInjects);
         log('injecting existing dependencies for mocks', mockInjects);
         mockInjects.forEach(function (dependencyName) {
           if ($injector.has(dependencyName)) {

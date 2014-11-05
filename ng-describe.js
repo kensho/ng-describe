@@ -51,6 +51,14 @@
     });
   }
 
+  function methodNames(reference) {
+    la(check.object(reference), 'expected object reference, not', reference);
+
+    return Object.keys(reference).filter(function (key) {
+      return check.fn(reference[key]);
+    });
+  }
+
   function ngDescribe(options) {
     la(check.defined(angular), 'missing angular');
     options = defaults(options);
@@ -134,6 +142,17 @@
         return wrappedFunction;
       }
 
+      function partiallyInjectObject(reference, mockName, $injector) {
+        la(check.object(reference), 'expected object reference, not', reference);
+
+        methodNames(reference).forEach(function (key) {
+          reference[key] = partiallInjectMethod(reference,
+            mockName + '.' + key, reference[key], $injector);
+        });
+
+        return reference;
+      }
+
       root.beforeEach(function mockModules() {
         log('ngDescribe', options.name);
         log('loading modules', options.modules);
@@ -154,6 +173,8 @@
 
                   if (check.fn(value)) {
                     value = partiallInjectMethod(mocks, mockName, value, $injector);
+                  } else if (check.object(value)) {
+                    value = partiallyInjectObject(value, mockName, $injector);
                   }
                   $provide.value(mockName, value);
                 });

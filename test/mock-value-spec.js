@@ -167,8 +167,8 @@ ngDescribe({
 ngDescribe({
   name: 'allow non-injected arguments mixed with injected',
   inject: ['getFoo', '$rootScope', 'mockObject'],
-  verbose: true,
-  only: true,
+  verbose: false,
+  only: false,
   mocks: {
     C: {
       getFoo: function (value, $q) {

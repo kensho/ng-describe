@@ -78,3 +78,34 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'parent scope initialization',
+  modules: 'IsolateFoo',
+  element: '<a-foo bar="values"></a-foo>',
+  parentScope: {
+    values: []
+  },
+  only: false,
+  verbose: false,
+  tests: function (deps) {
+    it('has empty array in parent scope', function () {
+      la(!deps.parentScope.values.length);
+    });
+
+    it('compiled template', function () {
+      var html = deps.element.html();
+      la(html === '[]', html);
+    });
+
+    it('changes valus in parent scope', function () {
+      la(!deps.parentScope.values.length);
+      deps.parentScope.values.push('foo');
+      la(deps.parentScope.values.length === 1, 'has 1 item');
+    });
+
+    it('does is empty again', function () {
+      la(!deps.parentScope.values.length);
+    });
+  }
+});

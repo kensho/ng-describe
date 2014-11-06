@@ -220,7 +220,7 @@
           la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
 
           var scope = dependencies.$rootScope.$new();
-          angular.extend(scope, options.parentScope);
+          angular.extend(scope, angular.copy(options.parentScope));
           log('created element scope with values', options.parentScope);
 
           var element = angular.element(options.element);

@@ -6,6 +6,7 @@
   * [Secondary options](#secondary-options)
 * [Examples](#examples)
   * [Test value provided by a module](#test-value-provided-by-a-module)
+  * [Test a filter](#test-a-filter)
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)

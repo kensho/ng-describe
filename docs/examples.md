@@ -24,6 +24,23 @@ ngDescribe({
 });
 ```
 
+## Test a filter
+
+We can easily test a built-in or custom filter function
+
+```js
+ngDescribe({
+  name: 'built-in filter',
+  inject: '$filter',
+  tests: function (deps) {
+    it('can convert to lowercase', function () {
+      var lowercase = deps.$filter('lowercase');
+      la(lowercase('Foo') === 'foo');
+    });
+  }
+});
+```
+
 ## Test a service
 
 We can inject a service to test using the same approach. You can even use multiple specs inside `tests` callback.

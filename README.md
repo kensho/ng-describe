@@ -35,6 +35,7 @@
   * [Secondary options](#secondary-options)
 * [Examples](#examples)
   * [Test value provided by a module](#test-value-provided-by-a-module)
+  * [Test a filter](#test-a-filter)
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
@@ -309,6 +310,23 @@ ngDescribe({
     // deps object has every injected dependency as a property
     it('has correct value foo', function () {
       expect(deps.foo).toEqual('bar');
+    });
+  }
+});
+```
+
+### Test a filter
+
+We can easily test a built-in or custom filter function
+
+```js
+ngDescribe({
+  name: 'built-in filter',
+  inject: '$filter',
+  tests: function (deps) {
+    it('can convert to lowercase', function () {
+      var lowercase = deps.$filter('lowercase');
+      la(lowercase('Foo') === 'foo');
     });
   }
 });

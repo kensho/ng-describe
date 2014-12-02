@@ -61,6 +61,14 @@
 
   function ngDescribe(options) {
     la(check.defined(angular), 'missing angular');
+
+    // aliases
+    if (options.module && !options.modules) {
+      options.modules = options.module;
+    }
+    if (options.test && !options.tests) {
+      options.tests = options.test;
+    }
     options = defaults(options);
     // list of services to inject into mock functions
     var mockInjects = [];

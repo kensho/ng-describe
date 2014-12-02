@@ -1,4 +1,4 @@
-# ng-describe v0.8.5
+# ng-describe v0.9.0
 
 > Convenient BDD specs for Angular
 
@@ -39,6 +39,7 @@
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
+  * [Test controller instance in custom directive](#test-controller-instance-in-custom-directive)
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [Angular services inside mocks](#angular-services-inside-mocks)
@@ -419,6 +420,41 @@ ngDescribe({
       scope.bar = 'bar';
       scope.$apply();
       la(deps.element.html() === 'bar');
+    });
+  }
+});
+```
+
+### Test controller instance in custom directive
+
+If you add methods to the controller inside custom directive, use `controllerAs` syntax to
+expose the controller instance.
+
+```js
+angular.module('C', [])
+  .directive('cDirective', function () {
+    return {
+      controllerAs: 'ctrl', // puts controller instance onto scope as ctrl
+      controller: function ($scope) {
+        $scope.foo = 'foo';
+        this.foo = function getFoo() {
+          return $scope.foo;
+        };
+      }
+    };
+  });
+ngDescribe({
+  name: 'controller for directive instance',
+  modules: 'C',
+  element: '<c-directive></c-directive>',
+  tests: function (deps) {
+    it('has controller', function () {
+      var scope = deps.element.scope(); // grabs scope
+      var controller = scope.ctrl; // grabs controller instance
+      la(typeof controller.foo === 'function');
+      la(controller.foo() === 'foo');
+      scope.foo = 'bar';
+      la(controller.foo() === 'bar');
     });
   }
 });

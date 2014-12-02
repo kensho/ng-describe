@@ -133,6 +133,41 @@ ngDescribe({
 });
 ```
 
+## Test controller instance in custom directive
+
+If you add methods to the controller inside custom directive, use `controllerAs` syntax to
+expose the controller instance.
+
+```js
+angular.module('C', [])
+  .directive('cDirective', function () {
+    return {
+      controllerAs: 'ctrl', // puts controller instance onto scope as ctrl
+      controller: function ($scope) {
+        $scope.foo = 'foo';
+        this.foo = function getFoo() {
+          return $scope.foo;
+        };
+      }
+    };
+  });
+ngDescribe({
+  name: 'controller for directive instance',
+  modules: 'C',
+  element: '<c-directive></c-directive>',
+  tests: function (deps) {
+    it('has controller', function () {
+      var scope = deps.element.scope(); // grabs scope
+      var controller = scope.ctrl; // grabs controller instance
+      la(typeof controller.foo === 'function');
+      la(controller.foo() === 'foo');
+      scope.foo = 'bar';
+      la(controller.foo() === 'bar');
+    });
+  }
+});
+```
+
 ## Test 2 way binding
 
 If a directive implements isolate scope, we can configure parent scope separately.

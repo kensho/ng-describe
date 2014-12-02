@@ -10,6 +10,7 @@
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
+  * [Test controller instance in custom directive](#test-controller-instance-in-custom-directive)
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [Angular services inside mocks](#angular-services-inside-mocks)

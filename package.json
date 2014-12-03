@@ -12,8 +12,8 @@
     "lazy-ass": "0.5.3"
   },
   "devDependencies": {
-    "angular": "1.3.0",
-    "angular-mocks": "1.3.4-build.3588",
+    "angular": "1.3.5",
+    "angular-mocks": "1.3.5",
     "coveralls": "2.11.2",
     "grunt": "0.4.5",
     "grunt-contrib-jshint": "0.10.0",
@@ -24,9 +24,9 @@
     "grunt-npm2bower-sync": "0.4.0",
     "grunt-readme": "0.4.5",
     "grunt-toc": "0.1.0",
-    "karma": "0.12.25",
-    "karma-chrome-launcher": "0.1.5",
-    "karma-coverage": "0.2.6",
+    "karma": "0.12.28-beta-b9be580",
+    "karma-chrome-launcher": "0.1.6",
+    "karma-coverage": "0.2.7",
     "karma-mocha": "0.1.9",
     "karma-nested-reporter": "0.1.3",
     "karma-phantomjs-launcher": "0.1.4",

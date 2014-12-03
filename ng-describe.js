@@ -59,20 +59,17 @@
     });
   }
 
-  function ngDescribe(options) {
-    la(check.defined(angular), 'missing angular');
-
-    // aliases
+  function copyAliases(options) {
     if (options.module && !options.modules) {
       options.modules = options.module;
     }
     if (options.test && !options.tests) {
       options.tests = options.test;
     }
-    options = defaults(options);
-    // list of services to inject into mock functions
-    var mockInjects = [];
+    return options;
+  }
 
+  function ensureArrays(options) {
     if (check.string(options.modules)) {
       options.modules = [options.modules];
     }
@@ -82,6 +79,12 @@
     if (check.string(options.controllers)) {
       options.controllers = [options.controllers];
     }
+    return options;
+  }
+
+  function collectInjects(options) {
+    la(check.object(options) && check.array(options.controllers),
+      'missing controllers', options);
 
     if (options.controllers.length) {
       options.inject.push('$controller');
@@ -98,15 +101,17 @@
     // auto inject configured modules
     options.modules = options.modules.concat(Object.keys(options.configs));
 
+    return options;
+  }
+
+  function ensureUnique(options) {
     options.inject = uniq(options.inject);
     options.modules = uniq(options.modules);
     options.controllers = uniq(options.controllers);
+    return options;
+  }
 
-    var log = options.verbose ? angular.bind(console, console.log) : angular.noop;
-
-    var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
-    la(isValidNgDescribe(options), 'invalid input options', options);
-
+  function decideSuiteFunction(options) {
     var suiteFn = root.describe;
     if (options.only) {
       // run only this describe block using Jasmine or Mocha
@@ -120,7 +125,33 @@
       la(!options.only, 'skip and only are exclusive options', options);
       suiteFn = root.xdescribe || root.describe.skip;
     }
+    return suiteFn;
+  }
+
+  function decideLogFunction(options) {
+    return options.verbose ? angular.bind(console, console.log) : angular.noop;
+  }
+
+  function ngDescribe(options) {
+    la(check.defined(angular), 'missing angular');
+
+    options = copyAliases(options);
+    options = defaults(options);
+    options = ensureArrays(options);
+    options = collectInjects(options);
+    options = ensureUnique(options);
+
+    var log = decideLogFunction(options);
+    la(check.fn(log), 'could not decide on log function', options);
+
+    var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
+    la(isValidNgDescribe(options), 'invalid input options', options);
+
+    var suiteFn = decideSuiteFunction(options);
     la(check.fn(suiteFn), 'missing describe function', options);
+
+    // list of services to inject into mock functions
+    var mockInjects = [];
 
     function ngSpecs() {
 

@@ -133,6 +133,7 @@
   }
 
   function ngDescribe(options) {
+    la(check.object(options), 'expected options object, see docs', options);
     la(check.defined(angular), 'missing angular');
 
     options = copyAliases(options);

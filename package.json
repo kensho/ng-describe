@@ -1,11 +1,12 @@
 {
   "name": "ng-describe",
   "description": "Convenient BDD specs for Angular",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"
   },
+  "contributors": [],
   "dependencies": {
     "check-more-types": "1.0.4",
     "check-types": "1.4.0",
@@ -49,7 +50,10 @@
   ],
   "license": "MIT",
   "main": "ng-describe.js",
-  "pre-commit": "npm test",
+  "pre-commit": [
+    "npm test",
+    "npm version"
+  ],
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:kensho/ng-describe.git"

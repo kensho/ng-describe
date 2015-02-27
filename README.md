@@ -1,4 +1,4 @@
-# ng-describe v0.9.1
+# ng-describe v0.9.2
 
 > Convenient BDD specs for Angular
 
@@ -45,6 +45,7 @@
   * [Angular services inside mocks](#angular-services-inside-mocks)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Spy on injected methods](#spy-on-injected-methods)
+  * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
 * [License](#license)
@@ -367,7 +368,7 @@ ngDescribe({
 
 We can easily create instances of controller functions and scope objects.
 In this example we also inject `$timeout` service to speed up delayed actions
-(see [Testing Angular async stuff](http://bahmutov.calepin.co/testing-angular-async-stuff.html)).
+(see [Testing Angular async stuff](http://glebbahmutov.com/blog/testing-angular-async-stuff/)).
 
 ```js
 angular.module('S', [])
@@ -682,10 +683,56 @@ ngDescribe({
 });
 ```
 
+### Spy on mocked service
+
+If we mock an injected service, we can still spy on it, just like as if we were spying on the
+regular service. For example, let us take the same method as above and mock it.
+
+```js
+angular.module('Tweets', [])
+  .service('getTweets', function () {
+    return function getTweets(username) {
+      return 42;
+    };
+  });
+```
+
+The mock will return a different number.
+
+```js
+ngDescribe({
+  name: 'spying on mock methods',
+  inject: 'getTweets',
+  mocks: {
+    Tweets: {
+      getTweets: function (username) {
+        return 1000;
+      }
+    }
+  },
+  tests: function (deps) {
+    beforeEach(function () {
+      sinon.spy(deps, 'getTweets');
+    });
+    afterEach(function () {
+      deps.getTweets.restore();
+    });
+    it('calls mocked getTweets service', function () {
+      var n = deps.getTweets('bar');
+      la(n === 1000, 'resolved with correct value from the mock service');
+      la(deps.getTweets.called,
+        'mock service getTweets was called (spied using sinon)');
+      la(deps.getTweets.firstCall.calledWith('bar'),
+        'mock service getTweets was called with expected argument');
+    });
+  }
+});
+```
+
 ### Configure module
 
 If you use a separate module with namesake provider to pass configuration into the modules
-(see [Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)),
+(see [Inject valid constants into Angular](http://glebbahmutov.com/blog/inject-valid-constants-into-angular/)),
 you can easily configure these modules.
 
 ```js

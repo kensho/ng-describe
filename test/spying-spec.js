@@ -1,7 +1,7 @@
 angular.module('Tweets', [])
   .service('getTweets', function () {
     return function getTweets(username) {
-      console.log('returning # of tweets for', username);
+      la(username === 'foo', 'unexpected username', username);
       return 42;
     };
   });
@@ -11,7 +11,7 @@ ngDescribe({
   name: 'spying on actual method',
   modules: 'Tweets',
   inject: 'getTweets',
-  verbose: true,
+  verbose: false,
   only: false,
   tests: function (deps) {
     beforeEach(function () {
@@ -37,23 +37,33 @@ ngDescribe({
 ngDescribe({
   name: 'spying on mock methods',
   inject: 'getTweets',
-  verbose: true,
+  verbose: false,
   only: false,
-  skip: true,
+  skip: false,
   mocks: {
     Tweets: {
-      getTweets: function ($q, value) {
-        return $q.when(value);
+      getTweets: function (username) {
+        la(username === 'bar');
+        return 1000;
       }
     }
   },
   tests: function (deps) {
-    it('injects $q but leaves "value" parameter free', function (done) {
-      deps.getFoo(21).then(function (result) {
-        la(result === 21, 'resolved with correct value');
-        done();
-      });
-      deps.$rootScope.$apply();
+    beforeEach(function () {
+      sinon.spy(deps, 'getTweets');
+    });
+
+    afterEach(function () {
+      deps.getTweets.restore();
+    });
+
+    it('calls mocked getTweets service', function () {
+      var n = deps.getTweets('bar');
+      la(n === 1000, 'resolved with correct value from the mock service');
+      la(deps.getTweets.called,
+        'mock service getTweets was called (spied using sinon)');
+      la(deps.getTweets.firstCall.calledWith('bar'),
+        'mock service getTweets was called with expected argument');
     });
   }
 });

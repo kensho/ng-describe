@@ -344,6 +344,51 @@ ngDescribe({
 });
 ```
 
+## Spy on injected methods
+
+One can quickly spy on injected services (or other methods) using [sinon.js](http://sinonjs.org/) 
+similarly to [spying on the regular JavaScript methods](http://glebbahmutov.com/blog/spying-on-methods/).
+
+* Include a browser-compatible combined [sinon.js build](http://sinonjs.org/releases/sinon-1.12.1.js) 
+into the list of loaded Karma files.
+* Setup spy in the `beforeEach` function. Since every injected service is a method on the `deps`
+object, the setup is a single command.
+* Restore the original method in `afterEach` function.
+
+```js
+// source code
+angular.module('Tweets', [])
+  .service('getTweets', function () {
+    return function getTweets(username) {
+      console.log('returning # of tweets for', username);
+      return 42;
+    };
+  });
+```
+
+```js
+// spec
+ngDescribe({
+  name: 'spying on Tweets getTweets service',
+  modules: 'Tweets',
+  inject: 'getTweets',
+  tests: function (deps) {
+    beforeEach(function () {
+      sinon.spy(deps, 'getTweets');
+    });
+    afterEach(function () {
+      deps.getTweets.restore();
+    });
+    it('calls getTweets service', function () {
+      var n = deps.getTweets('foo');
+      la(n === 42, 'resolved with correct value');
+      la(deps.getTweets.called, 'getTweets was called (spied using sinon)');
+      la(deps.getTweets.firstCall.calledWith('foo'));
+    });
+  }
+});
+```
+
 ## Configure module
 
 If you use a separate module with namesake provider to pass configuration into the modules

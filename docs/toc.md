@@ -15,6 +15,7 @@
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [Angular services inside mocks](#angular-services-inside-mocks)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
+  * [Spy on injected methods](#spy-on-injected-methods)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
 * [License](#license)

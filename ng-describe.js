@@ -119,7 +119,8 @@
     if (options.only) {
       // run only this describe block using Jasmine or Mocha
       // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
-      suiteFn = root.ddescribe || root.describe.only;
+      // Jasmine 2.x vs 1.x syntax - fdescribe vs ddescribe
+      suiteFn = root.fdescribe || root.ddescribe || root.describe.only;
     }
     if (options.helpful) {
       suiteFn = root.helpDescribe;

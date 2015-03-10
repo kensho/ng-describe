@@ -6,7 +6,10 @@
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"
   },
-  "contributors": [],
+  "contributors": [
+    "Gleb Bahmutov bahmutov",
+    "Martin Camacho mcamac"
+  ],
   "dependencies": {
     "check-more-types": "1.0.4",
     "check-types": "1.4.0",

@@ -56,7 +56,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:kensho/ng-describe.git"
+    "url": "git@github.com:kensho/ng-describe.git"
   },
   "scripts": {
     "test": "grunt",

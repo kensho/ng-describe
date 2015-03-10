@@ -1,4 +1,4 @@
-# ng-describe v0.9.2
+# ng-describe v0.9.3
 
 > Convenient BDD specs for Angular
 
@@ -39,6 +39,7 @@
   * [Test a service](#test-a-service)
   * [Test controller and scope](#test-controller-and-scope)
   * [Test directive](#test-directive)
+  * [Test controllerAs syntax](#test-controlleras-syntax)
   * [Test controller instance in custom directive](#test-controller-instance-in-custom-directive)
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
@@ -426,6 +427,39 @@ ngDescribe({
   }
 });
 ```
+
+### Test controllerAs syntax
+
+If you use `controllerAs` syntax without any components (see [Binding to ...][binding] post),
+then you can still test it quickly
+
+```js
+angular.module('H', [])
+  .controller('hController', function () {
+    // notice we attach properties to the instance, not to the $scope
+    this.foo = 'foo';
+  });
+  ngDescribe({
+    module: 'H',
+    element: '<div ng-controller="hController as ctrl">{{ ctrl.foo }}</div>',
+    tests: function (deps) {
+      it('created controller correctly', function () {
+        var compiledHtml = deps.element.html();
+        // 'foo'
+      });
+      it('changes value', function () {
+        var ctrl = deps.element.controller();
+        // { foo: 'foo' }
+        ctrl.foo = 'bar';
+        deps.element.scope().$apply();
+        var compiledHtml = deps.element.html();
+        // 'bar'
+      });
+    }
+  });
+```
+
+[binding]: http://blog.thoughtram.io/angularjs/2015/01/02/exploring-angular-1.3-bindToController.html
 
 ### Test controller instance in custom directive
 

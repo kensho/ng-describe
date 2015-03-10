@@ -133,6 +133,39 @@ ngDescribe({
 });
 ```
 
+## Test controllerAs syntax
+
+If you use `controllerAs` syntax without any components (see [Binding to ...][binding] post),
+then you can still test it quickly
+
+```js
+angular.module('H', [])
+  .controller('hController', function () {
+    // notice we attach properties to the instance, not to the $scope
+    this.foo = 'foo';
+  });
+  ngDescribe({
+    module: 'H',
+    element: '<div ng-controller="hController as ctrl">{{ ctrl.foo }}</div>',
+    tests: function (deps) {
+      it('created controller correctly', function () {
+        var compiledHtml = deps.element.html();
+        // 'foo'
+      });
+      it('changes value', function () {
+        var ctrl = deps.element.controller();
+        // { foo: 'foo' }
+        ctrl.foo = 'bar';
+        deps.element.scope().$apply();
+        var compiledHtml = deps.element.html();
+        // 'bar'
+      });
+    }
+  });
+```
+
+[binding]: http://blog.thoughtram.io/angularjs/2015/01/02/exploring-angular-1.3-bindToController.html
+
 ## Test controller instance in custom directive
 
 If you add methods to the controller inside custom directive, use `controllerAs` syntax to

@@ -66,6 +66,9 @@
     if (options.test && !options.tests) {
       options.tests = options.test;
     }
+    if (options.controller && !options.controllers) {
+      options.controllers = options.controller;
+    }
     return options;
   }
 

@@ -1,4 +1,4 @@
-# ng-describe v0.9.5
+# ng-describe v0.9.6
 
 > Convenient BDD specs for Angular
 
@@ -9,6 +9,8 @@
 [![Codacy Badge][ng-describe-codacy-image] ][ng-describe-codacy-url]
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
+
+Tested against angular v1.2, v1.3 and v1.4
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe

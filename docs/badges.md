@@ -6,6 +6,8 @@
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
 
+Tested against angular v1.2, v1.3 and v1.4
+
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe
 [ng-describe-ci-image]: https://travis-ci.org/kensho/ng-describe.png?branch=master

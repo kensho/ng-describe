@@ -62,7 +62,8 @@
     "url": "git@github.com:kensho/ng-describe.git"
   },
   "scripts": {
-    "test": "grunt",
+    "test": "grunt && npm run test-ng-1.2",
+    "test-ng-1.2": "cd test/angular-1.2; npm install; grunt",
     "coveralls": "cat test/coverage/P*/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   }
 }

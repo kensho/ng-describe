@@ -22,18 +22,23 @@ ngDescribe({
       la(check.object(deps.element));
     });
 
-    it('has scope', function () {
-      var scope = deps.element.scope();
-      la(scope.foo === 'foo');
-    });
+    if (angular.version.minor > 2) {
+      // controllerAs works in 1.3 but not in 1.2
+      it('has scope', function () {
+        var scope = deps.element.scope();
+        la(scope.foo === 'foo', Object.keys(scope));
+      });
 
-    it('has controller', function () {
-      var scope = deps.element.scope();
-      var controller = scope.ctrl;
-      la(typeof controller.foo === 'function');
-      la(controller.foo() === 'foo');
-      scope.foo = 'bar';
-      la(controller.foo() === 'bar');
-    });
+      it('has controller', function () {
+        var scope = deps.element.scope();
+        var controller = scope.ctrl;
+        la(typeof controller.foo === 'function');
+        la(controller.foo() === 'foo');
+        scope.foo = 'bar';
+        la(controller.foo() === 'bar');
+      });
+    } else {
+      console.log('skipping controllerAs unit tests');
+    }
   }
 });

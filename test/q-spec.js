@@ -3,7 +3,7 @@ ngDescribe({
   inject: ['$q', '$rootScope'],
   tests: function (deps) {
     it('injects $q', function () {
-      la(typeof deps.$q === 'function');
+      la(typeof deps.$q !== 'undefined', '$q is', typeof deps.$q);
     });
 
     it('can be resolved', function () {

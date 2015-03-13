@@ -7,6 +7,11 @@ ngDescribe({
     it('loads and runs', function () {
       la(true, 'everything is fine');
     });
+
+    it('prints angular version', function () {
+      la(typeof angular !== 'undefined', 'has angular');
+      console.log('angular version', angular.version.full);
+    });
   }
 });
 

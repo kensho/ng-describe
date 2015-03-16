@@ -9,6 +9,7 @@
     modules: [],
     configs: {},
     inject: [],
+    exposeApi: false,
     tests: function () {},
     mocks: {},
     helpful: false,
@@ -32,6 +33,7 @@
     modules: check.arrayOfStrings,
     configs: check.object,
     inject: check.arrayOfStrings,
+    exposeApi: check.bool,
     tests: check.fn,
     mocks: check.object,
     helpful: check.bool,
@@ -89,12 +91,12 @@
     la(check.object(options) && check.array(options.controllers),
       'missing controllers', options);
 
-    if (options.controllers.length) {
+    if (options.controllers.length || options.exposeApi) {
       options.inject.push('$controller');
       options.inject.push('$rootScope');
     }
 
-    if (check.unemptyString(options.element)) {
+    if (check.unemptyString(options.element) || options.exposeApi) {
       options.inject.push('$rootScope');
       options.inject.push('$compile');
     }
@@ -258,26 +260,40 @@
         });
       });
 
-      options.tests(dependencies);
+      function setupElement(elementHtml) {
+        la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
 
-      // Element setup must come after tests setup so that any beforeEach clauses
-      // within the tests occur before th element is compiled, i.e. $httpBackend setup.
+        var scope = dependencies.$rootScope.$new();
+        angular.extend(scope, angular.copy(options.parentScope));
+        log('created element scope with values', options.parentScope);
+
+        var element = angular.element(elementHtml);
+        var compiled = dependencies.$compile(element);
+        compiled(scope);
+        dependencies.$rootScope.$digest();
+
+        dependencies.element = element;
+        dependencies.parentScope = scope;
+      }
+
+      function exposeApi() {
+        return {
+          setupElement: setupElement
+        };
+      }
+
+      var toExpose = options.exposeApi ? exposeApi() : undefined;
+      options.tests(dependencies, toExpose);
+
+      // Element setup comes after tests setup by default so that any beforeEach clauses
+      // within the tests occur before the element is compiled, i.e. $httpBackend setup.
       if (check.unemptyString(options.element)) {
         log('setting up element', options.element);
-        root.beforeEach(function setupElement() {
-          la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
-
-          var scope = dependencies.$rootScope.$new();
-          angular.extend(scope, angular.copy(options.parentScope));
-          log('created element scope with values', options.parentScope);
-
-          var element = angular.element(options.element);
-          var compiled = dependencies.$compile(element);
-          compiled(scope);
-          dependencies.$rootScope.$digest();
-
-          dependencies.element = element;
-          dependencies.parentScope = scope;
+        root.beforeEach(function () {
+          setupElement(options.element);
+        });
+        root.afterEach(function () {
+          delete dependencies.element;
         });
       }
 

@@ -6,11 +6,13 @@ angular.module('MyFoo', [])
       template: '<span>{{ bar }}</span>'
     };
   });
-/* global ngDescribe, it */
+/* global ngDescribe, it, beforeEach */
 ngDescribe({
   name: 'MyFoo directive',
   modules: 'MyFoo',
   element: '<my-foo></my-foo>',
+  only: false,
+  verbose: true,
   tests: function (deps) {
     it('creates myFoo element', function () {
       la(check.object(deps), 'has dependencies');
@@ -31,6 +33,28 @@ ngDescribe({
       scope.bar = 'bar';
       scope.$apply();
       la(deps.element.html() === 'bar');
+    });
+  }
+});
+
+ngDescribe({
+  name: 'MyFoo directive and order of element vs beforeEach',
+  modules: 'MyFoo',
+  element: '<my-foo></my-foo>',
+  only: false,
+  verbose: true,
+  skip: true,
+  tests: function (deps) {
+    beforeEach(function () {
+      console.log('running before each');
+      deps.ranBeforeEach = true;
+      console.log(deps);
+      la(!check.has(deps, 'element'), 'has no compiled element in before each yet');
+    });
+
+    it('creates myFoo element', function () {
+      la(check.has(deps, 'element'), 'has compiled element');
+      la(deps.ranBeforeEach, 'element created AFTER it ran beforeEach');
     });
   }
 });

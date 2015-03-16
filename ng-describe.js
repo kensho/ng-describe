@@ -258,6 +258,10 @@
         });
       });
 
+      options.tests(dependencies);
+
+      // Element setup must come after tests setup so that any beforeEach clauses
+      // within the tests occur before th element is compiled, i.e. $httpBackend setup.
       if (check.unemptyString(options.element)) {
         log('setting up element', options.element);
         root.beforeEach(function setupElement() {
@@ -276,8 +280,6 @@
           dependencies.parentScope = scope;
         });
       }
-
-      options.tests(dependencies);
 
       root.afterEach(function () {
         options.inject.forEach(function (dependencyName) {

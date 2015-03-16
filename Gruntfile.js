@@ -14,6 +14,12 @@ module.exports = function(grunt) {
       }
     },
 
+    jsonlint: {
+      all: {
+        src: ['package.json']
+      }
+    },
+
     sync: {
       all: {
         options: {
@@ -65,5 +71,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['karma']);
   grunt.registerTask('doc', ['readme', 'toc', 'readme']);
   grunt.registerTask('default',
-    ['nice-package', 'deps-ok', 'sync', 'jshint', 'test', 'doc']);
+    ['nice-package', 'deps-ok', 'sync', 'jsonlint', 'jshint', 'test', 'doc']);
 };

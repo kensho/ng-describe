@@ -377,6 +377,9 @@ ngDescribe({
 });
 ```
 
+**Note** if you use `beforeEach` block with `element`, the `beforeEach` runs *before* the element
+is created. This gives you a chance to setup mocks before running the element and possibly making calls.
+
 ## Spy on injected methods
 
 One can quickly spy on injected services (or other methods) using [sinon.js](http://sinonjs.org/) 

@@ -1,4 +1,4 @@
-# ng-describe v0.9.6
+# ng-describe v0.9.7
 
 > Convenient BDD specs for Angular
 
@@ -670,6 +670,9 @@ ngDescribe({
   }
 });
 ```
+
+**Note** if you use `beforeEach` block with `element`, the `beforeEach` runs *before* the element
+is created. This gives you a chance to setup mocks before running the element and possibly making calls.
 
 ### Spy on injected methods
 

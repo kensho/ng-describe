@@ -12,7 +12,7 @@ ngDescribe({
   modules: 'MyFoo',
   element: '<my-foo></my-foo>',
   only: false,
-  verbose: true,
+  verbose: false,
   tests: function (deps) {
     it('creates myFoo element', function () {
       la(check.object(deps), 'has dependencies');
@@ -43,12 +43,10 @@ ngDescribe({
   element: '<my-foo></my-foo>',
   only: false,
   verbose: true,
-  skip: true,
+  skip: false,
   tests: function (deps) {
     beforeEach(function () {
-      console.log('running before each');
       deps.ranBeforeEach = true;
-      console.log(deps);
       la(!check.has(deps, 'element'), 'has no compiled element in before each yet');
     });
 

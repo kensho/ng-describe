@@ -175,3 +175,28 @@ ngDescribe({
 ```
 
 **skip** - flag to skip this group of specs. Equivalent to `xdescribe` or `describe.skip`.
+
+**exposeApi** - instead of creating element right away, expose element factory so that you can create
+an element *after* running a `beforeEach` block. Useful for setting up mock backend before creating
+an element.
+
+```js
+ngDescribe({
+  exposeApi: true,
+  inject: '$httpBackend',
+  // no element option
+  tests: function (deps, describeApi) {
+    beforeEach(function () {
+      deps.$httpBackend
+        .expectGET('/api/foo/bar').respond(500);
+    });
+    beforeEach(function () {
+      // now create an element ourselves
+      describeApi.setupElement('<study-flags />');
+    });
+    it('created an element', function () {
+      la(check.has(deps.element));
+    });
+  });
+});
+```

@@ -379,6 +379,8 @@ ngDescribe({
 
 **Note** if you use `beforeEach` block with `element`, the `beforeEach` runs *before* the element
 is created. This gives you a chance to setup mocks before running the element and possibly making calls.
+If you really want to control when an element is created use `exposeApi` option 
+(see [Secondary options](#secondary-options)).
 
 ## Spy on injected methods
 

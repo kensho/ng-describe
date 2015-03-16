@@ -42,8 +42,6 @@ ngDescribe({
   modules: 'MyFoo',
   element: '<my-foo></my-foo>',
   only: false,
-  verbose: true,
-  skip: false,
   tests: function (deps) {
     beforeEach(function () {
       deps.ranBeforeEach = true;
@@ -51,6 +49,11 @@ ngDescribe({
     });
 
     it('creates myFoo element', function () {
+      la(check.has(deps, 'element'), 'has compiled element');
+      la(deps.ranBeforeEach, 'element created AFTER it ran beforeEach');
+    });
+
+    it('creates myFoo element again', function () {
       la(check.has(deps, 'element'), 'has compiled element');
       la(deps.ranBeforeEach, 'element created AFTER it ran beforeEach');
     });

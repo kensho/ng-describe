@@ -62,6 +62,12 @@
   }
 
   function copyAliases(options) {
+    if (options.config && !options.configs) {
+      options.configs = options.config;
+    }
+    if (options.mock && !options.mocks) {
+      options.mocks = options.mock;
+    }
     if (options.module && !options.modules) {
       options.modules = options.module;
     }

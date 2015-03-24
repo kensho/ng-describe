@@ -1,11 +1,11 @@
 [![NPM][ng-describe-icon] ][ng-describe-url]
+[![Quality][quality-badge] ][quality-url]
 
 [![Build status][ng-describe-ci-image] ][ng-describe-ci-url]
 [![Coverage Status][ng-describe-coverage-image] ][ng-describe-coverage-url]
 [![Codacy Badge][ng-describe-codacy-image] ][ng-describe-codacy-url]
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
-[![Quality][quality-badge] ][quality-url]
 
 Tested against angular v1.2, v1.3 and v1.4
 

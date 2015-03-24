@@ -5,6 +5,7 @@
 [![Codacy Badge][ng-describe-codacy-image] ][ng-describe-codacy-url]
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
+[![Quality][quality-badge] ][quality-url]
 
 Tested against angular v1.2, v1.3 and v1.4
 
@@ -20,3 +21,6 @@ Tested against angular v1.2, v1.3 and v1.4
 [ng-describe-devdependencies-url]: https://david-dm.org/kensho/ng-describe#info=devDependencies
 [ng-describe-codacy-image]: https://www.codacy.com/project/badge/25cb5d1410c7497cb057d887d1f3ea23
 [ng-describe-codacy-url]: https://www.codacy.com/public/kensho/ng-describe.git
+
+[quality-badge]: http://npm.packagequality.com/badge/ng-describe.png
+[quality-url]: http://packagequality.com/#?package=ng-describe

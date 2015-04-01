@@ -53,6 +53,10 @@
     });
   }
 
+  function clone(a) {
+    return JSON.parse(JSON.stringify(a));
+  }
+
   function methodNames(reference) {
     la(check.object(reference), 'expected object reference, not', reference);
 
@@ -213,7 +217,9 @@
           if (options.configs[moduleName]) {
             var m = angular.module(moduleName);
             m.config([moduleName + 'Provider', function (provider) {
-              provider.set(options.configs[moduleName]);
+              var cloned = clone(options.configs[moduleName]);
+              log('setting config', moduleName + 'Provider to', cloned);
+              provider.set(cloned);
             }]);
           } else {
             angular.mock.module(moduleName, function ($provide, $injector) {

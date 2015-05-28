@@ -93,9 +93,11 @@ ngDescribe({
 ngDescribe({
   name: 'mocking with injected services',
   inject: ['getFoo', '$q', '$rootScope'],
+  only: false,
   mocks: {
     C: {
-      getFoo: function ($q) {
+      getFoo: function ($q, $rootScope) {
+        la(!$rootScope.$$phase, 'there is no need for phase');
         return $q.when(4);
       }
     }
@@ -108,6 +110,7 @@ ngDescribe({
     it('injected $q into mock', function (done) {
       deps.getFoo().then(function (result) {
         la(result === 4, 'resolved with correct value');
+        la(deps.$rootScope.$$phase === '$digest');
         done();
       });
       deps.$rootScope.$apply();

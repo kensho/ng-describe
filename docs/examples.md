@@ -287,6 +287,18 @@ ngDescribe({
 });
 ```
 
+Remember when macking mocks, it is always `module name : provider name : mocked property name`
+
+```js
+mocks: {
+  'module name': {
+    'mocked provider name': {
+      'mocked value name'
+    }
+  }
+}
+```
+
 ## Angular services inside mocks
 
 You can use other injected dependencies inside mocked functions, using
@@ -315,6 +327,32 @@ ngDescribe({
   }
 });
 ```
+
+## Mock $http.get
+
+Often we need some dummy response from `$http.get` method. We can use mock `httpBackend` 
+or mock the `$http` object. For example to always return mock value when making any GET request,
+we can use
+
+```js
+mocks: {
+  ng: {
+    $http: {
+      get: function ($q, url) {
+        // inspect url if needed
+        return $q.when({
+          data: {
+            life: 42
+          }
+        });
+      }
+    }
+  }
+}
+```
+
+`$http` service returns a promise that resolves with a *response* object. The actual result to send
+is placed into the `data` property, as I show here.
 
 ## beforeEach and afterEach
 

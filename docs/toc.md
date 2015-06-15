@@ -15,6 +15,7 @@
   * [Test 2 way binding](#test-2-way-binding)
   * [Mock value provided by a module](#mock-value-provided-by-a-module)
   * [Angular services inside mocks](#angular-services-inside-mocks)
+  * [Mock $http.get](#mock-httpget)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Spy on injected methods](#spy-on-injected-methods)
   * [Spy on mocked service](#spy-on-mocked-service)

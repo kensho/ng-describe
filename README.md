@@ -13,6 +13,8 @@
 
 Tested against angular v1.2, v1.3 and v1.4
 
+Dependent projects [![Circle CI] [circle-icon] ][circle-url]
+
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe
 [ng-describe-ci-image]: https://travis-ci.org/kensho/ng-describe.png?branch=master
@@ -28,6 +30,9 @@ Tested against angular v1.2, v1.3 and v1.4
 
 [quality-badge]: http://npm.packagequality.com/badge/ng-describe.png
 [quality-url]: http://packagequality.com/#?package=ng-describe
+
+[circle-icon]: https://circleci.com/gh/kensho/ng-describe.svg?style=svg
+[circle-url]: https://circleci.com/gh/kensho/ng-describe
 
 
 

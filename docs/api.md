@@ -218,6 +218,9 @@ ngDescribe({
       '/my/smart/url': function (method, url, data, headers) {
         return [500, 'something is wrong'];
       } // status 500, data "something is wrong"
+    }, 
+    post: {
+      // same format as GET
     }
   },
   tests: function (deps) {
@@ -233,3 +236,4 @@ ngDescribe({
   }
 });
 ```
+All standard methods should be supported (`get`, `head`, `post`, `put`, `delete`, `jsonp` and `patch`).

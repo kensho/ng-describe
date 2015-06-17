@@ -296,6 +296,28 @@
           isResponseCode(x[0]);
       }
 
+      function setupMethodHttpResponses(methodName) {
+        la(check.unemptyString(methodName), 'expected method name', methodName);
+        var mockConfig = options.http[methodName];
+        la(check.object(mockConfig),
+          'expected mock config for http method', methodName, mockConfig);
+        var method = methodName.toUpperCase();
+
+        Object.keys(mockConfig).forEach(function (url) {
+          var value = mockConfig[url];
+          if (check.fn(value)) {
+            return dependencies.http.when(method, url).respond(value);
+          }
+          if (check.number(value) && isResponseCode(value)) {
+            return dependencies.http.when(method, url).respond(value);
+          }
+          if (isResponsePair(value)) {
+            return dependencies.http.when(method, url).respond(value[0], value[1]);
+          }
+          return dependencies.http.when(method, url).respond(200, value);
+        });
+      }
+
       function setupHttpResponses() {
         if (check.not.has(options, 'http')) {
           return;
@@ -306,38 +328,14 @@
 
         log('setting up mock http responses', options.http);
         la(check.has(dependencies, 'http'), 'expected to inject http', dependencies);
-        if (check.has(options.http, 'get')) {
-          Object.keys(options.http.get).forEach(function (url) {
-            var value = options.http.get[url];
-            if (check.fn(value)) {
-              return dependencies.http.whenGET(url).respond(value);
-            }
-            if (check.number(value) && isResponseCode(value)) {
-              return dependencies.http.whenGET(url).respond(value);
-            }
-            if (isResponsePair(value)) {
-              return dependencies.http.whenGET(url).respond(value[0], value[1]);
-            }
-            return dependencies.http.whenGET(url).respond(200, value);
-          });
+        function hasMockResponses(methodName) {
+          return check.has(options.http, methodName);
         }
 
-        // TODO refactor GET and POST shortcuts
-        if (check.has(options.http, 'post')) {
-          Object.keys(options.http.post).forEach(function (url) {
-            var value = options.http.post[url];
-            if (check.fn(value)) {
-              return dependencies.http.whenPOST(url).respond(value);
-            }
-            if (check.number(value) && isResponseCode(value)) {
-              return dependencies.http.whenPOST(url).respond(value);
-            }
-            if (isResponsePair(value)) {
-              return dependencies.http.whenPOST(url).respond(value[0], value[1]);
-            }
-            return dependencies.http.whenPOST(url).respond(200, value);
-          });
-        }
+        var validMethods = ['get', 'head', 'post', 'put', 'delete', 'jsonp', 'patch'];
+        validMethods
+          .filter(hasMockResponses)
+          .forEach(setupMethodHttpResponses);
       }
 
       root.beforeEach(angular.mock.inject(injectDependencies));

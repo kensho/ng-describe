@@ -318,8 +318,24 @@
             if (isResponsePair(value)) {
               return dependencies.http.whenGET(url).respond(value[0], value[1]);
             }
-
             return dependencies.http.whenGET(url).respond(200, value);
+          });
+        }
+
+        // TODO refactor GET and POST shortcuts
+        if (check.has(options.http, 'post')) {
+          Object.keys(options.http.post).forEach(function (url) {
+            var value = options.http.post[url];
+            if (check.fn(value)) {
+              return dependencies.http.whenPOST(url).respond(value);
+            }
+            if (check.number(value) && isResponseCode(value)) {
+              return dependencies.http.whenPOST(url).respond(value);
+            }
+            if (isResponsePair(value)) {
+              return dependencies.http.whenPOST(url).respond(value[0], value[1]);
+            }
+            return dependencies.http.whenPOST(url).respond(200, value);
           });
         }
       }

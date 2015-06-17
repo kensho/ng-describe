@@ -1,4 +1,4 @@
-angular.module('apiCaller', [])
+angular.module('apiGetCaller', [])
   .service('getIt', function getItService($http) {
     return function getIt() {
       return $http.get('/my/url');
@@ -20,10 +20,17 @@ angular.module('apiCaller', [])
     };
   });
 
+angular.module('apiPostCaller', [])
+  .service('postIt', function ($http) {
+    return function postIt() {
+      return $http.post('/my/url', 42);
+    };
+  });
+
 /* global ngDescribe, it, beforeEach, afterEach */
 ngDescribe({
-  name: 'http response shortcuts',
-  modules: 'apiCaller',
+  name: 'http response shortcuts GET',
+  modules: 'apiGetCaller',
   inject: ['getIt', 'getStatus', 'failToGetIt', 'customGetIt'],
   only: false,
   verbose: false,
@@ -33,7 +40,8 @@ ngDescribe({
       '/my/status/url': [201, 'foo'], // status 201, data "foo"
       '/my/bad/url': 500,
       '/my/custom/url': function (method, url) {
-        console.log('custom response to', method, url);
+        la(method === 'GET', 'invalid method', method);
+        la(url === '/my/custom/url', 'invalid url', url);
         return [200, 21];
       }
     }
@@ -83,8 +91,31 @@ ngDescribe({
 });
 
 ngDescribe({
-  name: 'http mock backend example',
-  modules: ['apiCaller'],
+  name: 'http response shortcuts POST',
+  modules: 'apiPostCaller',
+  inject: ['postIt'],
+  only: false,
+  verbose: false,
+  http: {
+    post: {
+      '/my/url': 84 // return 84 on post
+    }
+  },
+  tests: function (deps) {
+    it('calls mock post', function (done) {
+      deps.postIt().then(function (response) {
+        la(response && response.status === 200, 'expected success response', response);
+        la(response.data === 84, 'expected data', response.data);
+        done();
+      });
+      deps.http.flush();
+    });
+  }
+});
+
+ngDescribe({
+  name: 'http mock backend example using $httpBackend',
+  modules: ['apiGetCaller'],
   inject: ['getIt', '$httpBackend'],
   only: false,
   tests: function (deps) {
@@ -111,7 +142,7 @@ ngDescribe({
 
 ngDescribe({
   name: 'several before and after blocks',
-  modules: 'apiCaller',
+  modules: 'apiGetCaller',
   inject: 'getIt',
   tests: function (deps) {
     beforeEach(function before1() {

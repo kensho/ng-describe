@@ -1,7 +1,7 @@
 {
   "name": "ng-describe",
   "description": "Convenient BDD specs for Angular",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"

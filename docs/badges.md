@@ -9,7 +9,7 @@
 
 Tested against angular v1.2, v1.3 and v1.4
 
-Dependent projects [![Circle CI] [circle-icon] ][circle-url]
+Dependent projects tested using [dont-break][dont-break] - [![Circle CI] [circle-icon] ][circle-url]
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe
@@ -29,3 +29,4 @@ Dependent projects [![Circle CI] [circle-icon] ][circle-url]
 
 [circle-icon]: https://circleci.com/gh/kensho/ng-describe.svg?style=svg
 [circle-url]: https://circleci.com/gh/kensho/ng-describe
+[dont-break]: https://github.com/bahmutov/dont-break

@@ -15,6 +15,7 @@
     helpful: false,
     controllers: [],
     element: '',
+    http: {},
     // secondary options
     only: false,
     verbose: false,
@@ -39,6 +40,7 @@
     helpful: check.bool,
     controllers: check.arrayOfStrings,
     element: check.string,
+    http: check.object,
     // secondary options
     only: check.bool,
     verbose: check.bool,
@@ -111,6 +113,10 @@
       options.inject.push('$compile');
     }
 
+    if (check.not.empty(options.http)) {
+      options.inject.push('$httpBackend');
+    }
+
     // auto inject mocked modules
     options.modules = options.modules.concat(Object.keys(options.mocks));
     // auto inject configured modules
@@ -169,6 +175,10 @@
 
     // list of services to inject into mock functions
     var mockInjects = [];
+
+    var aliasedDependencies = {
+      '$httpBackend': 'http'
+    };
 
     function ngSpecs() {
 
@@ -244,10 +254,14 @@
         });
       });
 
-      root.beforeEach(angular.mock.inject(function ($injector) {
+      function injectDependencies($injector) {
         log('injecting', options.inject);
         options.inject.forEach(function (dependencyName) {
-          dependencies[dependencyName] = $injector.get(dependencyName);
+          var injectedUnderName = aliasedDependencies[dependencyName] || dependencyName;
+          la(check.unemptyString(injectedUnderName),
+            'could not rename dependency', dependencyName);
+          dependencies[injectedUnderName] =
+            dependencies[dependencyName] = $injector.get(dependencyName);
         });
 
         mockInjects = uniq(mockInjects);
@@ -257,9 +271,9 @@
             dependencies[dependencyName] = $injector.get(dependencyName);
           }
         });
-      }));
+      }
 
-      root.beforeEach(function setupControllers() {
+      function setupControllers() {
         log('setting up controllers', options.controllers);
         options.controllers.forEach(function (controllerName) {
           la(check.fn(dependencies.$controller), 'need $controller service', dependencies);
@@ -270,7 +284,49 @@
           });
           dependencies[controllerName] = scope;
         });
-      });
+      }
+
+      function isResponseCode(x) {
+        return check.number(x) && x >= 200 && x < 550;
+      }
+
+      function isResponsePair(x) {
+        return check.array(x) &&
+          x.length === 2 &&
+          isResponseCode(x[0]);
+      }
+
+      function setupHttpResponses() {
+        if (check.not.has(options, 'http')) {
+          return;
+        }
+        if (check.empty(options.http)) {
+          return;
+        }
+
+        log('setting up mock http responses', options.http);
+        la(check.has(dependencies, 'http'), 'expected to inject http', dependencies);
+        if (check.has(options.http, 'get')) {
+          Object.keys(options.http.get).forEach(function (url) {
+            var value = options.http.get[url];
+            if (check.fn(value)) {
+              return dependencies.http.whenGET(url).respond(value);
+            }
+            if (check.number(value) && isResponseCode(value)) {
+              return dependencies.http.whenGET(url).respond(value);
+            }
+            if (isResponsePair(value)) {
+              return dependencies.http.whenGET(url).respond(value[0], value[1]);
+            }
+
+            return dependencies.http.whenGET(url).respond(200, value);
+          });
+        }
+      }
+
+      root.beforeEach(angular.mock.inject(injectDependencies));
+      root.beforeEach(setupControllers);
+      root.beforeEach(setupHttpResponses);
 
       function setupElement(elementHtml) {
         la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
@@ -309,11 +365,19 @@
         });
       }
 
-      root.afterEach(function () {
+      function deleteDependencies() {
         options.inject.forEach(function (dependencyName) {
+          la(check.unemptyString(dependencyName), 'missing dependency name', dependencyName);
+          var name = aliasedDependencies[dependencyName] || dependencyName;
+          la(check.has(dependencies, name),
+            'cannot find injected dependency', name, 'for', dependencyName);
+          la(check.has(dependencies, dependencyName),
+            'cannot find injected dependency', dependencyName);
+          delete dependencies[name];
           delete dependencies[dependencyName];
         });
-      });
+      }
+      root.afterEach(deleteDependencies);
     }
 
     suiteFn(options.name, ngSpecs);

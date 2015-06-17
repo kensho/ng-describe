@@ -1,4 +1,4 @@
-# ng-describe v0.10.2
+# ng-describe v0.11.0
 
 > Convenient BDD specs for Angular
 
@@ -324,6 +324,39 @@ ngDescribe({
       la(check.has(deps.element));
     });
   });
+});
+```
+
+**http** - shortcut for specifying mock HTTP responses, 
+built on top of [$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).
+Each GET request will be mapped to `$httpBackend.whenGET` for example. You can provide
+data, response code + data pair or custom function to return something using custom logic.
+If you use `http` property, then the injected dependencies will have `http` object that
+you can flush (it is really `$httpBackend` object).
+
+```js
+ngDescribe({
+  inject: '$http', // for making test calls
+  http: {
+    get: {
+      '/my/url': 42, // status 200, data 42
+      '/my/other/url': [202, 42], // status 202, data 42,
+      '/my/smart/url': function (method, url, data, headers) {
+        return [500, 'something is wrong'];
+      } // status 500, data "something is wrong"
+    }
+  },
+  tests: function (deps) {
+    it('responds', function (done) {
+      deps.$http.get('/my/other/url')
+        .then(function (response) {
+          // response.status = 202
+          // response.data = 42
+          done();
+        });
+      http.flush();
+    });
+  }
 });
 ```
 

@@ -40,7 +40,8 @@
     helpful: check.bool,
     controllers: check.arrayOfStrings,
     element: check.string,
-    http: check.object,
+    // TODO allow object OR function
+    // http: check.object,
     // secondary options
     only: check.bool,
     verbose: check.bool,
@@ -113,7 +114,7 @@
       options.inject.push('$compile');
     }
 
-    if (check.not.empty(options.http)) {
+    if (check.not.empty(options.http) || check.fn(options.http)) {
       options.inject.push('$httpBackend');
     }
 
@@ -256,6 +257,7 @@
 
       function injectDependencies($injector) {
         log('injecting', options.inject);
+
         options.inject.forEach(function (dependencyName) {
           var injectedUnderName = aliasedDependencies[dependencyName] || dependencyName;
           la(check.unemptyString(injectedUnderName),
@@ -331,8 +333,11 @@
           return;
         }
 
+        la(check.object(options.http), 'expected mock http object', options.http);
+
         log('setting up mock http responses', options.http);
         la(check.has(dependencies, 'http'), 'expected to inject http', dependencies);
+
         function hasMockResponses(methodName) {
           return check.has(options.http, methodName);
         }
@@ -342,6 +347,14 @@
           .filter(hasMockResponses)
           .forEach(setupMethodHttpResponses);
       }
+
+      // treat http option a little differently
+      root.beforeEach(function loadDynamicHttp() {
+        if (check.fn(options.http)) {
+          options.http = options.http();
+          console.log('http function returned', options.http);
+        }
+      });
 
       root.beforeEach(angular.mock.inject(injectDependencies));
       root.beforeEach(setupControllers);

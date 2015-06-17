@@ -393,6 +393,27 @@ ngDescribe({
 
 You can use `deps.http.flush()` to move the http responses along.
 
+You can return the entire http mock object from a function, or combine objects with functions.
+
+```js
+function constructMockApi() {
+  return {
+    get: function () {
+      return { '/my/url': 42 };
+    },
+    post: {
+      '/my/other/url': [200, 'nice']
+    }
+  };
+}
+ngDescribe({
+  http: constructMockApi,
+  test: function (deps) {
+    ...
+  } 
+});
+```
+
 **note** the `http` mocks are defined using `$httpBack.when(method, ...)` calls, 
 which are looser than `$httpBackend.expect(method, ...)`, 
 see [ngMock/$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).

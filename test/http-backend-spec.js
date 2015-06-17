@@ -140,6 +140,35 @@ ngDescribe({
 });
 
 ngDescribe({
+  name: 'dynamic http mock response',
+  modules: 'apiGetCaller',
+  inject: ['getIt'],
+  only: false,
+  verbose: false,
+  http: function constructMockApi() {
+    return {
+      get: function () {
+        return { '/my/url': 42 };
+      },
+      post: {
+        '/my/other/url': [200, 'nice']
+      }
+    };
+  },
+  tests: function (deps) {
+    it('gets the value', function (done) {
+      deps.getIt().then(function (response) {
+        la(response &&
+          response.status === 200 &&
+          response.data === 42, 'wrong response', response);
+        done();
+      });
+      deps.http.flush();
+    });
+  }
+});
+
+ngDescribe({
   name: 'http mock backend example using $httpBackend',
   modules: ['apiGetCaller'],
   inject: ['getIt', '$httpBackend'],

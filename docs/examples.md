@@ -354,6 +354,49 @@ mocks: {
 `$http` service returns a promise that resolves with a *response* object. The actual result to send
 is placed into the `data` property, as I show here.
 
+## mock http
+
+You can use a shortcut to define mock HTTP responses via `$httpBackend` module. For example, 
+you can define static responses
+
+```js
+ngDescribe({
+  http: {
+    get: {
+      '/some/url': 42,
+      '/some/other/url': [500, 'something went wrong']
+    },
+    post: {
+      // you can use custom functions too
+      '/some/post/url': function (method, url, data, headers) {
+        return [200, 'ok'];
+      }
+    }
+  }
+});
+```
+All HTTP methods are supported (`get`, `post`, `delete`, `put`, etc.)
+
+You can also get a function that would return a config object
+
+```js
+var mockGetApi = {
+  '/some/url': 42
+};
+mockGetApi['/some/other/url'] = [500, 'not ok'];
+ngDescribe({
+  http: {
+    get: mockGetApi
+  }
+});
+```
+
+You can use `deps.http.flush()` to move the http responses along.
+
+**note** the `http` mocks are defined using `$httpBack.when(method, ...)` calls, 
+which are looser than `$httpBackend.expect(method, ...)`, 
+see [ngMock/$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).
+
 ## beforeEach and afterEach
 
 You can use multiple `beforeEach` and `afterEach` inside `tests` function.

@@ -299,6 +299,11 @@
       function setupMethodHttpResponses(methodName) {
         la(check.unemptyString(methodName), 'expected method name', methodName);
         var mockConfig = options.http[methodName];
+
+        if (check.fn(mockConfig)) {
+          mockConfig = mockConfig();
+        }
+
         la(check.object(mockConfig),
           'expected mock config for http method', methodName, mockConfig);
         var method = methodName.toUpperCase();

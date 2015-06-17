@@ -237,3 +237,5 @@ ngDescribe({
 });
 ```
 All standard methods should be supported (`get`, `head`, `post`, `put`, `delete`, `jsonp` and `patch`).
+
+Each of the methods can return a function that returns an configuration object, see [mock http](#mock-http)

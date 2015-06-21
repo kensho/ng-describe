@@ -284,7 +284,7 @@ See "2 way binding" example below.
 **configs** - object with modules that have provider that can be used to inject
 run time settings. 
 See *Update 1* in 
-[Inject valid constants into Angular](http://bahmutov.calepin.co/inject-valid-constants-into-angular.html)
+[Inject valid constants into Angular](http://glebbahmutov.com/blog/inject-valid-constants-into-angular/)
 blog post and examples below.
 
 ### Secondary options
@@ -292,7 +292,7 @@ blog post and examples below.
 **verbose** - flag to print debug messages during execution
 
 **only** - flag to run this set of tests and skip the rest. Equivalent to 
-[ddescribe or describe.only](http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html).
+[ddescribe or describe.only](http://glebbahmutov.com/blog/focus-on-karma-test/).
 
 ```js
 ngDescribe({

@@ -46,3 +46,13 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'skip specs with message',
+  skip: 'this is spec is not working, will skip it',
+  tests: function () {
+    it('this is skipped', function () {
+      la(false, 'all tests here should have been skipped');
+    });
+  }
+});

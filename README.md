@@ -1,4 +1,4 @@
-# ng-describe v0.13.1
+# ng-describe v0.13.2
 
 > Convenient BDD specs for Angular
 
@@ -302,6 +302,7 @@ ngDescribe({
 ```
 
 **skip** - flag to skip this group of specs. Equivalent to `xdescribe` or `describe.skip`.
+Could be a string message explaining the reason for skipping the spec.
 
 **exposeApi** - instead of creating element right away, expose element factory so that you can create
 an element *after* running a `beforeEach` block. Useful for setting up mock backend before creating

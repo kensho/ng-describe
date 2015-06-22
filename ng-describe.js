@@ -3,17 +3,6 @@
   // la - bahmutov/lazy-ass
   la(check.object(root), 'missing root');
 
-  function or() {
-    var predicates = Array.prototype.slice.call(arguments, 0);
-    la(predicates.length, 'empty list of arguments to or');
-    return function orCheck() {
-      var values = Array.prototype.slice.call(arguments, 0);
-      return predicates.some(function (predicate) {
-        return predicate.apply(null, values);
-      });
-    };
-  }
-
   var _defaults = {
     // primary options
     name: 'default tests',
@@ -56,7 +45,7 @@
     // secondary options
     only: check.bool,
     verbose: check.bool,
-    skip: or(check.bool, check.unemptyString),
+    skip: check.or(check.bool, check.unemptyString),
     parentScope: check.object
   };
 

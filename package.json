@@ -1,7 +1,7 @@
 {
   "name": "ng-describe",
   "description": "Convenient BDD specs for Angular",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"
@@ -11,7 +11,7 @@
     "Martin Camacho mcamac"
   ],
   "dependencies": {
-    "check-more-types": "1.0.4",
+    "check-more-types": "1.8.1",
     "check-types": "1.4.0",
     "lazy-ass": "0.5.8"
   },
@@ -20,6 +20,7 @@
     "angular-mocks": "1.4.1",
     "coveralls": "2.11.2",
     "dont-break": "0.3.3",
+    "es5-shim": "4.1.7",
     "grunt": "0.4.5",
     "grunt-contrib-jshint": "0.11.2",
     "grunt-contrib-watch": "0.6.1",

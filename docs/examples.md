@@ -427,6 +427,27 @@ http: {
 // $http.get('/foo/bar?search=value&something=else') will resolve with value 'foo'
 ```
 
+or you can build the query string automatically by passing `params` property in the request config
+objet
+
+```js
+http: {
+  get: {
+    '/foo/bar?search=value&something=else': 'foo'
+  }
+}
+// inside the unit test
+var config = {
+  params: {
+    search: 'value',
+    something: 'else'
+  }
+};
+$http.get('/foo/bar', config).then(function (response) {
+  // response.data = 'foo'
+});
+```
+
 **note** the `http` mocks are defined using `$httpBack.when(method, ...)` calls, 
 which are looser than `$httpBackend.expect(method, ...)`, 
 see [ngMock/$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).

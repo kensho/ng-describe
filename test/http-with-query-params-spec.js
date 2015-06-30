@@ -10,36 +10,44 @@ ngDescribe({
       '/my/url?query=foo': 'foo',
       '/my/url?query=foo&another=bar': 'bar',
       '/my/url?query=foo&verbose=true': function () {
-        console.log('verbose query');
         return [200, 'foo'];
+      },
+      '/assume/sucess/status': function () {
+        return 'foo';
       }
     }
   },
   tests: function (deps) {
+    function assertData(data, response) {
+      la(response && response.status === 200, 'expected success response', response);
+      la(response.data === data, 'expected data', data, 'got', response.data);
+    }
+
+    it('assumes success when returning a non-status response', function (done) {
+      deps.$http.get('/assume/sucess/status')
+        .then(assertData.bind(null, 'foo'))
+        .then(done);
+      deps.http.flush();
+    });
+
     it('returns 42', function (done) {
-      deps.$http.get('/my/url').then(function (response) {
-        la(response && response.status === 200, 'expected success response', response);
-        la(response.data === 42, 'expected data', response.data);
-        done();
-      });
+      deps.$http.get('/my/url')
+        .then(assertData.bind(null, 42))
+        .then(done);
       deps.http.flush();
     });
 
     it('returns query foo', function (done) {
-      deps.$http.get('/my/url?query=foo').then(function (response) {
-        la(response && response.status === 200, 'expected success response', response);
-        la(response.data === 'foo', 'expected foo, got', response.data);
-        done();
-      });
+      deps.$http.get('/my/url?query=foo')
+        .then(assertData.bind(null, 'foo'))
+        .then(done);
       deps.http.flush();
     });
 
     it('returns query foo and bar', function (done) {
-      deps.$http.get('/my/url?query=foo&another=bar').then(function (response) {
-        la(response && response.status === 200, 'expected success response', response);
-        la(response.data === 'bar', 'expected bar, got', response.data);
-        done();
-      });
+      deps.$http.get('/my/url?query=foo&another=bar')
+        .then(assertData.bind(null, 'bar'))
+        .then(done);
       deps.http.flush();
     });
 
@@ -47,10 +55,8 @@ ngDescribe({
       deps.$http({
         method: 'GET',
         url: '/my/url'
-      }).then(function (response) {
-        la(response.data === 42, 'expected 42, got', response);
-        done();
-      });
+      }).then(assertData.bind(null, 42))
+        .then(done);
       deps.http.flush();
     });
 
@@ -61,10 +67,8 @@ ngDescribe({
         params: {
           query: 'foo'
         }
-      }).then(function (response) {
-        la(response.data === 'foo', 'expected foo, got', response);
-        done();
-      });
+      }).then(assertData.bind(null, 'foo'))
+        .then(done);
       deps.http.flush();
     });
 
@@ -76,10 +80,8 @@ ngDescribe({
           query: 'foo',
           verbose: true
         }
-      }).then(function (response) {
-        la(response.data === 'foo', 'expected foo, got', response);
-        done();
-      });
+      }).then(assertData.bind(null, 'foo'))
+        .then(done);
       deps.http.flush();
     });
 
@@ -90,10 +92,9 @@ ngDescribe({
           verbose: true
         }
       };
-      deps.$http.get('/my/url', config).then(function (response) {
-        la(response.data === 'foo', 'expected foo, got', response);
-        done();
-      });
+      deps.$http.get('/my/url', config)
+        .then(assertData.bind(null, 'foo'))
+        .then(done);
       deps.http.flush();
     });
   }

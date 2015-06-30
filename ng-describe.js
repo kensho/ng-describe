@@ -315,7 +315,13 @@
 
           var value = mockConfig[url];
           if (check.fn(value)) {
-            return dependencies.http.when(method, url).respond(value);
+            return dependencies.http.when(method, url).respond(function () {
+              var result = value.apply(null, arguments);
+              if (isResponsePair(result)) {
+                return result;
+              }
+              return [200, result];
+            });
           }
           if (check.number(value) && isResponseCode(value)) {
             return dependencies.http.when(method, url).respond(value);

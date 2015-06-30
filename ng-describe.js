@@ -311,6 +311,8 @@
         var method = methodName.toUpperCase();
 
         Object.keys(mockConfig).forEach(function (url) {
+          log('mocking', method, 'response for url', url);
+
           var value = mockConfig[url];
           if (check.fn(value)) {
             return dependencies.http.when(method, url).respond(value);

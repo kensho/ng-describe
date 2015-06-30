@@ -1,4 +1,4 @@
-# ng-describe v0.13.2
+# ng-describe v0.13.3
 
 > Convenient BDD specs for Angular
 
@@ -783,6 +783,19 @@ ngDescribe({
     ...
   } 
 });
+```
+
+You can use exact query arguments too
+
+```js
+http: {
+  get: {
+    '/foo/bar?search=value': 42,
+    '/foo/bar?search=value&something=else': 'foo'
+  }
+}
+// $http.get('/foo/bar?search=value') will resolve with value 42
+// $http.get('/foo/bar?search=value&something=else') will resolve with value 'foo'
 ```
 
 **note** the `http` mocks are defined using `$httpBack.when(method, ...)` calls, 

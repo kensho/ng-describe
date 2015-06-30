@@ -414,6 +414,19 @@ ngDescribe({
 });
 ```
 
+You can use exact query arguments too
+
+```js
+http: {
+  get: {
+    '/foo/bar?search=value': 42,
+    '/foo/bar?search=value&something=else': 'foo'
+  }
+}
+// $http.get('/foo/bar?search=value') will resolve with value 42
+// $http.get('/foo/bar?search=value&something=else') will resolve with value 'foo'
+```
+
 **note** the `http` mocks are defined using `$httpBack.when(method, ...)` calls, 
 which are looser than `$httpBackend.expect(method, ...)`, 
 see [ngMock/$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).

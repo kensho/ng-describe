@@ -1,4 +1,4 @@
-# ng-describe v0.13.5
+# ng-describe v0.14.0
 
 > Convenient BDD specs for Angular
 
@@ -367,6 +367,33 @@ ngDescribe({
 All standard methods should be supported (`get`, `head`, `post`, `put`, `delete`, `jsonp` and `patch`).
 
 Each of the methods can return a function that returns an configuration object, see [mock http](#mock-http)
+
+**step** - shortcut for running the digest cycle and mock http flush
+
+```js
+tests: function (deps) {
+  it('runs the digest cycle', function (done) {
+    $q.when(42).finally(done);
+    deps.step();
+    // same as deps.$rootScope.$digest();
+  });
+}
+```
+
+Also flushes the mock http backend
+
+```js
+http: {}
+tests: function (deps) {
+  it('returns expected result', function (done) {
+    deps.$http.get(...)
+      .then(...)
+      .finally(done);
+    deps.step();
+    // same as deps.http.flush();
+  });
+}
+```
 
 
 ## Examples

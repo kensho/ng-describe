@@ -356,6 +356,23 @@
           .forEach(setupMethodHttpResponses);
       }
 
+      function setupDigestcycleShortcut() {
+        if (dependencies.$httpBackend ||
+          dependencies.http ||
+          dependencies.$rootScope) {
+          dependencies.step = function step() {
+            if (dependencies.http && check.fn(dependencies.http.flush)) {
+              dependencies.http.flush();
+            }
+            if (dependencies.$rootScope) {
+              dependencies.$rootScope.$digest();
+            }
+          };
+        } else {
+          dependencies.step = null;
+        }
+      }
+
       // treat http option a little differently
       root.beforeEach(function loadDynamicHttp() {
         if (check.fn(options.http)) {
@@ -365,6 +382,7 @@
       });
 
       root.beforeEach(angular.mock.inject(injectDependencies));
+      root.beforeEach(setupDigestcycleShortcut);
       root.beforeEach(setupControllers);
       root.beforeEach(setupHttpResponses);
 

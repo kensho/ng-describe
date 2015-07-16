@@ -165,6 +165,11 @@ ngDescribe({
       });
       deps.http.flush();
     });
+
+    it('can use .step shortcut', function (done) {
+      deps.getIt().finally(done);
+      deps.step();
+    });
   }
 });
 

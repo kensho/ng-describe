@@ -16,7 +16,7 @@ Tested against angular v1.2, v1.3 and v1.4
 Dependent projects tested using [dont-break][dont-break] - [![Circle CI] [circle-icon] ][circle-url]
 
 Join [Kensho](https://kensho.com/#/careers) and change the way financial industry analyzes information.
-We love the open source and use the bleeding edge technology stack.
+We love open source and use a bleeding edge technology stack.
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe
@@ -1079,7 +1079,7 @@ helpDescribe('ngDescribe inside helpful', function () {
   });
 });
 ```
-when this test fails, it generates meaningful message with all relevant information: the expression
+when this test fails, it generates a meaningful message with all relevant information: the expression
 that fails `foo + bar === 4` and runtime values of `foo` and `bar`.
 
     PhantomJS 1.9.7 (Mac OS X) 

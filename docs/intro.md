@@ -13,6 +13,7 @@ describe('typical test', function () {
         foo = _foo_;
     }));
     it('finally a test', function () {
+        $rootScope.$apply(); // for example
         expect(foo).toEqual('bar');
     });
 });
@@ -28,6 +29,7 @@ ngDescribe({
     inject: ['$rootScope', 'foo'],
     tests: function (deps) {
         it('finally a test', function () {
+            deps.$rootScope.$apply();
             expect(deps.foo).toEqual('bar');
         });
     });

@@ -78,6 +78,7 @@ describe('typical test', function () {
         foo = _foo_;
     }));
     it('finally a test', function () {
+        $rootScope.$apply(); // for example
         expect(foo).toEqual('bar');
     });
 });
@@ -93,6 +94,7 @@ ngDescribe({
     inject: ['$rootScope', 'foo'],
     tests: function (deps) {
         it('finally a test', function () {
+            deps.$rootScope.$apply();
             expect(deps.foo).toEqual('bar');
         });
     });
@@ -135,7 +137,8 @@ ngDescribe({
 });
 ```
 
-You do not have to specify every option, there are reasonable defaults.
+You do not have to specify every option, there are reasonable defaults. We also tried to make
+the API [user-friendly](http://glebbahmutov.com/blog/user-friendly-api/).
 
 ### Primary options
 

@@ -8,7 +8,8 @@ ngDescribe({
 });
 ```
 
-You do not have to specify every option, there are reasonable defaults.
+You do not have to specify every option, there are reasonable defaults. We also tried to make
+the API [user-friendly](http://glebbahmutov.com/blog/user-friendly-api/).
 
 ## Primary options
 

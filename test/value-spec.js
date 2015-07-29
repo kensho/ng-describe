@@ -56,3 +56,21 @@ ngDescribe({
     });
   }
 });
+
+ngDescribe({
+  name: 'mock value',
+  modules: 'A',
+  inject: 'foo',
+  mock: {
+    A: {
+      foo: 42
+    }
+  },
+  only: false,
+  verbose: false,
+  tests: function (deps) {
+    it('has mocked value foo', function () {
+      la(deps.foo === 42, 'mocked foo value', deps.foo);
+    });
+  }
+});

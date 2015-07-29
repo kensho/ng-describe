@@ -299,6 +299,28 @@ mocks: {
 }
 ```
 
+Note: the mocked values are injected using `$provider.constant` call to be able to override both
+values and constants
+
+```js
+angular.module('A10', [])
+  .constant('foo', 'bar');
+ngDescribe({
+  modules: 'A10',
+  mock: {
+    A10: {
+      foo: 42
+    }
+  },
+  inject: 'foo',
+  tests: function (deps) {
+    it('has correct constant foo', function () {
+      expect(deps.foo).toEqual(42);
+    });
+  }
+});
+```
+
 ## Angular services inside mocks
 
 You can use other injected dependencies inside mocked functions, using

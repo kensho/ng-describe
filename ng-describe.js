@@ -247,7 +247,8 @@
                     value = partiallyInjectObject(value, mockName, $injector);
                     value.injected = true; // prevent multiple wrapping
                   }
-                  $provide.value(mockName, value);
+                  // should we inject a value or a constant?
+                  $provide.constant(mockName, value);
                 });
               }
             });

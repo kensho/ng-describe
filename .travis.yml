@@ -7,7 +7,5 @@ node_js:
 branches:
   only:
     - master
-before_script:
-  - npm install -g grunt-cli
 after_success:
   - npm run coveralls

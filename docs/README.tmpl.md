@@ -8,6 +8,7 @@
 {%= _.doc("./docs/install.md") %}
 {%= _.doc("./docs/api.md") %}
 {%= _.doc("./docs/examples.md") %}
+{%= _.doc("./docs/development.md") %}
 {%= _.doc("./docs/footer.md") %}
 {%= _.doc("./LICENSE") %}
 

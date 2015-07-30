@@ -22,4 +22,5 @@
   * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
+  * [Development](#development)
 * [License](#license)

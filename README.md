@@ -16,7 +16,7 @@ Tested against angular v1.2, v1.3 and v1.4
 Dependent projects tested using [dont-break][dont-break] - [![Circle CI] [circle-icon] ][circle-url]
 
 Join [Kensho](https://kensho.com/#/careers) and change the way financial industry analyzes information.
-We love open source and use a bleeding edge technology stack.
+We love the open source and use the bleeding edge technology stack.
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe
@@ -63,6 +63,7 @@ We love open source and use a bleeding edge technology stack.
   * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
+  * [Development](#development)
 * [License](#license)
 
 
@@ -112,10 +113,10 @@ even html fragments. For more details, continue reading.
 `npm install ng-describe --save-dev`
 
 Load ng-describe.js after angular, [lazy-ass](https://github.com/bahmutov/lazy-ass), 
-[check-types](https://github.com/philbooth/check-types.js), 
+[check-types@1.4.0](https://github.com/philbooth/check-types.js), 
 [check-more-types](https://github.com/kensho/check-more-types) but before your code, for example in Karma conf file
 
-    npm install lazy-ass check-types check-more-types angular angular-mocks --save-dev
+    npm install lazy-ass check-types@1.4.0 check-more-types angular angular-mocks --save-dev
 
     // karma.conf.js
     files: [
@@ -1101,7 +1102,7 @@ helpDescribe('ngDescribe inside helpful', function () {
   });
 });
 ```
-when this test fails, it generates a meaningful message with all relevant information: the expression
+when this test fails, it generates meaningful message with all relevant information: the expression
 that fails `foo + bar === 4` and runtime values of `foo` and `bar`.
 
     PhantomJS 1.9.7 (Mac OS X) 
@@ -1111,6 +1112,24 @@ that fails `foo + bar === 4` and runtime values of `foo` and `bar`.
       Error: condition [foo + bar === 4] foo: 2 bar: 3
           at lazyAss (/ng-describe/node_modules/lazy-ass/index.js:57)
     PhantomJS 1.9.7 (Mac OS X): Executed 37 of 38 (1 FAILED) (skipped 1) (0.053 secs / 0.002 secs)
+
+
+### Development
+
+To build the README document, run unit tests and linter
+
+    npm run build
+
+To run all unit tests (against different Angular versions)
+
+    npm test
+
+To keep a watch and rerun build + lint + tests on source file change
+
+    npm run watch
+
+For now, all source is in a single `ng-describe.js` file, while the documentation
+is generated from Markdown files in the `docs` folder
 
 
 ## License

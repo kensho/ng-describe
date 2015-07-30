@@ -3,10 +3,10 @@
 `npm install {%= name %} --save-dev`
 
 Load ng-describe.js after angular, [lazy-ass](https://github.com/bahmutov/lazy-ass), 
-[check-types](https://github.com/philbooth/check-types.js), 
+[check-types@1.4.0](https://github.com/philbooth/check-types.js), 
 [check-more-types](https://github.com/kensho/check-more-types) but before your code, for example in Karma conf file
 
-    npm install lazy-ass check-types check-more-types angular angular-mocks --save-dev
+    npm install lazy-ass check-types@1.4.0 check-more-types angular angular-mocks --save-dev
 
     // karma.conf.js
     files: [

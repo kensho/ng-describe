@@ -63,7 +63,7 @@ We love the open source and use the bleeding edge technology stack.
   * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
-  * [Development](#development)
+* [Development](#development)
 * [License](#license)
 
 
@@ -1114,7 +1114,7 @@ that fails `foo + bar === 4` and runtime values of `foo` and `bar`.
     PhantomJS 1.9.7 (Mac OS X): Executed 37 of 38 (1 FAILED) (skipped 1) (0.053 secs / 0.002 secs)
 
 
-### Development
+## Development
 
 To build the README document, run unit tests and linter
 

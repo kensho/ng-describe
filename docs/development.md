@@ -1,4 +1,4 @@
-## Development
+# Development
 
 To build the README document, run unit tests and linter
 

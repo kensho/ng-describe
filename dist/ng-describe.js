@@ -3203,6 +3203,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     }
 
     suiteFn(options.name, ngSpecs);
+
+    return ngDescribe;
   }
 
   root.ngDescribe = ngDescribe;

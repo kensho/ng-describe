@@ -440,6 +440,8 @@
     }
 
     suiteFn(options.name, ngSpecs);
+
+    return ngDescribe;
   }
 
   root.ngDescribe = ngDescribe;

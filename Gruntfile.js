@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         atBegin: true
       },
       all: {
-        files: ['*.js', 'test/*.js', 'package.json'],
+        files: ['*.js', 'src/*.js', 'test/*.js', 'package.json'],
         tasks: ['jshint', 'concat', 'test']
       }
     }

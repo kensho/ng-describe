@@ -1,4 +1,4 @@
-# ng-describe v1.0.0
+# ng-describe v1.1.0
 
 > Convenient BDD specs for Angular
 
@@ -141,6 +141,18 @@ ngDescribe({
 
 You do not have to specify every option, there are reasonable defaults. We also tried to make
 the API [user-friendly](http://glebbahmutov.com/blog/user-friendly-api/).
+
+`ngDescribe` returns itself, so you can chain multiple sets of specs easily
+
+```js
+ngDescribe({
+  name: 'first suite'
+  ...
+})({
+  name: 'second suite'
+  ...
+});
+```
 
 ### Primary options
 

@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
     jshint: {
       all: [
-        'ng-describe.js'
+        'src/ng-describe.js'
       ],
       specs: ['test/*-spec.js'],
       options: {
@@ -18,6 +18,21 @@ module.exports = function(grunt) {
       all: {
         src: ['package.json']
       }
+    },
+
+    concat: {
+      dist: {
+        src: [
+          // 3rd party dependencies
+          'node_modules/es5-shim/es5-shim.js',
+          'node_modules/check-types/src/check-types.js',
+          'node_modules/check-more-types/check-more-types.js',
+          'node_modules/lazy-ass/index.js',
+          // the library itself
+          'src/ng-describe.js'
+        ],
+        dest: 'dist/ng-describe.js',
+      },
     },
 
     sync: {
@@ -60,7 +75,7 @@ module.exports = function(grunt) {
       },
       all: {
         files: ['*.js', 'test/*.js', 'package.json'],
-        tasks: ['jshint', 'test']
+        tasks: ['jshint', 'concat', 'test']
       }
     }
   });
@@ -70,6 +85,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['karma']);
   grunt.registerTask('doc', ['readme', 'toc', 'readme']);
-  grunt.registerTask('default',
-    ['nice-package', 'deps-ok', 'sync', 'jsonlint', 'jshint', 'test', 'doc']);
+  grunt.registerTask('default', [
+    'nice-package', 'deps-ok', 'sync', 'jsonlint', 'jshint',
+    'concat', 'test', 'doc'
+  ]);
 };

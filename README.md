@@ -1,4 +1,4 @@
-# ng-describe v0.14.1
+# ng-describe v1.0.0
 
 > Convenient BDD specs for Angular
 
@@ -112,23 +112,21 @@ even html fragments. For more details, continue reading.
 
 `npm install ng-describe --save-dev`
 
-Load ng-describe.js after angular, [lazy-ass](https://github.com/bahmutov/lazy-ass), 
-[check-types@1.4.0](https://github.com/philbooth/check-types.js), 
-[check-more-types](https://github.com/kensho/check-more-types) but before your code, for example in Karma conf file
+Load ng-describe.js after angular and angular-mocks but before your specs, for example in Karma conf file
 
-    npm install lazy-ass check-types@1.4.0 check-more-types angular angular-mocks --save-dev
+```js 
+// karma.conf.js
+files: [
+    'node_modules/angular/angular.js',
+    'node_modules/angular-mocks/angular-mocks.js',
+    'node_modules/ng-describe/dist/ng-describe.js',
+    '<your source.js>',
+    '<your specs.js>'
+],
+```
 
-    // karma.conf.js
-    files: [
-        'node_modules/check-types/src/check-types.js',
-        'node_modules/check-more-types/check-more-types.js',
-        'node_modules/lazy-ass/index.js',
-        'node_modules/angular/angular.js',
-        'node_modules/angular-mocks/angular-mocks.js',
-        'node_modules/ng-describe/ng-describe.js',
-        '<your source.js>',
-        '<your specs.js>'
-    ],
+File `dist/ng-describe.js` includes es5-shim and other dependencies needed by 
+the `ngDescribe` function.
 
 
 ## API

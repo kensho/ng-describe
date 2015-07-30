@@ -15,16 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        '../node_modules/es5-shim/es5-shim.js',
-        '../node_modules/check-types/src/check-types.js',
-        '../node_modules/check-more-types/check-more-types.js',
-        '../node_modules/lazy-ass/index.js',
         '../node_modules/angular/angular.js',
         '../node_modules/angular-mocks/angular-mocks.js',
         '../lib/sinon.js',
+        '../dist/ng-describe.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-browser.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-bdd.js',
-        '../ng-describe.js',
         './*-spec.js'
     ],
 
@@ -37,7 +33,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        '../ng-describe.js': []
+        '../dist/ng-describe.js': []
     },
 
 

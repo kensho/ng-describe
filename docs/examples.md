@@ -4,6 +4,29 @@ Some examples use Jasmine matchers, others use `la` assertion from
 [lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
 from [Mocha](http://visionmedia.github.io/mocha/) testing framework.
 
+Also, note that the dependencies object is filled **only** inside the unit test callbacks `it` and
+setup helpers `beforeEach` and `afterEach`
+
+```js
+ngDescribe({
+  inject: 'foo',
+  tests: function (deps) {
+    // deps is empty object here
+    beforeEach(function () {
+      // deps object has 'foo'
+    });
+    // deps is empty object here
+    it(function () {
+      // deps object has 'foo'
+    });
+    // deps is empty object here
+    afterEach(function () {
+      // deps object has 'foo'
+    });
+  }
+});
+```
+
 ## Test value provided by a module
 
 ```js

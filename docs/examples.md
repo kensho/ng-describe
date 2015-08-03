@@ -11,15 +11,15 @@ setup helpers `beforeEach` and `afterEach`
 ngDescribe({
   inject: 'foo',
   tests: function (deps) {
-    // deps is empty object here
+    // deps is an empty object here
     beforeEach(function () {
       // deps object has 'foo'
     });
-    // deps is empty object here
+    // deps is an empty object here
     it(function () {
       // deps object has 'foo'
     });
-    // deps is empty object here
+    // deps is an empty object here
     afterEach(function () {
       // deps object has 'foo'
     });

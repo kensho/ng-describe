@@ -57,7 +57,7 @@
     "describe"
   ],
   "license": "MIT",
-  "main": "ng-describe.js",
+  "main": "src/ng-describe.js",
   "pre-commit": [
     "npm test",
     "npm version"

@@ -68,3 +68,33 @@ ngDescribe({
   }
 });
 
+ngDescribe({
+  name: 'spying on a filter',
+  inject: '$filter',
+  only: false,
+  tests: function (deps) {
+    /*
+      to spy on a injected filter, need to grab the actual filter function
+      and then create a spy
+    */
+    // _uppercase = angular uppercase $filter
+    // uppercase = spy on the _uppercase
+    var _uppercase, uppercase;
+
+    beforeEach(function () {
+      _uppercase = deps.$filter('uppercase');
+      la(check.fn(_uppercase));
+
+      uppercase = sinon.spy(_uppercase);
+      la(check.fn(uppercase), 'spy on uppercase is a function');
+    });
+
+    it('converts string to uppercase', function () {
+      var result = uppercase('foo');
+      la(result === 'FOO', 'converted string to uppercase', result);
+      la(uppercase.calledOnce, 'uppercase was called once');
+      la(uppercase.calledWith('foo'));
+    });
+  }
+});
+

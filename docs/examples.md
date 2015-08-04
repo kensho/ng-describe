@@ -608,6 +608,38 @@ ngDescribe({
 });
 ```
 
+## Spy on injected function
+
+You can inject a function, but use a [Sinon spy](http://sinonjs.org/docs/#spies) instead
+of the injected function to get additional information. For example, to spy on the `$filter uppercase`,
+we can use the following code.
+
+```js
+ngDescribe({
+  name: 'spying on a filter',
+  inject: '$filter',
+  tests: function (deps) {
+    /*
+      to spy on a injected filter, need to grab the actual filter function
+      and then create a spy
+    */
+    // _uppercase = angular uppercase $filter
+    // uppercase = spy on the _uppercase
+    var _uppercase, uppercase;
+    beforeEach(function () {
+      _uppercase = deps.$filter('uppercase');
+      uppercase = sinon.spy(_uppercase);
+    });
+    it('converts string to uppercase', function () {
+      var result = uppercase('foo');
+      la(result === 'FOO', 'converted string to uppercase', result);
+      la(uppercase.calledOnce, 'uppercase was called once');
+      la(uppercase.calledWith('foo'));
+    });
+  }
+});
+```
+
 ## Spy on mocked service
 
 If we mock an injected service, we can still spy on it, just like as if we were spying on the

@@ -60,6 +60,7 @@ We love the open source and use the bleeding edge technology stack.
   * [mock http](#mock-http)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Spy on injected methods](#spy-on-injected-methods)
+  * [Spy on injected function](#spy-on-injected-function)
   * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
@@ -1018,6 +1019,38 @@ ngDescribe({
       la(n === 42, 'resolved with correct value');
       la(deps.getTweets.called, 'getTweets was called (spied using sinon)');
       la(deps.getTweets.firstCall.calledWith('foo'));
+    });
+  }
+});
+```
+
+### Spy on injected function
+
+You can inject a function, but use a [Sinon spy](http://sinonjs.org/docs/#spies) instead
+of the injected function to get additional information. For example, to spy on the `$filter uppercase`,
+we can use the following code.
+
+```js
+ngDescribe({
+  name: 'spying on a filter',
+  inject: '$filter',
+  tests: function (deps) {
+    /*
+      to spy on a injected filter, need to grab the actual filter function
+      and then create a spy
+    */
+    // _uppercase = angular uppercase $filter
+    // uppercase = spy on the _uppercase
+    var _uppercase, uppercase;
+    beforeEach(function () {
+      _uppercase = deps.$filter('uppercase');
+      uppercase = sinon.spy(_uppercase);
+    });
+    it('converts string to uppercase', function () {
+      var result = uppercase('foo');
+      la(result === 'FOO', 'converted string to uppercase', result);
+      la(uppercase.calledOnce, 'uppercase was called once');
+      la(uppercase.calledWith('foo'));
     });
   }
 });

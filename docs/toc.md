@@ -19,6 +19,7 @@
   * [mock http](#mock-http)
   * [beforeEach and afterEach](#beforeeach-and-aftereach)
   * [Spy on injected methods](#spy-on-injected-methods)
+  * [Spy on injected function](#spy-on-injected-function)
   * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)

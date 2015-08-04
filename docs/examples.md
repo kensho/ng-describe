@@ -272,7 +272,75 @@ it('updates isolate scope', function () {
 });
 ```
 
-## Mock value provided by a module
+## beforeEach and afterEach
+
+You can use multiple `beforeEach` and `afterEach` inside `tests` function.
+
+```js
+ngDescribe({
+  name: 'before and after example',
+  modules: ['A'],
+  inject: ['foo'],
+  tests: function (deps) {
+    var localFoo;
+    beforeEach(function () {
+      // dependencies are already injected
+      la(deps.foo === 'bar');
+      localFoo = deps.foo;
+    });
+    it('has correct value foo', function () {
+      la(localFoo === 'bar');
+    });
+    afterEach(function () {
+      la(localFoo === 'bar');
+      // dependencies are still available
+      la(deps.foo === 'bar');
+    });
+  }
+});
+```
+
+This could be useful for setting up additional mocks, like `$httpBackend`.
+
+```js
+angular.module('apiCaller', [])
+  .service('getIt', function ($http) {
+    return function () {
+      return $http.get('/my/url');
+    };
+  });
+ngDescribe({
+  name: 'http mock backend example',
+  modules: ['apiCaller'],
+  inject: ['getIt', '$httpBackend'],
+  tests: function (deps) {
+    beforeEach(function () {
+      deps.$httpBackend.expectGET('/my/url').respond(200, 42);
+    });
+    it('returns result from server', function (done) {
+      deps.getIt().then(function (response) {
+        la(response && response.status === 200);
+        la(response.data === 42);
+        done();
+      });
+      deps.$httpBackend.flush();
+    });
+    afterEach(function () {
+      deps.$httpBackend.verifyNoOutstandingRequest();
+      deps.$httpBackend.verifyNoOutstandingExpectation();
+    });
+  }
+});
+```
+
+**Note** if you use `beforeEach` block with `element`, the `beforeEach` runs *before* the element
+is created. This gives you a chance to setup mocks before running the element and possibly making calls.
+If you really want to control when an element is created use `exposeApi` option 
+(see [Secondary options](#secondary-options)).
+
+## Mocking
+
+### Mock value provided by a module
 
 Often during testing we need to mock something provided by a module, even if it is 
 passed via dependency injection. {%= name %} makes it very simple. List all modules with values 
@@ -344,7 +412,7 @@ ngDescribe({
 });
 ```
 
-## Angular services inside mocks
+### Angular services inside mocks
 
 You can use other injected dependencies inside mocked functions, using
 injected values and free parameters.
@@ -373,7 +441,7 @@ ngDescribe({
 });
 ```
 
-## Mock $http.get
+### Mock $http.get
 
 Often we need some dummy response from `$http.get` method. We can use mock `httpBackend` 
 or mock the `$http` object. For example to always return mock value when making any GET request,
@@ -399,7 +467,7 @@ mocks: {
 `$http` service returns a promise that resolves with a *response* object. The actual result to send
 is placed into the `data` property, as I show here.
 
-## mock http
+### Mock http responses
 
 You can use a shortcut to define mock HTTP responses via `$httpBackend` module. For example, 
 you can define static responses
@@ -497,73 +565,9 @@ $http.get('/foo/bar', config).then(function (response) {
 which are looser than `$httpBackend.expect(method, ...)`, 
 see [ngMock/$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).
 
-## beforeEach and afterEach
+## Spying
 
-You can use multiple `beforeEach` and `afterEach` inside `tests` function.
-
-```js
-ngDescribe({
-  name: 'before and after example',
-  modules: ['A'],
-  inject: ['foo'],
-  tests: function (deps) {
-    var localFoo;
-    beforeEach(function () {
-      // dependencies are already injected
-      la(deps.foo === 'bar');
-      localFoo = deps.foo;
-    });
-    it('has correct value foo', function () {
-      la(localFoo === 'bar');
-    });
-    afterEach(function () {
-      la(localFoo === 'bar');
-      // dependencies are still available
-      la(deps.foo === 'bar');
-    });
-  }
-});
-```
-
-This could be useful for setting up additional mocks, like `$httpBackend`.
-
-```js
-angular.module('apiCaller', [])
-  .service('getIt', function ($http) {
-    return function () {
-      return $http.get('/my/url');
-    };
-  });
-ngDescribe({
-  name: 'http mock backend example',
-  modules: ['apiCaller'],
-  inject: ['getIt', '$httpBackend'],
-  tests: function (deps) {
-    beforeEach(function () {
-      deps.$httpBackend.expectGET('/my/url').respond(200, 42);
-    });
-    it('returns result from server', function (done) {
-      deps.getIt().then(function (response) {
-        la(response && response.status === 200);
-        la(response.data === 42);
-        done();
-      });
-      deps.$httpBackend.flush();
-    });
-    afterEach(function () {
-      deps.$httpBackend.verifyNoOutstandingRequest();
-      deps.$httpBackend.verifyNoOutstandingExpectation();
-    });
-  }
-});
-```
-
-**Note** if you use `beforeEach` block with `element`, the `beforeEach` runs *before* the element
-is created. This gives you a chance to setup mocks before running the element and possibly making calls.
-If you really want to control when an element is created use `exposeApi` option 
-(see [Secondary options](#secondary-options)).
-
-## Spy on injected methods
+### Spy on injected methods
 
 One can quickly spy on injected services (or other methods) using [sinon.js](http://sinonjs.org/) 
 similarly to [spying on the regular JavaScript methods](http://glebbahmutov.com/blog/spying-on-methods/).
@@ -608,7 +612,7 @@ ngDescribe({
 });
 ```
 
-## Spy on injected function
+### Spy on injected function
 
 You can inject a function, but use a [Sinon spy](http://sinonjs.org/docs/#spies) instead
 of the injected function to get additional information. For example, to spy on the `$filter uppercase`,
@@ -640,7 +644,7 @@ ngDescribe({
 });
 ```
 
-## Spy on mocked service
+### Spy on mocked service
 
 If we mock an injected service, we can still spy on it, just like as if we were spying on the
 regular service. For example, let us take the same method as above and mock it.

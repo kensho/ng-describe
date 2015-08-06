@@ -375,13 +375,14 @@
       }
 
       // treat http option a little differently
-      root.beforeEach(function loadDynamicHttp() {
+      function loadDynamicHttp() {
         if (check.fn(options.http)) {
           options.http = options.http();
           console.log('http function returned', options.http);
         }
-      });
+      }
 
+      root.beforeEach(loadDynamicHttp);
       root.beforeEach(angular.mock.inject(injectDependencies));
       root.beforeEach(setupDigestcycleShortcut);
       root.beforeEach(setupControllers);
@@ -410,6 +411,7 @@
       }
 
       var toExpose = options.exposeApi ? exposeApi() : undefined;
+      // call the user-supplied test function to register the actual unit tests
       options.tests(dependencies, toExpose);
 
       // Element setup comes after tests setup by default so that any beforeEach clauses

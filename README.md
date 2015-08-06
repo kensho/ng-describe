@@ -1,4 +1,4 @@
-# ng-describe v1.1.1
+# ng-describe v1.2.0
 
 > Convenient BDD specs for Angular
 
@@ -324,7 +324,17 @@ ngDescribe({
 **skip** - flag to skip this group of specs. Equivalent to `xdescribe` or `describe.skip`.
 Could be a string message explaining the reason for skipping the spec.
 
-**exposeApi** - instead of creating element right away, expose element factory so that you can create
+**exposeApi** - expose low-level ngDescribe methods
+
+The `tests` callback will get the second argument, which is an object with the following methods
+
+    {
+      setupElement: function (elementHtml),
+      setupControllers: function (controllerNames)
+    }
+
+You can use `setupElement` to control when to create the element.
+For example, instead of creating element right away, expose element factory so that you can create
 an element *after* running a `beforeEach` block. Useful for setting up mock backend before creating
 an element.
 
@@ -348,6 +358,43 @@ ngDescribe({
   });
 });
 ```
+
+See the spec in [test/expose-spec.js](test/expose-spec.js)
+
+Or you can use `setupControllers` to create controller objects AFTER setting up your spies.
+
+```js
+angular.module('BroadcastController', [])
+  .controller('broadcastController', function broadcastController($rootScope) {
+    $rootScope.$broadcast('foo');
+  });
+```
+
+We need to listen for the `foo` broadcast inside a unit test before creating the controller.
+If we let `ngDescribe` create the "broadcastController" it will be too late. Instead we
+can tell the `ngDescribe` to expose the low-level api and then we create the controllers when
+we are ready
+
+```js
+ngDescribe({
+  name: 'spy on controller init',
+  modules: 'BroadcastController',
+  inject: '$rootScope',
+  exposeApi: true,
+  tests: function (deps, describeApi) {
+    it('can catch the broadcast in controller init', function (done) {
+      var heardFoo;
+      deps.$rootScope.$on('foo', function () {
+        heardFoo = true;
+        done();
+      });
+      describeApi.setupControllers('broadcastController');
+    });
+  }
+});
+```
+
+See the spec in [test/controller-init-spec.js](test/controller-init-spec.js)
 
 **http** - shortcut for specifying mock HTTP responses, 
 built on top of [$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).

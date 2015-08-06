@@ -3039,9 +3039,15 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
         });
       }
 
-      function setupControllers() {
-        log('setting up controllers', options.controllers);
-        options.controllers.forEach(function (controllerName) {
+      function setupControllers(controllerNames) {
+        if (check.unemptyString(controllerNames)) {
+          controllerNames = [controllerNames];
+        }
+        log('setting up controllers', controllerNames);
+        la(check.arrayOfStrings(controllerNames),
+          'expected list of controller names', controllerNames);
+
+        controllerNames.forEach(function (controllerName) {
           la(check.fn(dependencies.$controller), 'need $controller service', dependencies);
           la(check.object(dependencies.$rootScope), 'need $rootScope service', dependencies);
           var scope = dependencies.$rootScope.$new();
@@ -3049,6 +3055,13 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
             $scope: scope
           });
           dependencies[controllerName] = scope;
+        });
+
+        // need to clean up anything created when setupControllers was called
+        root.afterEach(function cleanupControllers() {
+          controllerNames.forEach(function (controllerName) {
+            delete dependencies[controllerName];
+          });
         });
       }
 
@@ -3120,7 +3133,7 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
           .forEach(setupMethodHttpResponses);
       }
 
-      function setupDigestcycleShortcut() {
+      function setupDigestCycleShortcut() {
         if (dependencies.$httpBackend ||
           dependencies.http ||
           dependencies.$rootScope) {
@@ -3147,8 +3160,7 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
 
       root.beforeEach(loadDynamicHttp);
       root.beforeEach(angular.mock.inject(injectDependencies));
-      root.beforeEach(setupDigestcycleShortcut);
-      root.beforeEach(setupControllers);
+      root.beforeEach(setupDigestCycleShortcut);
       root.beforeEach(setupHttpResponses);
 
       function setupElement(elementHtml) {
@@ -3169,7 +3181,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
 
       function exposeApi() {
         return {
-          setupElement: setupElement
+          setupElement: setupElement,
+          setupControllers: setupControllers
         };
       }
 
@@ -3186,6 +3199,14 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
         });
         root.afterEach(function () {
           delete dependencies.element;
+        });
+      }
+
+      if (check.has(options, 'controllers') &&
+        check.unempty(options.controllers)) {
+
+        root.beforeEach(function () {
+          setupControllers(options.controllers);
         });
       }
 

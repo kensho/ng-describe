@@ -158,8 +158,8 @@ ngDescribe({
 
 ## Test controllerAs syntax
 
-If you use `controllerAs` syntax without any components (see [Binding to ...][binding] post),
-then you can still test it quickly
+If you use `controllerAs` syntax without any components (see [Binding to ...][binding] post or
+[Separate ...][separate]), then you can still test it quickly
 
 ```js
 angular.module('H', [])
@@ -188,6 +188,7 @@ angular.module('H', [])
 ```
 
 [binding]: http://blog.thoughtram.io/angularjs/2015/01/02/exploring-angular-1.3-bindToController.html
+[separate]: http://glebbahmutov.com/blog/separate-model-from-view-in-angular/
 
 ## Test controller instance in custom directive
 

@@ -69,6 +69,7 @@
   "scripts": {
     "build": "grunt",
     "watch": "grunt watch",
+    "karma": "grunt karma",
     "test": "npm run build && npm run test-ng-1.2 && npm run test-ng-1.3 && npm run test-ng-1.4",
     "test-ng-1.2": "cd test/angular-1.2; npm install; npm test",
     "test-ng-1.3": "cd test/angular-1.3; npm install; npm test",

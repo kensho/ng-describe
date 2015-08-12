@@ -5,11 +5,9 @@ angular.module('Remote', [])
       return 'Hello';
     };
   })
-  .service('username', function ($http) {
-    return function username() {
-      // console.log('calling server for username');
-      return $http.get('/user/name');
-    };
+  .value('username', function username($http) {
+    // console.log('calling server for username');
+    return $http.get('/user/name');
   });
 angular.module('GreetUser', ['Remote'])
   .service('helloUser', function (greeting, username) {

@@ -42,7 +42,7 @@ ngDescribe({
   only: false,
   verbose: false,
   mock: {
-    Remote: {
+    GreetUser: {
       username: function ($q) {
         return $q.when('Test');
       }

@@ -25,7 +25,7 @@ angular.module('GreetUser', ['Remote'])
 ngDescribe({
   module: 'GreetUser',
   inject: ['helloUser', '$rootScope'],
-  skip: true,
+  skip: 'because will try to do HTTP get in Remote',
   tests: function (deps) {
     it('makes http request', function (done) {
       deps.helloUser()
@@ -37,11 +37,37 @@ ngDescribe({
     });
   }
 })({
+  name: 'mock Remote username service',
   module: 'GreetUser',
   inject: ['helloUser', '$rootScope'],
   only: false,
   verbose: false,
   mock: {
+    // mock in the module providing the username service
+    Remote: {
+      username: function ($q) {
+        return $q.when('Test');
+      }
+    }
+  },
+  tests: function (deps) {
+    it('does not make http requests', function (done) {
+      deps.helloUser()
+        .then(function (value) {
+          la(value === 'Hello Test!');
+        })
+        .finally(done);
+      deps.$rootScope.$apply();
+    });
+  }
+})({
+  name: 'mock at the injection point',
+  module: 'GreetUser',
+  inject: ['helloUser', '$rootScope'],
+  only: false,
+  verbose: false,
+  mock: {
+    // mock in the USER of the dependency
     GreetUser: {
       username: function ($q) {
         return $q.when('Test');

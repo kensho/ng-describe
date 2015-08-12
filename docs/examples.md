@@ -413,6 +413,33 @@ ngDescribe({
 });
 ```
 
+You can even mock part of the module itself and use mock value in other parts via injection
+
+```js
+angular.module('LargeModule', [])
+  .constant('foo', 'foo')
+  .service('getFoo', function (foo) {
+    return function getFoo() {
+      return foo;
+    };
+  });
+ngDescribe({
+  name: 'mocking part of the module itself',
+  modules: 'LargeModule',
+  inject: 'getFoo',
+  mock: {
+    LargeModule: {
+      foo: 'bar'
+    }
+  },
+  tests: function (deps) {
+    it('service injects mock value', function () {
+      la(deps.getFoo() === 'bar', 'returns mock value');
+    });
+  }
+});
+```
+
 ### Angular services inside mocks
 
 You can use other injected dependencies inside mocked functions, using

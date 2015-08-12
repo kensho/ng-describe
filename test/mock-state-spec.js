@@ -4,7 +4,7 @@ angular.module('Position', [])
       return $state.params.name;
     };
     this.name = this.init();
-});
+  });
 
 /* global ngDescribe, it */
 ngDescribe({

@@ -1,3 +1,8 @@
+// wrap any code prefix to ignore it from code
+// coverage metrix
+/* istanbul ignore next */
+(function () {
+
 /*!
  * https://github.com/es-shims/es5-shim
  * @license es5-shim Copyright 2009-2015 by contributors, MIT License
@@ -2760,6 +2765,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
   register(lazyAssync, 'lac');
 
 }());
+
+}());
+// suffix after code to continue
+// code coverage collection
 
 (function setupNgDescribe(root) {
   // check - kensho/check-more-types

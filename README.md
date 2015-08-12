@@ -108,7 +108,8 @@ ngDescribe({
 });
 ```
 ng-describe can inject dependencies, mock modules, set configs, create controllers, scopes, and
-even html fragments. For more details, continue reading.
+even html fragments. For more details, continue reading. We also showed this library at AngularJS NYC
+meetup, the slides are at [slides.com/bahmutov/ng-describe](http://slides.com/bahmutov/ng-describe).
 
 
 ## Install

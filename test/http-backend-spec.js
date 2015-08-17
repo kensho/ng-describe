@@ -148,7 +148,7 @@ ngDescribe({
   http: function constructMockApi() {
     return {
       get: function () {
-        return { '/my/url': 42 };
+        return {'/my/url': 42};
       },
       post: {
         '/my/other/url': [200, 'nice']

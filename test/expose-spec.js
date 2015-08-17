@@ -10,7 +10,7 @@ ngDescribe({
       la(!check.has(deps, 'element'), 'has no compiled element in before each yet');
     });
     beforeEach(function () {
-     descApi.setupElement(elementHtml);
+      descApi.setupElement(elementHtml);
     });
     beforeEach(function () {
       la(check.has(deps, 'element'), 'has compiled element after previous beforeEach');

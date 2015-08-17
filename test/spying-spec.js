@@ -79,7 +79,8 @@ ngDescribe({
     */
     // _uppercase = angular uppercase $filter
     // uppercase = spy on the _uppercase
-    var _uppercase, uppercase;
+    var _uppercase;
+    var uppercase;
 
     beforeEach(function () {
       _uppercase = deps.$filter('uppercase');

@@ -1,0 +1,5 @@
+{
+  "preset": "yandex",
+  "validateIndentation": 2,
+  "disallowMultipleVarDecl": "strict"
+}

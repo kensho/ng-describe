@@ -8,7 +8,9 @@ angular.module('TodoApp', [])
 /* global describe, ngDescribe, beforeEach, inject, it */
 describe('todos app', function () {
   beforeEach(angular.mock.module('TodoApp'));
-  var $controller, $rootScope;
+  var $controller;
+  var $rootScope;
+
   beforeEach(inject(function (_$controller_, _$rootScope_) {
     $controller = _$controller_;
     $rootScope = _$rootScope_;

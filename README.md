@@ -11,9 +11,11 @@
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
 
-Tested against angular v1.2, v1.3 and v1.4
+Tested against angular v1.2, v1.3 and v1.4, 
+dependent projects tested using [dont-break][dont-break] - [![Circle CI] [circle-icon] ][circle-url].
 
-Dependent projects tested using [dont-break][dont-break] - [![Circle CI] [circle-icon] ][circle-url]
+Read [Unit testing AngularJS using ng-describe](http://glebbahmutov.com/blog/1-2-3-tested/) tutorial,
+look through [Unit testing](http://slides.com/bahmutov/ng-describe) slides.
 
 Join [Kensho](https://kensho.com/#/careers) and change the way financial industry analyzes information.
 We love the open source and use the bleeding edge technology stack.

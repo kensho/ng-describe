@@ -18,9 +18,8 @@ module.exports = function(config) {
         '../dist/ng-describe.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-browser.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-bdd.js',
-        'after-each-order-spec.js',
-        'before-and-after-spec.js'
-        // './*-spec.js'
+        // 'before-and-after-spec.js'
+        './*-spec.js'
     ],
 
 

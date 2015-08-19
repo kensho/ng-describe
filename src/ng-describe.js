@@ -310,8 +310,9 @@
         });
 
         // need to clean up anything created when setupControllers was called
-        cleanupCallbacks.push(function cleanupControllers() {
-          controllerNames.forEach(function (controllerName) {
+        bdd.afterEach(function cleanupControllers() {
+          controllerNames.forEach(function cleanupControllerName(controllerName) {
+            log('deleting controller name', controllerName, 'from dependencies');
             delete dependencies[controllerName];
           });
         });
@@ -438,6 +439,13 @@
         };
       }
 
+      // collect afterEach callbacks from inside the unit test
+      var afters = [];
+      var _afterEach = window.afterEach;
+      window.afterEach = function saveAfterEach(cb) {
+        afters.push(cb);
+      };
+
       var toExpose = options.exposeApi ? exposeApi() : undefined;
       // call the user-supplied test function to register the actual unit tests
       options.tests(dependencies, toExpose);
@@ -450,6 +458,7 @@
           setupElement(options.element);
         });
         cleanupCallbacks.push(function cleanupElement() {
+          log('deleting created element');
           delete dependencies.element;
         });
       }
@@ -463,15 +472,26 @@
       }
 
       function deleteDependencies() {
-        options.inject.forEach(function (dependencyName) {
+        la(check.object(dependencies), 'missing dependencies object', dependencies);
+
+        log('deleting dependencies injected by ngDescribe from', Object.keys(dependencies));
+        log('before cleaning up, these names were injected', options.inject);
+
+        options.inject.forEach(function deleteInjectedDependency(dependencyName, k) {
           la(check.unemptyString(dependencyName), 'missing dependency name', dependencyName);
           var name = aliasedDependencies[dependencyName] || dependencyName;
+          log('deleting injected name', dependencyName, 'alias', name, 'index', k);
+
           la(check.has(dependencies, name),
-            'cannot find injected dependency', name, 'for', dependencyName);
+            'cannot find injected dependency', name, '(or alias)', dependencyName,
+            'in', dependencies);
           la(check.has(dependencies, dependencyName),
             'cannot find injected dependency', dependencyName);
+
+          log('deleting property', name, 'from dependencies', Object.keys(dependencies));
           delete dependencies[name];
           delete dependencies[dependencyName];
+          log('remaining dependencies object', Object.keys(dependencies));
         });
       }
       cleanupCallbacks.push(deleteDependencies);
@@ -479,16 +499,30 @@
       // run all callbacks after each unit test as a single function
       function cleanUp(callbacks) {
         la(check.array(callbacks), 'expected list of callbacks', callbacks);
+        log('inside cleanup afterEach', callbacks.length, 'callbacks');
 
-        bdd.afterEach(function ngDescribeCleanup() {
-          callbacks.forEach(function (fn) {
-            la(check.fn(fn), 'expected function to cleanup, got', fn);
-            fn();
-          });
+        callbacks.forEach(function (fn) {
+          la(check.fn(fn), 'expected function to cleanup, got', fn);
+          window.afterEach(fn);
         });
       }
 
+      log('cleanupCallbacks', cleanupCallbacks.length);
       cleanUp(cleanupCallbacks);
+
+      // restore the original afterEach
+      window.afterEach = _afterEach;
+
+      function singleAfterEachInOrder(afterCallbacks) {
+        la(check.array(afterCallbacks), 'expected array of callbacks', afterCallbacks);
+        log('single "after" block with', afterCallbacks.length, 'callbacks');
+        afterCallbacks.forEach(function (fn, k) {
+          log('"after callback"', k, fn.name);
+          fn();
+        });
+      }
+      var singleCleanup = singleAfterEachInOrder.bind(null, afters);
+      window.afterEach(singleCleanup);
     }
 
     bdd.describe(options.name, ngSpecs);

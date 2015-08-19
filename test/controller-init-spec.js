@@ -11,6 +11,8 @@ ngDescribe({
   modules: 'BroadcastController',
   inject: '$rootScope',
   exposeApi: true,
+  only: false,
+  verbose: false,
   tests: function (deps, describeApi) {
     it('has no controller by default', function () {
       la(check.not.has(deps, 'broadcastController'));
@@ -26,7 +28,8 @@ ngDescribe({
     });
 
     it('cleans up created controllers', function () {
-      la(check.not.has(deps, 'broadcastController'));
+      la(check.not.has(deps, 'broadcastController'),
+        'should not have broadcast controller in another unit test', deps);
     });
 
     it('can catch the broadcast in controller init', function (done) {

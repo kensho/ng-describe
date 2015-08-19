@@ -18,13 +18,13 @@ module.exports = function(config) {
         '../dist/ng-describe.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-browser.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-bdd.js',
-        // 'before-and-after-spec.js'
         './*-spec.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+        'controller-init-spec.js'
     ],
 
 

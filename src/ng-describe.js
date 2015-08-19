@@ -307,12 +307,11 @@
             $scope: scope
           });
           dependencies[controllerName] = scope;
-        });
 
-        // need to clean up anything created when setupControllers was called
-        bdd.afterEach(function cleanupControllers() {
-          controllerNames.forEach(function cleanupControllerName(controllerName) {
-            log('deleting controller name', controllerName, 'from dependencies');
+          // need to clean up anything created when setupControllers was called
+          bdd.afterEach(function () {
+            log('deleting controller name', controllerName, 'from dependencies',
+              Object.keys(dependencies));
             delete dependencies[controllerName];
           });
         });

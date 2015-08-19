@@ -2905,22 +2905,30 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     return options;
   }
 
-  function decideSuiteFunction(options) {
-    var suiteFn = root.describe;
-    if (options.only) {
-      // run only this describe block using Jasmine or Mocha
-      // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
-      // Jasmine 2.x vs 1.x syntax - fdescribe vs ddescribe
-      suiteFn = root.fdescribe || root.ddescribe || root.describe.only;
+  function bddCallbacks(options) {
+    function decideSuiteFunction(options) {
+      var suiteFn = root.describe;
+      if (options.only) {
+        // run only this describe block using Jasmine or Mocha
+        // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
+        // Jasmine 2.x vs 1.x syntax - fdescribe vs ddescribe
+        suiteFn = root.fdescribe || root.ddescribe || root.describe.only;
+      }
+      if (options.helpful) {
+        suiteFn = root.helpDescribe;
+      }
+      if (options.skip) {
+        la(!options.only, 'skip and only are exclusive options', options);
+        suiteFn = root.xdescribe || root.describe.skip;
+      }
+      return suiteFn;
     }
-    if (options.helpful) {
-      suiteFn = root.helpDescribe;
-    }
-    if (options.skip) {
-      la(!options.only, 'skip and only are exclusive options', options);
-      suiteFn = root.xdescribe || root.describe.skip;
-    }
-    return suiteFn;
+
+    return {
+      describe: decideSuiteFunction(options),
+      beforeEach: root.beforeEach,
+      afterEach: root.afterEach
+    };
   }
 
   function decideLogFunction(options) {
@@ -2943,8 +2951,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
     la(isValidNgDescribe(options), 'invalid input options', options);
 
-    var suiteFn = decideSuiteFunction(options);
-    la(check.fn(suiteFn), 'missing describe function', options);
+    var bdd = bddCallbacks(options);
+    la(check.fn(bdd.describe), 'missing describe function in', bdd, 'options', options);
 
     // list of services to inject into mock functions
     var mockInjects = [];
@@ -2992,7 +3000,7 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
         return reference;
       }
 
-      root.beforeEach(function mockModules() {
+      bdd.beforeEach(function mockModules() {
         log('ngDescribe', options.name);
         log('loading modules', options.modules);
 
@@ -3167,10 +3175,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
         }
       }
 
-      root.beforeEach(loadDynamicHttp);
-      root.beforeEach(angular.mock.inject(injectDependencies));
-      root.beforeEach(setupDigestCycleShortcut);
-      root.beforeEach(setupHttpResponses);
+      bdd.beforeEach(loadDynamicHttp);
+      bdd.beforeEach(angular.mock.inject(injectDependencies));
+      bdd.beforeEach(setupDigestCycleShortcut);
+      bdd.beforeEach(setupHttpResponses);
 
       function setupElement(elementHtml) {
         la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
@@ -3203,10 +3211,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       // within the tests occur before the element is compiled, i.e. $httpBackend setup.
       if (check.unemptyString(options.element)) {
         log('setting up element', options.element);
-        root.beforeEach(function () {
+        bdd.beforeEach(function () {
           setupElement(options.element);
         });
-        root.afterEach(function () {
+        bdd.afterEach(function () {
           delete dependencies.element;
         });
       }
@@ -3214,7 +3222,7 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       if (check.has(options, 'controllers') &&
         check.unempty(options.controllers)) {
 
-        root.beforeEach(function () {
+        bdd.beforeEach(function () {
           setupControllers(options.controllers);
         });
       }
@@ -3231,10 +3239,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
           delete dependencies[dependencyName];
         });
       }
-      root.afterEach(deleteDependencies);
+      bdd.afterEach(deleteDependencies);
     }
 
-    suiteFn(options.name, ngSpecs);
+    bdd.describe(options.name, ngSpecs);
 
     return ngDescribe;
   }

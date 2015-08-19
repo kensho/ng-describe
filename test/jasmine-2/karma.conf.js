@@ -24,7 +24,8 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-        'controller-init-spec.js'
+        'controller-init-spec.js',
+        'http-backend-spec.js'
     ],
 
 

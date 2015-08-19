@@ -1,8 +1,11 @@
-/* global ngDescribe, it, beforeEach, afterEach */
+/* global ngDescribe, describe, it, beforeEach, afterEach */
+angular.module('BeforeAndAfterA', [])
+  .value('foo', 'bar');
+
 ngDescribe({
   name: 'before and after example',
-  modules: ['A'],
-  inject: ['foo'],
+  module: 'BeforeAndAfterA',
+  inject: 'foo',
   tests: function (deps) {
     var localFoo;
 
@@ -16,8 +19,8 @@ ngDescribe({
     });
 
     afterEach(function () {
-      la(localFoo === 'bar');
-      la(deps.foo === 'bar');
+      la(localFoo === 'bar', 'localFoo', localFoo);
+      la(deps.foo === 'bar', 'dependencies still has foo', deps);
     });
   }
 });

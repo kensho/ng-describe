@@ -3251,6 +3251,7 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       // run all callbacks after each unit test as a single function
       function cleanUp(callbacks) {
         la(check.array(callbacks), 'expected list of callbacks', callbacks);
+
         bdd.afterEach(function ngDescribeCleanup() {
           callbacks.forEach(function (fn) {
             la(check.fn(fn), 'expected function to cleanup, got', fn);

@@ -1,4 +1,4 @@
-/* global ngDescribe, describe, it, beforeEach, afterEach */
+/* global ngDescribe, it, beforeEach, afterEach */
 angular.module('BeforeAndAfterA', [])
   .value('foo', 'bar');
 

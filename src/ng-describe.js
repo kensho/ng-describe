@@ -133,6 +133,9 @@
     return options;
   }
 
+  // returns original BDD callbacks provided by the testing framework
+  // except for the main 'describe' function
+  // describe can be replaced with skip / only version
   function bddCallbacks(options) {
     function decideSuiteFunction(options) {
       var suiteFn = root.describe;
@@ -155,7 +158,8 @@
     return {
       describe: decideSuiteFunction(options),
       beforeEach: root.beforeEach,
-      afterEach: root.afterEach
+      afterEach: root.afterEach,
+      it: root.it
     };
   }
 

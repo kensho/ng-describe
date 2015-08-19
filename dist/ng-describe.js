@@ -2905,6 +2905,9 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     return options;
   }
 
+  // returns original BDD callbacks provided by the testing framework
+  // except for the main 'describe' function
+  // describe can be replaced with skip / only version
   function bddCallbacks(options) {
     function decideSuiteFunction(options) {
       var suiteFn = root.describe;
@@ -2927,7 +2930,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     return {
       describe: decideSuiteFunction(options),
       beforeEach: root.beforeEach,
-      afterEach: root.afterEach
+      afterEach: root.afterEach,
+      it: root.it
     };
   }
 

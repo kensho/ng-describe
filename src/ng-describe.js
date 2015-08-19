@@ -196,6 +196,9 @@
     function ngSpecs() {
 
       var dependencies = {};
+      // individual functions that should run after each unit test
+      // to clean up everything setup.
+      var cleanupCallbacks = [];
 
       function partiallInjectMethod(owner, mockName, fn, $injector) {
         la(check.unemptyString(mockName), 'expected mock name', mockName);
@@ -307,7 +310,7 @@
         });
 
         // need to clean up anything created when setupControllers was called
-        root.afterEach(function cleanupControllers() {
+        cleanupCallbacks.push(function cleanupControllers() {
           controllerNames.forEach(function (controllerName) {
             delete dependencies[controllerName];
           });
@@ -446,7 +449,7 @@
         bdd.beforeEach(function () {
           setupElement(options.element);
         });
-        bdd.afterEach(function () {
+        cleanupCallbacks.push(function cleanupElement() {
           delete dependencies.element;
         });
       }
@@ -471,7 +474,21 @@
           delete dependencies[dependencyName];
         });
       }
-      bdd.afterEach(deleteDependencies);
+      cleanupCallbacks.push(deleteDependencies);
+
+      // run all callbacks after each unit test as a single function
+      function cleanUp(callbacks) {
+        la(check.array(callbacks), 'expected list of callbacks', callbacks);
+
+        bdd.afterEach(function ngDescribeCleanup() {
+          callbacks.forEach(function (fn) {
+            la(check.fn(fn), 'expected function to cleanup, got', fn);
+            fn();
+          });
+        });
+      }
+
+      cleanUp(cleanupCallbacks);
     }
 
     bdd.describe(options.name, ngSpecs);

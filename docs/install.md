@@ -2,7 +2,7 @@
 
 `npm install {%= name %} --save-dev`
 
-Load ng-describe.js after angular and angular-mocks but before your specs, for example in Karma conf file
+Load ng-describe.js after angular and angular-mocks but before your specs, for example in Karma conf file.
 
 ```js 
 // karma.conf.js

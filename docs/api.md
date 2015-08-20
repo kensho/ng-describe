@@ -38,7 +38,7 @@ ngDescribe({
 });
 ```
 
-You if have a single module to inject, you can just use a string name without Array notation
+If you have a single module to inject, you can just use a string name without Array notation
 
 ```js
 ngDescribe({
@@ -68,7 +68,7 @@ ngDescribe({
 });
 ```
 
-**tests** - callback function that contains actual specs. This of this as `describe` equivalent with
+**tests** - callback function that contains actual specs. Think of this as equivalent to `describe` with
 all necessary Angular dependencies taken care of.
 
 ```js
@@ -111,7 +111,7 @@ ngDescribe({
 
 For more information see examples below.
 
-**controllers** - list of controllers by name that be injected. Each controller
+**controllers** - list of controllers by name that should be injected. Each controller
 is created with a new `$rootScope` instance.
 
 **NOTE: For each created controller, its SCOPE instance will be in the dependencies object.**
@@ -142,7 +142,7 @@ ngDescribe({
 });
 ```
 
-The compiled `angular.element` will be injected into dependencies object under `element` property.
+The compiled `angular.element` will be injected into the dependencies object under `element` property.
 See examples below for more information. The compilation will create a new scope object too.
 
 **parentScope** - when creating HTML fragment, copies properties from this object into the
@@ -299,7 +299,7 @@ ngDescribe({
 ```
 All standard methods should be supported (`get`, `head`, `post`, `put`, `delete`, `jsonp` and `patch`).
 
-Each of the methods can return a function that returns an configuration object, see [mock http](#mock-http)
+Each of the methods can return a function that returns an configuration object, see [mock http](#mock-http).
 
 **step** - shortcut for running the digest cycle and mock http flush
 

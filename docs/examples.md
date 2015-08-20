@@ -379,7 +379,7 @@ ngDescribe({
 });
 ```
 
-Remember when macking mocks, it is always `module name : provider name : mocked property name`
+Remember when making mocks, it is always `module name : provider name : mocked property name`
 
 ```js
 mocks: {
@@ -497,8 +497,8 @@ is placed into the `data` property, as I show here.
 
 ### Mock http responses
 
-You can use a shortcut to define mock HTTP responses via `$httpBackend` module. For example, 
-you can define static responses
+You can use a shortcut to define mock HTTP responses via `$httpBackend` module. For example,
+you can define static responses.
 
 ```js
 ngDescribe({
@@ -516,9 +516,9 @@ ngDescribe({
   }
 });
 ```
-All HTTP methods are supported (`get`, `post`, `delete`, `put`, etc.)
+All HTTP methods are supported (`get`, `post`, `delete`, `put`, etc.).
 
-You can also get a function that would return a config object
+You can also get a function that would return a config object.
 
 ```js
 var mockGetApi = {

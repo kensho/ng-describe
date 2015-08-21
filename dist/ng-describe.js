@@ -3158,20 +3158,14 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       }
 
       function setupDigestCycleShortcut() {
-        if (dependencies.$httpBackend ||
-          dependencies.http ||
-          dependencies.$rootScope) {
-          dependencies.step = function step() {
-            if (dependencies.http && check.fn(dependencies.http.flush)) {
-              dependencies.http.flush();
-            }
-            if (dependencies.$rootScope) {
-              dependencies.$rootScope.$digest();
-            }
-          };
-        } else {
-          dependencies.step = null;
-        }
+        dependencies.step = function step() {
+          if (dependencies.http && check.fn(dependencies.http.flush)) {
+            dependencies.http.flush();
+          }
+          if (dependencies.$rootScope) {
+            dependencies.$rootScope.$digest();
+          }
+        };
       }
 
       // treat http option a little differently

@@ -272,6 +272,10 @@
       });
 
       function injectDependencies($injector) {
+        if(options.inject.indexOf('$rootScope') === -1) {
+          options.inject.push('$rootScope');
+        }
+
         log('injecting', options.inject);
 
         options.inject.forEach(function (dependencyName) {

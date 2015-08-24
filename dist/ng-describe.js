@@ -3044,6 +3044,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       });
 
       function injectDependencies($injector) {
+        if(options.inject.indexOf('$rootScope') === -1) {
+          options.inject.push('$rootScope');
+        }
+
         log('injecting', options.inject);
 
         options.inject.forEach(function (dependencyName) {

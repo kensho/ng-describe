@@ -23,13 +23,11 @@ ngDescribe({
     });
 
     it('detects the broadcast in the controller function', function () {
-      console.log('setting up controller manually');
       describeApi.setupControllers('broadcastController');
       la(check.has(deps, 'broadcastController'), 'broadcast controller was created');
     });
 
     it('cleans up created controllers', function () {
-      console.log('another unit test after controller init');
       la(check.not.has(deps, 'broadcastController'),
         'should not have broadcast controller in another unit test', deps);
     });

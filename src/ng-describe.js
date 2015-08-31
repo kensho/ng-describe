@@ -528,4 +528,4 @@
 
   root.ngDescribe = ngDescribe;
 
-}(this));
+}(typeof window === 'object' ? window : this));

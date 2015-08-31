@@ -26,7 +26,6 @@ angular.module('websockets test', [])
   .factory('ComponentUsingWebSocket', ['WebSocket',
     function (WebSocket) {
       function ComponentUsingWebSocket(url) {
-        console.log('WebSocket', WebSocket);
         this._socket = new WebSocket(url);
       }
 

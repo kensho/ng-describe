@@ -13,7 +13,6 @@ ngDescribe({
     var context;
 
     beforeEach(function () {
-      console.log('before localFoo, deps', deps);
       la(deps.foo === 'bar');
       localFoo = deps.foo;
       la(this !== undefined, 'beforeEach has no context');
@@ -21,13 +20,11 @@ ngDescribe({
     });
 
     it('test 1: has correct value foo', function () {
-      console.log('inside test 1 localFoo, deps', deps);
       la(localFoo === 'bar');
       la(deps.foo === 'bar', 'dependencies still has foo', deps);
     });
 
     it('test 2: has correct value foo', function () {
-      console.log('inside test 1 localFoo, deps', deps);
       la(localFoo === 'bar');
       la(deps.foo === 'bar', 'dependencies still has foo', deps);
     });
@@ -37,7 +34,6 @@ ngDescribe({
     });
 
     afterEach(function insideNgDescribeAfterEach() {
-      console.log('after localFoo, deps', deps);
       la(localFoo === 'bar', 'localFoo is', localFoo);
       la(deps.foo === 'bar', 'dependencies still has foo', deps);
       // No checking the context using "this"

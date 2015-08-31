@@ -1,7 +1,6 @@
 // controller that broadcasts an event on init
 angular.module('BroadcastController', [])
   .controller('broadcastController', function broadcastController($rootScope) {
-    console.log('broadcast controller broadcasts "foo"');
     $rootScope.$broadcast('foo');
   });
 

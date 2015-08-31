@@ -404,7 +404,6 @@
       function loadDynamicHttp() {
         if (check.fn(options.http)) {
           options.http = options.http();
-          console.log('http function returned', options.http);
         }
       }
 

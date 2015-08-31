@@ -13,7 +13,7 @@
   "dependencies": {
     "check-more-types": "1.8.1",
     "check-types": "1.4.0",
-    "lazy-ass": "0.5.8"
+    "lazy-ass": "0.6.0"
   },
   "devDependencies": {
     "angular": "1.4.1",

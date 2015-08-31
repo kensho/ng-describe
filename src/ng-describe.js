@@ -28,6 +28,8 @@
     return angular.extend(angular.copy(_defaults), opts);
   }
 
+  la(check.fn(check.or), 'cannot find check.or method', check);
+
   var ngDescribeSchema = {
     // primary options
     name: check.unemptyString,

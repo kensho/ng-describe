@@ -2749,12 +2749,18 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
   };
 
   function register(value, name) {
+    var registered;
     if (typeof window === 'object') {
       /* global window */
       window[name] = value;
-    } else if (typeof global === 'object') {
+      registered = true;
+    }
+    if (typeof global === 'object') {
       global[name] = value;
-    } else {
+      registered = true;
+    }
+
+    if (!registered) {
       throw new Error('Do not know how to register ' + name);
     }
   }
@@ -2799,6 +2805,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     opts = opts || {};
     return angular.extend(angular.copy(_defaults), opts);
   }
+
+  la(check.fn(check.or), 'cannot find check.or method', check);
 
   var ngDescribeSchema = {
     // primary options

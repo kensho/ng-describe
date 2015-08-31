@@ -65,6 +65,7 @@ We love the open source and use the bleeding edge technology stack.
   * [Spying](#spying)
     * [Spy on injected methods](#spy-on-injected-methods)
     * [Spy on injected function](#spy-on-injected-function)
+    * [Spy on 3rd party service injected some place else](#spy-on-3rd-party-service-injected-some-place-else)
     * [Spy on mocked service](#spy-on-mocked-service)
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
@@ -1139,6 +1140,72 @@ ngDescribe({
   }
 });
 ```
+
+#### Spy on 3rd party service injected some place else
+
+Let us say you need to verify that the `$interval` service injected in the module under test
+was called. It is a little verbose to verify from the unit test. We must mock the `$interval`
+with our function and then call the actual `$interval` from the module `ng` to provide the
+same functionality.
+
+Source code we are trying to unit test
+
+```js
+angular.module('IntervalExample', [])
+  .service('numbers', function ($interval, $rootScope) {
+    return function emitNumbers(delay, n) {
+      var k = 0;
+      $interval(function () {
+        $rootScope.$emit('number', k);
+        k += 1;
+      }, 100, n);
+    };
+  });
+```
+
+In the unit test we will mock `$interval` service for module `IntervalExample`
+
+```js
+// unit test start
+var intervalCalled;
+ngDescribe({
+  name: 'spying on $interval',
+  module: 'IntervalExample',
+  inject: ['numbers', '$rootScope'],
+  verbose: false,
+  only: false,
+  mocks: {
+    IntervalExample: {
+      $interval: function mockInterval(fn, delay, n) {
+        var injector = angular.injector(['ng']);
+        var $interval = injector.get('$interval');
+        intervalCalled = true;
+        return $interval(fn, delay, n);
+      }
+    }
+  },
+  tests: function (deps) {
+    // unit test goes here
+  }
+});
+```
+
+A unit test just calls the `numbers` function and then checks the variable `intervalCalled`
+
+```js
+it('emits 3 numbers', function (done) {
+  deps.$rootScope.$on('number', function (event, k) {
+    if (k === 2) {
+      done();
+    }
+  });
+  // emit 3 numbers with 100ms interval
+  deps.numbers(100, 3);
+  la(intervalCalled, 'the $interval was called somewhere');
+});
+```
+
+You can see the unit test in file [test/spying-on-interval-spec.js](test/spying-on-interval-spec.js).
 
 #### Spy on mocked service
 

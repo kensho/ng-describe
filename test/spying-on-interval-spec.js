@@ -36,38 +36,32 @@ ngDescribe({
 
 var intervalCalled;
 
-var mocks = {
-  $interval: function mockInterval($interval, fn, delay, n) {
-    intervalCalled = true;
-    console.log('mock interval args', arguments);
-    return $interval(fn, delay, n);
-  }
-};
-
 ngDescribe({
   name: 'spying on $interval',
   module: 'IntervalExample',
-  inject: ['numbers', '$rootScope', '$interval'],
+  inject: ['numbers', '$rootScope'],
   verbose: false,
-  skip: true,
-  mock: {
-    IntervalExample: mocks
+  only: false,
+  mocks: {
+    IntervalExample: {
+      $interval: function mockInterval(fn, delay, n) {
+        var injector = angular.injector(['ng']);
+        var $interval = injector.get('$interval');
+        intervalCalled = true;
+        return $interval(fn, delay, n);
+      }
+    }
   },
   tests: function (deps) {
     it('emits 3 numbers', function (done) {
       deps.$rootScope.$on('number', function (event, k) {
         if (k === 2) {
-          console.log('got all numbers');
           done();
         }
       });
       // emit 3 numbers with 100ms interval
       deps.numbers(100, 3);
       la(intervalCalled, 'the $interval was called somewhere');
-
-      // advance mock $interval service by 500 ms
-      // forcing 3 100ms intervals to fire
-      deps.$interval.flush(500);
     });
   }
 });

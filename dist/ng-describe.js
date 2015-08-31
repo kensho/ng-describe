@@ -2091,6 +2091,27 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
   }
 
   /**
+    Returns true if the argument is primitive JavaScript type
+
+    @method primitive
+  */
+  function primitive(value) {
+    var type = typeof value;
+    return type === 'number' ||
+      type === 'boolean' ||
+      type === 'string';
+  }
+
+  /**
+    Returns true if the value is a number 0
+
+    @method zero
+  */
+  function zero(x) {
+    return typeof x === 'number' && x === 0;
+  }
+
+  /**
     same as ===
 
     @method same
@@ -2636,7 +2657,9 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     validDate: validDate,
     equal: equal,
     or: or,
-    and: and
+    and: and,
+    primitive: primitive,
+    zero: zero
   };
 
   Object.keys(predicates).forEach(function (name) {
@@ -2646,6 +2669,15 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
   if (typeof module === 'object') {
     module.exports = check;
   }
+
+  // if we are loaded under Node, but "window" object is available, put a reference
+  // there too - maybe we are running inside a synthetic browser environment
+  if (typeof window === 'object') {
+    console.log('window check');
+    window.check = check;
+    console.log('typeof window.check.or', typeof window.check.or)
+  }
+
 }(typeof window === 'object' ? window.check : global.check));
 
 (function initLazyAss() {

@@ -237,6 +237,11 @@
         return reference;
       }
 
+      bdd.beforeEach(function checkEnvironment() {
+        la(check.object(angular), 'angular is undefined');
+        la(check.has(angular, 'mock'), 'angular.mock is undefined');
+      });
+
       bdd.beforeEach(function mockModules() {
         log('ngDescribe', options.name);
         log('loading modules', options.modules);
@@ -410,7 +415,10 @@
       }
 
       bdd.beforeEach(loadDynamicHttp);
-      bdd.beforeEach(angular.mock.inject(injectDependencies));
+      bdd.beforeEach(function injectDeps() {
+        // defer using angular.mock
+        angular.mock.inject(injectDependencies);
+      });
       bdd.beforeEach(setupDigestCycleShortcut);
       bdd.beforeEach(setupHttpResponses);
 

@@ -1,6 +1,13 @@
 (function setupNgDescribe(root) {
-  // check - kensho/check-more-types
-  // la - bahmutov/lazy-ass
+  if (typeof la === 'undefined') {
+    // lazy assertions from bahmutov/lazy-ass
+    require('lazy-ass');
+  }
+  if (typeof check === 'undefined') {
+    // check predicates from kensho/check-more-types
+    /* global require */
+    check = require('check-more-types');
+  }
   la(check.object(root), 'missing root');
 
   var _defaults = {

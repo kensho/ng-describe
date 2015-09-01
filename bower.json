@@ -1,7 +1,7 @@
 {
   "name": "ng-describe",
   "main": "dist/ng-describe.js",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "license": "MIT",
   "ignore": [
     "**/.*",

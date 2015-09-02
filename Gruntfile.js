@@ -27,7 +27,6 @@ module.exports = function(grunt) {
           'utils/stop-code-coverage.js',
           // 3rd party dependencies
           'node_modules/es5-shim/es5-shim.js',
-          'node_modules/check-types/src/check-types.js',
           'node_modules/check-more-types/check-more-types.js',
           'node_modules/lazy-ass/index.js',
           'utils/start-code-coverage.js',

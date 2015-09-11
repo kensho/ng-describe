@@ -430,7 +430,7 @@ ngDescribe({
           // response.data = 42
           done();
         });
-      deps.http.flush();
+      deps.$http.flush();
     });
   }
 });

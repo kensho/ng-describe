@@ -14,7 +14,7 @@ Read [Unit testing AngularJS using ng-describe](http://glebbahmutov.com/blog/1-2
 look through [Unit testing](http://slides.com/bahmutov/ng-describe) slides.
 
 Join [Kensho](https://kensho.com/#/careers) and change the way financial industry analyzes information.
-We love the open source and use the bleeding edge technology stack.
+We love open source and use the bleeding edge technology stack.
 
 [ng-describe-icon]: https://nodei.co/npm/ng-describe.png?downloads=true
 [ng-describe-url]: https://npmjs.org/package/ng-describe

@@ -288,6 +288,7 @@ ngDescribe({
     it('responds', function (done) {
       deps.$http.get('/my/other/url')
         .then(function (response) {
+          // expect
           // response.status = 202
           // response.data = 42
           done();

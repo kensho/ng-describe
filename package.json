@@ -55,6 +55,10 @@
     "angularjs",
     "bdd",
     "describe",
+    "helper",
+    "ng",
+    "simple",
+    "test",
     "testing",
     "unit"
   ],

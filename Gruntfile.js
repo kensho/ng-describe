@@ -86,7 +86,17 @@ module.exports = function(grunt) {
   plugins.forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('test', ['karma']);
-  grunt.registerTask('doc', ['readme', 'toc', 'readme']);
+
+  grunt.registerTask('modules-used', function () {
+    var modulesUsed = require('modules-used');
+    var markdownList = modulesUsed();
+    var fs = require('fs');
+    var filename = './docs/modules-used.md';
+    fs.writeFileSync(filename, markdownList);
+    grunt.log.writeln('Wrote list of used dependencies into', filename);
+  });
+  grunt.registerTask('doc', ['modules-used', 'readme', 'toc', 'readme']);
+
   grunt.registerTask('default', [
     'nice-package', 'deps-ok', 'sync', 'jsonlint', 'jshint',
     'concat', 'test', 'doc'

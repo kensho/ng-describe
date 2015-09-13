@@ -27,4 +27,5 @@
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
 * [Development](#development)
+* [Modules used](#modules-used)
 * [License](#license)

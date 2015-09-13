@@ -9,6 +9,10 @@
 {%= _.doc("./docs/api.md") %}
 {%= _.doc("./docs/examples.md") %}
 {%= _.doc("./docs/development.md") %}
+
+## Modules used
+{%= _.doc("./docs/modules-used.md") %}
+
 {%= _.doc("./docs/footer.md") %}
 {%= _.doc("./LICENSE") %}
 

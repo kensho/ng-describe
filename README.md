@@ -1,4 +1,4 @@
-# ng-describe v1.2.7
+# ng-describe v1.3.0
 
 > Convenient BDD specs for Angular
 
@@ -70,6 +70,7 @@ We love open source and use the bleeding edge technology stack.
   * [Configure module](#configure-module)
   * [Helpful failure messages](#helpful-failure-messages)
 * [Development](#development)
+* [Modules used](#modules-used)
 * [License](#license)
 
 
@@ -1356,6 +1357,12 @@ To just run karma unit tests via Grunt plugin
 If you have Karma runner installed globally you can run all the unit tests yourself ones
 
     karma start --single-run=true test/karma.conf.js
+
+
+
+## Modules used
+* check-more-types - Large collection of predicates
+* lazy-ass - Lazy assertions without performance penalty
 
 
 ## License

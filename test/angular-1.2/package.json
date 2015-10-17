@@ -25,7 +25,8 @@
     "karma-phantomjs-launcher": "0.1.4",
     "lazy-ass-helpful": "0.6.0",
     "matchdep": "0.3.0",
-    "mocha": "2.0.1"
+    "mocha": "2.0.1",
+    "obind": "0.2.0"
   },
   "engines": {
     "node": ">= 0.10.*"

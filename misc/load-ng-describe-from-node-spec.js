@@ -1,3 +1,11 @@
+describe('json parse', function () {
+  it('fails to stringify undefined', function () {
+    var a;
+    var result = JSON.stringify(a);
+    console.assert(result);
+  });
+});
+
 describe('load ngDescribe in synthetic browser', function () {
 
   var benv = require('benv'), ngDescribeFn, check;

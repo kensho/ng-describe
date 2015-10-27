@@ -36,6 +36,7 @@
     "grunt-toc": "0.1.0",
     "jscs": "2.1.1",
     "jshint-stylish": "2.0.1",
+    "jshint-summary": "0.4.0",
     "karma": "0.12.28",
     "karma-chrome-launcher": "0.2.0",
     "karma-coverage": "0.5.2",

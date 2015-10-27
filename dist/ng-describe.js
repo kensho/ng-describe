@@ -2555,8 +2555,12 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     });
   }
 
+  function isDefined(a) {
+    return typeof a !== 'undefined';
+  }
+
   function clone(a) {
-    return JSON.parse(JSON.stringify(a));
+    return isDefined(a) ? JSON.parse(JSON.stringify(a)) : undefined;
   }
 
   function methodNames(reference) {
@@ -2670,11 +2674,22 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
     la(check.object(options), 'expected options object, see docs', options);
     la(check.defined(angular), 'missing angular');
 
+    var explicitInjectCopy = clone(options.inject);
+
     options = copyAliases(options);
     options = defaults(options);
     options = ensureArrays(options);
     options = collectInjects(options);
     options = ensureUnique(options);
+
+    function hasImplicitInjects() {
+      if (explicitInjectCopy) {
+        return false;
+      }
+      var depsTests = /^function \(deps\)/;
+      var testCode = options.tests.toString();
+      return depsTests.test(testCode);
+    }
 
     var log = decideLogFunction(options);
     la(check.fn(log), 'could not decide on log function', options);
@@ -2776,18 +2791,28 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       });
 
       function injectDependencies($injector) {
+        var implicit = hasImplicitInjects();
+        if (implicit) {
+          options.inject = $injector.annotate(options.tests);
+          log('implicit injects', options.inject);
+        }
+
         if(options.inject.indexOf('$rootScope') === -1) {
           options.inject.push('$rootScope');
         }
 
         log('injecting', options.inject);
 
-        options.inject.forEach(function (dependencyName) {
+        options.inject.forEach(function (dependencyName, k) {
           var injectedUnderName = aliasedDependencies[dependencyName] || dependencyName;
           la(check.unemptyString(injectedUnderName),
             'could not rename dependency', dependencyName);
-          dependencies[injectedUnderName] =
-            dependencies[dependencyName] = $injector.get(dependencyName);
+          var value = $injector.get(dependencyName);
+          if (implicit) {
+            dependencies[String(k)] = value;
+          } else {
+            dependencies[injectedUnderName] = dependencies[dependencyName] = value;
+          }
         });
 
         mockInjects = uniq(mockInjects);
@@ -2935,6 +2960,15 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
         dependencies.parentScope = scope;
       }
 
+      function runTestCallbackExposeArguments() {
+        var testsCode = options.tests.toString();
+        var returnArguments = testsCode.replace(/\}\s*$/, '\nreturn arguments;\n}');
+        /* jshint -W061 */
+        var testCallback = eval('(' + returnArguments + ')');
+        dependencies = testCallback.apply(null, new Array(testCallback.length));
+        la(check.object(dependencies), 'have not received arguments');
+      }
+
       function exposeApi() {
         return {
           setupElement: setupElement,
@@ -2943,6 +2977,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       }
 
       // collect afterEach callbacks from inside the unit test
+      // to work around Jasmine bug
+      // https://github.com/kensho/ng-describe/issues/74
       var afters = [];
       var _afterEach = window.afterEach;
       window.afterEach = function saveAfterEach(cb) {
@@ -2950,8 +2986,13 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       };
 
       var toExpose = options.exposeApi ? exposeApi() : undefined;
+
       // call the user-supplied test function to register the actual unit tests
-      options.tests(dependencies, toExpose);
+      if (hasImplicitInjects()) {
+        runTestCallbackExposeArguments();
+      } else {
+        options.tests(dependencies, toExpose);
+      }
 
       // Element setup comes after tests setup by default so that any beforeEach clauses
       // within the tests occur before the element is compiled, i.e. $httpBackend setup.
@@ -2979,6 +3020,15 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
 
         log('deleting dependencies injected by ngDescribe from', Object.keys(dependencies));
         log('before cleaning up, these names were injected', options.inject);
+
+        var implicit = hasImplicitInjects();
+        if (implicit) {
+          log('removing implicit dependencies');
+          options.inject.forEach(function deleteImplicitDependency(name, k) {
+            delete dependencies[String(k)];
+          });
+          return;
+        }
 
         options.inject.forEach(function deleteInjectedDependency(dependencyName, k) {
           la(check.unemptyString(dependencyName), 'missing dependency name', dependencyName);

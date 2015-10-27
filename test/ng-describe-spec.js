@@ -18,6 +18,8 @@ ngDescribe({
 ngDescribe({
   name: 'ng-describe test 2',
   only: false,
+  // to force deps object
+  inject: ['$rootScope'],
   tests: function (deps) {
     la(typeof deps === 'object', 'missing injected object');
     it('loads and runs', function () {
@@ -30,7 +32,7 @@ ngDescribe({
   name: 'ng-describe empty modules',
   only: false,
   modules: [],
-  inject: [],
+  inject: ['$rootScope'],
   tests: function (deps) {
     la(typeof deps === 'object', 'missing injected object');
     it('loads and runs', function () {

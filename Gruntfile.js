@@ -11,7 +11,7 @@ module.exports = function(grunt) {
       specs: ['test/*-spec.js'],
       options: {
         jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
+        reporter: require('jshint-summary')
       }
     },
 

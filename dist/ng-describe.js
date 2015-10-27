@@ -2487,6 +2487,8 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
 // code coverage collection
 
 (function setupNgDescribe(root) {
+  var check = root.check;
+
   if (typeof la === 'undefined') {
     // lazy assertions from bahmutov/lazy-ass
     require('lazy-ass');

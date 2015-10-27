@@ -1,4 +1,6 @@
 (function setupNgDescribe(root) {
+  var check = root.check;
+
   if (typeof la === 'undefined') {
     // lazy assertions from bahmutov/lazy-ass
     require('lazy-ass');

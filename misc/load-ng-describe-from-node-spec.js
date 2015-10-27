@@ -1,6 +1,6 @@
 describe('load ngDescribe in synthetic browser', function () {
 
-  var benv = require('benv'), ngDescribeFn;
+  var benv = require('benv'), ngDescribeFn, check;
 
   beforeEach(function setupEnvironment(done) {
     benv.setup(function () {

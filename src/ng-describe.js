@@ -455,6 +455,8 @@
       }
 
       // collect afterEach callbacks from inside the unit test
+      // to work around Jasmine bug
+      // https://github.com/kensho/ng-describe/issues/74
       var afters = [];
       var _afterEach = window.afterEach;
       window.afterEach = function saveAfterEach(cb) {

@@ -1,6 +1,6 @@
 angular.module('identity', [])
-  .value('I', function (x) { 
-    return x; 
+  .value('I', function (x) {
+    return x;
   });
 
 /* global ngDescribe, it */

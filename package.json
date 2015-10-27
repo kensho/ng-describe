@@ -78,7 +78,7 @@
   },
   "scripts": {
     "build": "grunt",
-    "coverage-codacy": "cat test/coverage/P*/lcov.info | ./node_modules/.bin/codacy-coverage",
+    "coverage-codacy": "cat test/coverage/P*/lcov.info | ./node_modules/.bin/codacy-coverage -v -d",
     "coveralls": "cat test/coverage/P*/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "karma": "grunt karma",
     "ng-versions": "npm run test-ng-1.2 && npm run test-ng-1.3 && npm run test-ng-1.4",

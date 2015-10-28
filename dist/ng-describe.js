@@ -1633,7 +1633,10 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       Object.keys(x).length === 0;
   }
   function isNumber(x) {
-    return typeof x === 'number' && !isNaN(x);
+    return typeof x === 'number' &&
+      !isNaN(x) &&
+      x !== Infinity &&
+      x !== -Infinity;
   }
   function isInteger(x) {
     return isNumber(x) && x % 1 === 0;

@@ -2686,6 +2686,9 @@ if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
       if (explicitInjectCopy) {
         return false;
       }
+      if (options.exposeApi) {
+        return false;
+      }
       var depsTests = /^function\s+[a-zA-Z0-9]*\s*\((deps|dependencies)\)/;
       var testCode = options.tests.toString();
       return !depsTests.test(testCode);

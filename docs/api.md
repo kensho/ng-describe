@@ -89,6 +89,26 @@ ngDescribe({
 });
 ```
 
+**Dependencies injection shortcut**
+
+You can list the dependencies to be injected directly in the test callback.
+
+```js
+angular.module('shortcut', [])
+  .constant('foo', 'bar');
+ngDescribe({
+  module: 'shortcut',
+  tests: function (foo) {
+    it('has constant', function () {
+      console.assert(foo === 'bar');
+    });
+  }
+});
+```
+
+You can inject multiple providers, including built-in services. If the test callback argument
+is named `deps` or `dependencies` it will be assumed that you do NOT use the shortcut.
+
 **mocks** - top level mocks to be substituted into the tests. 
 The mocks override *any* injected dependencies among modules.
 

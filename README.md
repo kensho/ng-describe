@@ -1,4 +1,4 @@
-# ng-describe v1.3.1
+# ng-describe v1.4.0
 
 > Convenient BDD specs for Angular
 
@@ -79,17 +79,15 @@ We love open source and use the bleeding edge technology stack.
 Unit testing and mocking AngularJs requires a lot of boilerplate code:
 ```js
 describe('typical test', function () {
-    var $rootScope, foo;
+    var foo;
     beforeEach(function () {
         angular.mock.module('A');
         // other modules
     });
-    beforeEach(inject(function (_$rootScope_, _foo_) {
-        $rootScope = _$rootScope_;
+    beforeEach(inject(function (_foo_) {
         foo = _foo_;
     }));
     it('finally a test', function () {
-        $rootScope.$apply(); // for example
         expect(foo).toEqual('bar');
     });
 });
@@ -102,11 +100,9 @@ is much shorter and clearer:
 ```js
 ngDescribe({
     modules: 'A',
-    inject: ['$rootScope', 'foo'],
-    tests: function (deps) {
+    tests: function (foo) {
         it('finally a test', function () {
-            deps.$rootScope.$apply();
-            expect(deps.foo).toEqual('bar');
+            expect(foo).toEqual('bar');
         });
     });
 });
@@ -227,6 +223,26 @@ ngDescribe({
   }
 });
 ```
+
+**Dependencies injection shortcut**
+
+You can list the dependencies to be injected directly in the test callback.
+
+```js
+angular.module('shortcut', [])
+  .constant('foo', 'bar');
+ngDescribe({
+  module: 'shortcut',
+  tests: function (foo) {
+    it('has constant', function () {
+      console.assert(foo === 'bar');
+    });
+  }
+});
+```
+
+You can inject multiple providers, including built-in services. If the test callback argument
+is named `deps` or `dependencies` it will be assumed that you do NOT use the shortcut.
 
 **mocks** - top level mocks to be substituted into the tests. 
 The mocks override *any* injected dependencies among modules.

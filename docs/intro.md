@@ -3,17 +3,15 @@
 Unit testing and mocking AngularJs requires a lot of boilerplate code:
 ```js
 describe('typical test', function () {
-    var $rootScope, foo;
+    var foo;
     beforeEach(function () {
         angular.mock.module('A');
         // other modules
     });
-    beforeEach(inject(function (_$rootScope_, _foo_) {
-        $rootScope = _$rootScope_;
+    beforeEach(inject(function (_foo_) {
         foo = _foo_;
     }));
     it('finally a test', function () {
-        $rootScope.$apply(); // for example
         expect(foo).toEqual('bar');
     });
 });
@@ -26,11 +24,9 @@ is much shorter and clearer:
 ```js
 ngDescribe({
     modules: 'A',
-    inject: ['$rootScope', 'foo'],
-    tests: function (deps) {
+    tests: function (foo) {
         it('finally a test', function () {
-            deps.$rootScope.$apply();
-            expect(deps.foo).toEqual('bar');
+            expect(foo).toEqual('bar');
         });
     });
 });

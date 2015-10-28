@@ -244,6 +244,10 @@ ngDescribe({
 You can inject multiple providers, including built-in services. If the test callback argument
 is named `deps` or `dependencies` it will be assumed that you do NOT use the shortcut.
 
+The shortcut was implemented using [changing named parameters trick][trick].
+
+[trick]: http://glebbahmutov.com/blog/changing-the-function-arguments-trick/
+
 **mocks** - top level mocks to be substituted into the tests. 
 The mocks override *any* injected dependencies among modules.
 

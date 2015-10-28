@@ -198,9 +198,9 @@
       if (explicitInjectCopy) {
         return false;
       }
-      var depsTests = /^function \(deps\)/;
+      var depsTests = /^function\s+[a-zA-Z0-9]*\s*\((deps|dependencies)\)/;
       var testCode = options.tests.toString();
-      return depsTests.test(testCode);
+      return !depsTests.test(testCode);
     }
 
     var log = decideLogFunction(options);

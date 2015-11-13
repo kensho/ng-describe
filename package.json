@@ -49,6 +49,7 @@
     "mocha": "2.3.2",
     "modules-used": "1.0.2",
     "obind": "0.2.0",
+    "phantomjs": "1.9.18",
     "pre-git": "1.2.11"
   },
   "engines": {

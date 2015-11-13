@@ -49,10 +49,11 @@
     "mocha": "2.3.2",
     "modules-used": "1.0.2",
     "obind": "0.2.0",
-    "pre-git": "0.6.2"
+    "pre-git": "1.2.11"
   },
   "engines": {
-    "node": "> 0.10.0"
+    "node": "> 0.10.0",
+    "npm": "3"
   },
   "homepage": "https://github.com/kensho/ng-describe",
   "keywords": [

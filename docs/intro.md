@@ -17,7 +17,7 @@ describe('typical test', function () {
 });
 ```
 
-{%= name %} makes testing simple modules a breeze. 
+{%= name %} makes testing simple modules a breeze.
 Just list which modules you would like to load, which values / services / etc.
 you would like to inject and then start testing. Same test as above using {%= name %}
 is much shorter and clearer:
@@ -28,7 +28,7 @@ ngDescribe({
         it('finally a test', function () {
             expect(foo).toEqual('bar');
         });
-    });
+    }
 });
 ```
 {%= name %} can inject dependencies, mock modules, set configs, create controllers, scopes, and

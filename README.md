@@ -93,7 +93,7 @@ describe('typical test', function () {
 });
 ```
 
-ng-describe makes testing simple modules a breeze. 
+ng-describe makes testing simple modules a breeze.
 Just list which modules you would like to load, which values / services / etc.
 you would like to inject and then start testing. Same test as above using ng-describe
 is much shorter and clearer:

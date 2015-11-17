@@ -104,7 +104,7 @@ ngDescribe({
         it('finally a test', function () {
             expect(foo).toEqual('bar');
         });
-    });
+    }
 });
 ```
 ng-describe can inject dependencies, mock modules, set configs, create controllers, scopes, and

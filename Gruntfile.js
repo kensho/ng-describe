@@ -4,6 +4,14 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    'nice-package': {
+      all: {
+        options: {
+          blankLine: true
+        }
+      }
+    },
+
     jshint: {
       all: [
         'src/ng-describe.js'

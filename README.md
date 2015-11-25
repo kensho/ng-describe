@@ -6,8 +6,10 @@
 [![Quality][quality-badge] ][quality-url]
 
 [![Build status][ng-describe-ci-image] ][ng-describe-ci-url]
-[![Coverage Status][ng-describe-coverage-image] ][ng-describe-coverage-url]
+[![manpm](https://img.shields.io/badge/manpm-%E2%9C%93-3399ff.svg)](https://github.com/bahmutov/manpm)
 [![Codacy Badge][ng-describe-codacy-image] ][ng-describe-codacy-url]
+
+[![Coverage Status][ng-describe-coverage-image] ][ng-describe-coverage-url]
 [![dependencies][ng-describe-dependencies-image] ][ng-describe-dependencies-url]
 [![devdependencies][ng-describe-devdependencies-image] ][ng-describe-devdependencies-url]
 

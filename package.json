@@ -1,10 +1,26 @@
 {
   "name": "ng-describe",
   "description": "Convenient BDD specs for Angular",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "bugs": {
     "url": "https://github.com/kensho/ng-describe/issues"
+  },
+  "config": {
+    "pre-git": {
+      "commit-msg": "validate-commit-msg",
+      "pre-commit": [
+        "npm test",
+        "npm run style",
+        "npm version"
+      ],
+      "pre-push": [
+        "npm run size",
+        "npm run pkgfiles"
+      ],
+      "post-commit": [],
+      "post-merge": []
+    }
   },
   "contributors": [
     "Gleb Bahmutov bahmutov",
@@ -50,12 +66,17 @@
     "modules-used": "1.0.2",
     "obind": "0.2.0",
     "phantomjs": "1.9.18",
-    "pre-git": "1.2.11"
+    "pkgfiles": "2.3.0",
+    "pre-git": "1.3.1"
   },
   "engines": {
-    "node": "> 0.10.0",
-    "npm": "3"
+    "node": "> 0.10.0"
   },
+  "files": [
+    "src",
+    "dist",
+    "bower.json"
+  ],
   "homepage": "https://github.com/kensho/ng-describe",
   "keywords": [
     "angular",
@@ -71,19 +92,6 @@
   ],
   "license": "MIT",
   "main": "src/ng-describe.js",
-  "config": {
-    "pre-git": {
-      "commit-msg": "validate-commit-msg",
-      "pre-commit": [
-        "npm test",
-        "npm run style",
-        "npm version"
-      ],
-      "pre-push": [],
-      "post-commit": [],
-      "post-merge": []
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:kensho/ng-describe.git"
@@ -91,11 +99,13 @@
   "scripts": {
     "build": "grunt",
     "commit": "git-issues && commit-wizard",
-    "issues": "git-issues",
     "coverage-codacy": "cat test/coverage/P*/lcov.info | ./node_modules/.bin/codacy-coverage -v -d",
     "coveralls": "cat test/coverage/P*/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "issues": "git-issues",
     "karma": "grunt karma",
     "ng-versions": "npm run test-ng-1.2 && npm run test-ng-1.3 && npm run test-ng-1.4",
+    "pkgfiles": "pkgfiles",
+    "size": "tarball=\"$(npm pack .)\"; wc -c \"${tarball}\"; tar tvf \"${tarball}\"; rm \"${tarball}\";",
     "style": "jscs test/*.js --fix",
     "synthetic-browser": "mocha misc/*-spec.js",
     "test": "npm run build && npm run ng-versions && npm run test-jasmine-2 && npm run synthetic-browser",
@@ -105,8 +115,5 @@
     "test-ng-1.3": "cd test/angular-1.3; npm install; npm test",
     "test-ng-1.4": "cd test/angular-1.4; npm install; npm test",
     "watch": "grunt watch"
-  },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
   }
 }

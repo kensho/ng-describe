@@ -1383,8 +1383,8 @@ If you have Karma runner installed globally you can run all the unit tests yours
 
 
 ## Modules used
-* check-more-types - Large collection of predicates
-* lazy-ass - Lazy assertions without performance penalty
+* [check-more-types](https://github.com/kensho/check-more-types) - Large collection of predicates
+* [lazy-ass](https://github.com/bahmutov/lazy-ass) - Lazy assertions without performance penalty
 
 
 ## License

@@ -3034,6 +3034,14 @@ if (String(new RangeError('test')) !== 'RangeError: test') {
           if (isResponsePair(value)) {
             return dependencies.http.when(method, url).respond(value[0], value[1]);
           }
+
+          if (Array.isArray(value) && value.length >= 3) {
+            return dependencies.http.when(method, url).respond(function (method, url, data, headers) {
+              var compiledHeaders = value[2] ? angular.extend(headers, value[2]) : headers;
+
+              return [value[0], value[1], compiledHeaders, value[3] || ''];
+            });
+          }
           return dependencies.http.when(method, url).respond(200, value);
         });
       }

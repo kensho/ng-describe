@@ -113,7 +113,7 @@ The shortcut was implemented using [changing named parameters trick][trick].
 
 [trick]: http://glebbahmutov.com/blog/changing-the-function-arguments-trick/
 
-**mocks** - top level mocks to be substituted into the tests. 
+**mocks** - top level mocks to be substituted into the tests.
 The mocks override *any* injected dependencies among modules.
 
 ```js
@@ -192,8 +192,8 @@ ngDescribe({
 See "2 way binding" example below.
 
 **configs** - object with modules that have provider that can be used to inject
-run time settings. 
-See *Update 1* in 
+run time settings.
+See *Update 1* in
 [Inject valid constants into Angular](http://glebbahmutov.com/blog/inject-valid-constants-into-angular/)
 blog post and examples below.
 
@@ -201,7 +201,7 @@ blog post and examples below.
 
 **verbose** - flag to print debug messages during execution
 
-**only** - flag to run this set of tests and skip the rest. Equivalent to 
+**only** - flag to run this set of tests and skip the rest. Equivalent to
 [ddescribe or describe.only](http://glebbahmutov.com/blog/focus-on-karma-test/).
 
 ```js
@@ -286,10 +286,11 @@ ngDescribe({
 
 See the spec in [test/controller-init-spec.js](test/controller-init-spec.js)
 
-**http** - shortcut for specifying mock HTTP responses, 
+**http** - shortcut for specifying mock HTTP responses,
 built on top of [$httpBackend](https://docs.angularjs.org/api/ngMock/service/$httpBackend).
 Each GET request will be mapped to `$httpBackend.whenGET` for example. You can provide
-data, response code + data pair or custom function to return something using custom logic.
+data, response code + data pair, response code + data + headers and optionally statusText
+or custom function to return something using custom logic.
 If you use `http` property, then the injected dependencies will have `http` object that
 you can flush (it is really `$httpBackend` object).
 
@@ -303,8 +304,9 @@ ngDescribe({
       '/my/smart/url': function (method, url, data, headers) {
         return [500, 'something is wrong'];
       } // status 500, data "something is wrong"
-    }, 
+    },
     post: {
+      '/my/url': '/my/url': [201, {message: 'ok'}, {Location: '/new/url'}, 'this is the new response'], // status data, headers and statusText
       // same format as GET
     }
   },

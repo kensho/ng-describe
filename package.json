@@ -47,7 +47,7 @@
     "grunt-deps-ok": "0.8.0",
     "grunt-jsonlint": "1.0.6",
     "grunt-karma": "0.11.0",
-    "grunt-nice-package": "0.9.6",
+    "grunt-nice-package": "0.10.2",
     "grunt-npm2bower-sync": "0.9.1",
     "grunt-readme": "0.4.5",
     "grunt-toc": "0.1.0",

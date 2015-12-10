@@ -1,12 +1,20 @@
-language: node_js
 sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
 node_js:
-  - "0.12"
-branches:
-  only:
-    - master
+  - '4'
 before_install:
-  - npm install -g npm@3
+  - npm i -g npm@^2.0.0
+before_script:
+  - npm prune
 after_success:
   - npm run coveralls
   - npm run coverage-codacy
+  - npm run semantic-release
+branches:
+  except:
+    - "/^v\\d+\\.\\d+\\.\\d+$/"

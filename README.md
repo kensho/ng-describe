@@ -1,4 +1,4 @@
-# ng-describe v0.0.0
+# ng-describe
 
 > Convenient BDD specs for Angular
 

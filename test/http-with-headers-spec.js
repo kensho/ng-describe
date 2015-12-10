@@ -1,7 +1,7 @@
 /* global ngDescribe, it */
 ngDescribe({
   name: 'mocking http with headers',
-  only: true,
+  only: false,
   verbose: false,
   inject: '$http',
   http: {

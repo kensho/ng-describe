@@ -18,6 +18,12 @@
       ],
       "post-commit": [],
       "post-merge": []
+    },
+    "next-update": {
+      "skip": [
+        "karma",
+        "benv"
+      ]
     }
   },
   "contributors": [

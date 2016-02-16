@@ -22,7 +22,9 @@
     "next-update": {
       "skip": [
         "karma",
-        "benv"
+        "benv",
+        "grunt",
+        "grunt-cli"
       ]
     }
   },
@@ -44,8 +46,8 @@
     "dont-break": "0.4.2",
     "es5-shim": "4.5.4",
     "git-issues": "1.2.0",
-    "grunt": "1.0.0-rc1",
-    "grunt-cli": "1.0.0-rc1",
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
     "grunt-contrib-concat": "0.5.1",
     "grunt-contrib-jshint": "0.12.0",
     "grunt-contrib-watch": "0.6.1",

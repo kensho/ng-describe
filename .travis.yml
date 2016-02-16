@@ -7,10 +7,15 @@ notifications:
   email: false
 node_js:
   - '0.12'
+  - '4.2.2',
+  - '5'
 before_install:
   - npm i -g npm@^2.0.0
 before_script:
   - npm prune
+script:
+  - npm run ng-versions
+  - npm run test-jasmine-2
 after_success:
   - npm run coveralls
   - npm run coverage-codacy

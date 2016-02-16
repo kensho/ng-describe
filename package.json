@@ -33,6 +33,7 @@
     "angular-mocks": "1.4.8",
     "benv": "1.1.0",
     "codacy-coverage": "1.1.3",
+    "condition-node-version": "1.2.0",
     "coveralls": "2.11.4",
     "dont-break": "0.4.2",
     "es5-shim": "4.3.1",
@@ -92,6 +93,13 @@
   ],
   "license": "MIT",
   "main": "src/ng-describe.js",
+  "release": {
+    "verifyConditions": {
+      "path": "condition-node-version",
+      "node": "4.2.2",
+      "verbose": false
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kensho/ng-describe.git"
@@ -103,18 +111,19 @@
     "coveralls": "cat test/coverage/P*/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "issues": "git-issues",
     "karma": "grunt karma",
-    "ng-versions": "npm run test-ng-1.2 && npm run test-ng-1.3 && npm run test-ng-1.4",
+    "ng-versions": "npm run test-ng-1.2 && npm run test-ng-1.3 && npm run test-ng-1.4 && npm run test-ng-1.5",
     "pkgfiles": "pkgfiles",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "size": "tarball=\"$(npm pack .)\"; wc -c \"${tarball}\"; tar tvf \"${tarball}\"; rm \"${tarball}\";",
     "style": "jscs test/*.js --fix",
     "synthetic-browser": "mocha misc/*-spec.js",
-    "test": "npm run build && npm run ng-versions && npm run test-jasmine-2 && npm run synthetic-browser",
+    "test": "npm run build",
     "test-dependents": "dont-break",
     "test-jasmine-2": "cd test/jasmine-2; npm install; npm test",
     "test-ng-1.2": "cd test/angular-1.2; npm install; npm test",
     "test-ng-1.3": "cd test/angular-1.3; npm install; npm test",
     "test-ng-1.4": "cd test/angular-1.4; npm install; npm test",
+    "test-ng-1.5": "cd test/angular-1.5; npm install; npm test",
     "update-dependencies": "next-update --keep true --test 'npm run build'",
     "watch": "grunt watch"
   }

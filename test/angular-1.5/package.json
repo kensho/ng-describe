@@ -1,0 +1,52 @@
+{
+  "name": "test-ng-describe-angular-1.5",
+  "description": "Testing ng-describe against angular 1.5",
+  "version": "0.0.1",
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/kensho/ng-describe/issues"
+  },
+  "contributors": [
+    "Gleb Bahmutov bahmutov",
+    "Martin Camacho mcamac"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "angular": "1.5.0",
+    "angular-mocks": "1.5.0",
+    "es5-shim": "4.1.7",
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
+    "grunt-karma": "0.9.0",
+    "karma": "0.12.28",
+    "karma-chrome-launcher": "0.1.6",
+    "karma-mocha": "0.1.9",
+    "karma-nested-reporter": "0.1.3",
+    "karma-phantomjs-launcher": "0.1.4",
+    "lazy-ass-helpful": "0.6.0",
+    "matchdep": "0.3.0",
+    "mocha": "2.0.1",
+    "obind": "0.2.0"
+  },
+  "engines": {
+    "node": ">= 0.10.*"
+  },
+  "homepage": "https://github.com/kensho/ng-describe",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "testing",
+    "unit",
+    "bdd",
+    "describe"
+  ],
+  "license": "MIT",
+  "main": "ng-describe.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kensho/ng-describe.git"
+  },
+  "scripts": {
+    "test": "grunt karma"
+  }
+}

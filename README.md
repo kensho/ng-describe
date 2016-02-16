@@ -1405,7 +1405,7 @@ If you use [npm-quick-run](https://github.com/bahmutov/npm-quick-run) you can us
 
 
 ## Modules used
-* [check-more-types](https://github.com/kensho/check-more-types) - Large collection of predicates
+* [check-more-types](https://github.com/kensho/check-more-types) - Large collection of predicates.
 * [lazy-ass](https://github.com/bahmutov/lazy-ass) - Lazy assertions without performance penalty
 
 

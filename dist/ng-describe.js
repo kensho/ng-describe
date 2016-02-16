@@ -2059,6 +2059,22 @@ if (String(/a/mig) !== '/a/gim') {
     throw new Error('Missing Function.prototype.bind, please load es5-shim first');
   }
 
+  // utility method
+  function curry2(fn, strict2) {
+    return function curried(a) {
+      if (strict2 && arguments.length > 2) {
+        throw new Error('Curry2 function ' + fn.name +
+          ' called with too many arguments ' + arguments.length);
+      }
+      if (arguments.length === 2) {
+        return fn(arguments[0], arguments[1]);
+      }
+      return function second(b) {
+        return fn(a, b);
+      };
+    };
+  }
+
   // most of the old methods from check-types.js
   function isFn(x) { return typeof x === 'function'; }
   function isString(x) { return typeof x === 'string'; }
@@ -2097,17 +2113,42 @@ if (String(/a/mig) !== '/a/gim') {
   function isDate(x) {
     return x instanceof Date;
   }
+  function isRegExp(x) {
+    return x instanceof RegExp;
+  }
   function instance(x, type) {
     return x instanceof type;
   }
   function hasLength(x, k) {
+    if (typeof x === 'number' && typeof k !== 'number') {
+      // swap arguments
+      return hasLength(k, x);
+    }
     return (Array.isArray(x) || isString(x)) && x.length === k;
+  }
+
+  /**
+    Checks if the given index is valid in an array or string or -1
+
+    @method found
+  */
+  function found(index) {
+    return index >= 0;
   }
 
   function startsWith(prefix, x) {
     return isString(prefix) &&
       isString(x) &&
       x.indexOf(prefix) === 0;
+  }
+
+  /**
+    Checks if the type of second argument matches the name in the first
+
+    @method type
+  */
+  function type(expectedType, x) {
+    return typeof x === expectedType;
   }
 
   var startsWithHttp = startsWith.bind(null, 'http://');
@@ -2182,6 +2223,16 @@ if (String(/a/mig) !== '/a/gim') {
   }
 
   /**
+    Checks if it is exact semver
+
+    @method semver
+  */
+  function semver(s) {
+    return check.unemptyString(s) &&
+      /^\d+\.\d+\.\d+$/.test(s);
+  }
+
+  /**
     Returns true if the argument is primitive JavaScript type
 
     @method primitive
@@ -2190,7 +2241,8 @@ if (String(/a/mig) !== '/a/gim') {
     var type = typeof value;
     return type === 'number' ||
       type === 'boolean' ||
-      type === 'string';
+      type === 'string' ||
+      type === 'symbol';
   }
 
   /**
@@ -2720,15 +2772,7 @@ if (String(/a/mig) !== '/a/gim') {
     @method equal
   */
   function equal(a, b) {
-    if (arguments.length === 2) {
-      return a === b;
-    } else if (arguments.length === 1) {
-      return function equalTo(b) {
-        return a === b;
-      };
-    } else {
-      throw new Error('Expected at least 1 or 2 arguments to check.equal');
-    }
+    return a === b;
   }
 
   // new predicates to be added to check object. Use object to preserve names
@@ -2742,6 +2786,9 @@ if (String(/a/mig) !== '/a/gim') {
     array: Array.isArray,
     positiveNumber: positiveNumber,
     negativeNumber: negativeNumber,
+    // a couple of aliases
+    positive: positiveNumber,
+    negative: negativeNumber,
     defined: defined,
     same: same,
     allSame: allSame,
@@ -2753,9 +2800,10 @@ if (String(/a/mig) !== '/a/gim') {
     arrayOfStrings: arrayOfStrings,
     arrayOfArraysOfStrings: arrayOfArraysOfStrings,
     all: all,
-    schema: schema,
+    schema: curry2(schema),
     raises: raises,
     empty: empty,
+    found: found,
     emptyString: emptyString,
     unempty: unempty,
     unit: unit,
@@ -2767,22 +2815,25 @@ if (String(/a/mig) !== '/a/gim') {
     git: git,
     arrayOf: arrayOf,
     badItems: badItems,
-    oneOf: oneOf,
+    oneOf: curry2(oneOf, true),
     promise: isPromise,
     validDate: validDate,
-    equal: equal,
+    equal: curry2(equal),
     or: or,
     and: and,
     primitive: primitive,
     zero: zero,
     date: isDate,
+    regexp: isRegExp,
     instance: instance,
     emptyObject: isEmptyObject,
-    length: hasLength,
+    length: curry2(hasLength),
     floatNumber: isFloat,
     intNumber: isInteger,
     startsWith: startsWith,
-    webUrl: webUrl
+    webUrl: webUrl,
+    semver: semver,
+    type: curry2(type)
   };
 
   Object.keys(predicates).forEach(function (name) {
@@ -2849,9 +2900,13 @@ if (String(/a/mig) !== '/a/gim') {
     return argString;
   }
 
+  function endsWithNewLine(s) {
+    return /\n$/.test(s);
+  }
+
   function formMessage(args) {
     var msg = args.reduce(function (total, arg, k) {
-      if (k) {
+      if (k && !endsWithNewLine(total)) {
         total += ' ';
       }
       if (typeof arg === 'string') {
@@ -2904,27 +2959,44 @@ if (String(/a/mig) !== '/a/gim') {
     }
   };
 
-  function register(value, name) {
-    var registered;
-    if (typeof window === 'object') {
-      /* global window */
-      window[name] = value;
-      registered = true;
-    }
-    if (typeof global === 'object') {
-      global[name] = value;
-      registered = true;
-    }
+  lazyAss.async = lazyAssync;
 
-    if (!registered) {
-      throw new Error('Do not know how to register ' + name);
+  function isNode() {
+    return typeof global === 'object';
+  }
+
+  function isBrowser() {
+    return typeof window === 'object';
+  }
+
+  function isCommonJS() {
+    return typeof module === 'object';
+  }
+
+  function globalRegister() {
+    if (isNode()) {
+      /* global global */
+      register(global, lazyAss, 'lazyAss', 'la');
+      register(global, lazyAssync, 'lazyAssync', 'lac');
     }
   }
 
-  register(lazyAss, 'lazyAss');
-  register(lazyAss, 'la');
-  register(lazyAssync, 'lazyAssync');
-  register(lazyAssync, 'lac');
+  function register(root, value, name, alias) {
+    root[name] = root[alias] = value;
+  }
+
+  lazyAss.globalRegister = globalRegister;
+
+  if (isBrowser()) {
+    /* global window */
+    register(window, lazyAss, 'lazyAss', 'la');
+    register(window, lazyAssync, 'lazyAssync', 'lac');
+  }
+
+  if (isCommonJS()) {
+    /* global module */
+    module.exports = lazyAss;
+  }
 
 }());
 

@@ -1,5 +1,5 @@
 if (typeof la === 'undefined') {
-  require('lazy-ass');
+  la = require('lazy-ass');
 }
 if (typeof check === 'undefined') {
   check = require('check-more-types');

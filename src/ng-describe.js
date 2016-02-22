@@ -152,29 +152,34 @@
   // except for the main 'describe' function
   // describe can be replaced with skip / only version
   function bddCallbacks(options) {
+    // Allow finding test framework OUTSIDE the angular environment
+    // useful when loading angular + ngDescribe in synthetic Node browser
+    // attached to window object,
+    // but running Mocha / Jasmine in Node (global) context
+    var globalOrWindow = options.root || root;
     function decideSuiteFunction(options) {
-      var suiteFn = root.describe;
+      var suiteFn = globalOrWindow.describe;
       if (options.only) {
         // run only this describe block using Jasmine or Mocha
         // http://bahmutov.calepin.co/focus-on-specific-jasmine-suite-in-karma.html
         // Jasmine 2.x vs 1.x syntax - fdescribe vs ddescribe
-        suiteFn = root.fdescribe || root.ddescribe || root.describe.only;
+        suiteFn = globalOrWindow.fdescribe || globalOrWindow.ddescribe || globalOrWindow.describe.only;
       }
       if (options.helpful) {
-        suiteFn = root.helpDescribe;
+        suiteFn = globalOrWindow.helpDescribe;
       }
       if (options.skip) {
         la(!options.only, 'skip and only are exclusive options', options);
-        suiteFn = root.xdescribe || root.describe.skip;
+        suiteFn = globalOrWindow.xdescribe || globalOrWindow.describe.skip;
       }
       return suiteFn;
     }
 
     return {
       describe: decideSuiteFunction(options),
-      beforeEach: root.beforeEach,
-      afterEach: root.afterEach,
-      it: root.it
+      beforeEach: globalOrWindow.beforeEach,
+      afterEach: globalOrWindow.afterEach,
+      it: globalOrWindow.it
     };
   }
 

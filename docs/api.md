@@ -354,3 +354,23 @@ tests: function (deps) {
   });
 }
 ```
+
+**root** - alternative context for BDD callbacks
+
+Imagine we are loading Angular and ngDescribe in a synthetic browser environment (like 
+[jsdom](https://www.npmjs.com/package/jsdom)). ngDescribe attaches itself to synthetic `window`
+object, but the test framework callbacks are attached to `global` object, not `window`.
+By passing an alternative object, we allow ngDescribe to discover `it`, `beforeEach`, etc.
+
+```js
+// load ngDescribe in jsdom under Node
+window.ngDescribe({
+  root: global,
+  tests: function (deps) {
+    ...
+  }
+})
+```
+
+See repo [ng-describe-jsdom](https://gitlab.com/bahmutov/ng-describe-jsdom) for actual
+example that tests Angular without a browser, only a synthetic emulation.

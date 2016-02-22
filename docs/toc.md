@@ -28,5 +28,6 @@
   * [Helpful failure messages](#helpful-failure-messages)
 * [Development](#development)
   * [Updating dependencies](#updating-dependencies)
+* [Note to Jasmine users](#note-to-jasmine-users)
 * [Modules used](#modules-used)
 * [License](#license)

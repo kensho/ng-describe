@@ -1,6 +1,6 @@
 # Examples
 
-Some examples use Jasmine matchers, others use `la` assertion from
+Most examples use use the `la` assertion from the
 [lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
 from [Mocha](http://visionmedia.github.io/mocha/) testing framework.
 
@@ -41,7 +41,7 @@ ngDescribe({
   tests: function (deps) {
     // deps object has every injected dependency as a property
     it('has correct value foo', function () {
-      expect(deps.foo).toEqual('bar');
+      la(deps.foo === 'bar');
     });
   }
 });
@@ -83,11 +83,11 @@ ngDescribe({
   inject: 'addFoo',
   tests: function (deps) {
     it('is a function', function () {
-      expect(typeof deps.addFoo).toEqual('function');
+      la(typeof deps.addFoo === 'function');
     });
     it('appends value of foo to any string', function () {
       var result = deps.addFoo('x');
-      expect(result).toEqual('xbar');
+      la(result === 'xbar');
     });
   }
 });

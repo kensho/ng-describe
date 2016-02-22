@@ -14,7 +14,7 @@ module.exports = function(config) {
     files: [
         './angular-1.4/node_modules/angular/angular.js',
         './angular-1.4/node_modules/angular-mocks/angular-mocks.js',
-        '../lib/sinon.js',
+        // '../lib/sinon.js',
         '../dist/ng-describe.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-browser.js',
         '../node_modules/lazy-ass-helpful/lazy-ass-helpful-bdd.js',

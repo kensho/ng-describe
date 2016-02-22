@@ -3,7 +3,7 @@ angular.module('BeforeAndAfterA', [])
   .value('foo', 'bar');
 
 ngDescribe({
-  name: 'before and after example',
+  name: 'before and after each example',
   module: 'BeforeAndAfterA',
   inject: 'foo',
   only: false,

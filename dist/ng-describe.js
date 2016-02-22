@@ -3510,15 +3510,6 @@ if (String(/a/mig) !== '/a/gim') {
         };
       }
 
-      // collect afterEach callbacks from inside the unit test
-      // to work around Jasmine bug
-      // https://github.com/kensho/ng-describe/issues/74
-      var afters = [];
-      var _afterEach = window.afterEach;
-      window.afterEach = function saveAfterEach(cb) {
-        afters.push(cb);
-      };
-
       var toExpose = options.exposeApi ? exposeApi() : undefined;
 
       // call the user-supplied test function to register the actual unit tests
@@ -3583,33 +3574,18 @@ if (String(/a/mig) !== '/a/gim') {
       }
       cleanupCallbacks.push(deleteDependencies);
 
-      // run all callbacks after each unit test as a single function
       function cleanUp(callbacks) {
         la(check.array(callbacks), 'expected list of callbacks', callbacks);
         log('inside cleanup afterEach', callbacks.length, 'callbacks');
 
         callbacks.forEach(function (fn) {
           la(check.fn(fn), 'expected function to cleanup, got', fn);
-          window.afterEach(fn);
+          bdd.afterEach(fn);
         });
       }
 
       log('cleanupCallbacks', cleanupCallbacks.length);
       cleanUp(cleanupCallbacks);
-
-      // restore the original afterEach
-      window.afterEach = _afterEach;
-
-      function singleAfterEachInOrder(afterCallbacks) {
-        la(check.array(afterCallbacks), 'expected array of callbacks', afterCallbacks);
-        log('single "after" block with', afterCallbacks.length, 'callbacks');
-        afterCallbacks.forEach(function (fn, k) {
-          log('"after callback"', k, fn.name);
-          fn();
-        });
-      }
-      var singleCleanup = singleAfterEachInOrder.bind(null, afters);
-      window.afterEach(singleCleanup);
     }
 
     bdd.describe(options.name, ngSpecs);

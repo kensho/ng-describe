@@ -76,6 +76,7 @@ We love open source and use the bleeding edge technology stack.
   * [Helpful failure messages](#helpful-failure-messages)
 * [Development](#development)
   * [Updating dependencies](#updating-dependencies)
+* [Note to Jasmine users](#note-to-jasmine-users)
 * [Modules used](#modules-used)
 * [License](#license)
 
@@ -519,7 +520,7 @@ example that tests Angular without a browser, only a synthetic emulation.
 
 ## Examples
 
-Some examples use Jasmine matchers, others use `la` assertion from
+Most examples use use the `la` assertion from the
 [lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
 from [Mocha](http://visionmedia.github.io/mocha/) testing framework.
 
@@ -560,7 +561,7 @@ ngDescribe({
   tests: function (deps) {
     // deps object has every injected dependency as a property
     it('has correct value foo', function () {
-      expect(deps.foo).toEqual('bar');
+      la(deps.foo === 'bar');
     });
   }
 });
@@ -602,11 +603,11 @@ ngDescribe({
   inject: 'addFoo',
   tests: function (deps) {
     it('is a function', function () {
-      expect(typeof deps.addFoo).toEqual('function');
+      la(typeof deps.addFoo === 'function');
     });
     it('appends value of foo to any string', function () {
       var result = deps.addFoo('x');
-      expect(result).toEqual('xbar');
+      la(result === 'xbar');
     });
   }
 });
@@ -1421,6 +1422,17 @@ You can upgrade a particular dependency by adding "-m <name>", for example
 If you use [npm-quick-run](https://github.com/bahmutov/npm-quick-run) you can use shorthand
 
     nr u -m jscs
+
+
+## Note to Jasmine users
+
+We got very tired of fighting bugs in the [Jasmine](http://jasmine.github.io/) test framework.
+From the broken order of `afterEach` callbacks to the `afterAll` not firing at all - the work arounds
+we had to write quickly becamse insane. Thus we 
+[recommend Mocha](https://glebbahmutov.com/blog/picking-javascript-testing-framework/) testing
+framework - fast, simple and seems to not suffer from any bugs. You do need your own assertion
+framework, we use [lazy-ass](https://github.com/bahmutov/lazy-ass) and a library
+of predicates [check-more-types](https://github.com/kensho/check-more-types).
 
 
 

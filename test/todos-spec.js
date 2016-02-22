@@ -35,3 +35,17 @@ ngDescribe({
     });
   }
 });
+
+angular.module('SimpleFoo', [])
+  .value('foo', 'foo');
+
+ngDescribe({
+  name: 'inject using name',
+  module: 'SimpleFoo',
+  only: false,
+  tests: function (foo) {
+    it('has foo', function () {
+      la(foo === 'foo');
+    });
+  }
+});

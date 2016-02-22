@@ -274,6 +274,8 @@
       bdd.beforeEach(function checkEnvironment() {
         la(check.object(root.angular), 'angular is undefined');
         la(check.has(root.angular, 'mock'), 'angular.mock is undefined');
+        la(check.fn(root.angular.mock.module),
+          'missing angular mock module fn, is running inside jasmine or mocha?');
       });
 
       bdd.beforeEach(function mockModules() {

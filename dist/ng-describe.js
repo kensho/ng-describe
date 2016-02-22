@@ -3464,6 +3464,9 @@ if (String(/a/mig) !== '/a/gim') {
           if (dependencies.$rootScope) {
             dependencies.$rootScope.$digest();
           }
+          if (dependencies.$timeout) {
+            dependencies.$timeout.flush();
+          }
         };
       }
 

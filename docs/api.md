@@ -355,6 +355,21 @@ tests: function (deps) {
 }
 ```
 
+Also flushed the `$timeout` service
+
+```js
+ngDescribe({
+  inject: '$timeout',
+  tests: function (deps) {
+    it(function () {
+      deps.$timeout(...)
+      deps.step();
+      // same as deps.$timeout.flush()
+    })
+  }
+})
+```
+
 **root** - alternative context for BDD callbacks
 
 Imagine we are loading Angular and ngDescribe in a synthetic browser environment (like 

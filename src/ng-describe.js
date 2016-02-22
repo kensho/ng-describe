@@ -458,6 +458,9 @@
           if (dependencies.$rootScope) {
             dependencies.$rootScope.$digest();
           }
+          if (dependencies.$timeout) {
+            dependencies.$timeout.flush();
+          }
         };
       }
 

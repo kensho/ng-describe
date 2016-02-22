@@ -1,9 +1,11 @@
 (function setupNgDescribe(root) {
   var check = root.check;
 
+  // probably loaded under Node
+
   if (typeof la === 'undefined') {
     // lazy assertions from bahmutov/lazy-ass
-    require('lazy-ass');
+    la = require('lazy-ass');
   }
   if (typeof check === 'undefined') {
     // check predicates from kensho/check-more-types
@@ -34,7 +36,7 @@
 
   function defaults(opts) {
     opts = opts || {};
-    return angular.extend(angular.copy(_defaults), opts);
+    return root.angular.extend(root.angular.copy(_defaults), opts);
   }
 
   la(check.fn(check.or), 'cannot find check.or method', check);
@@ -184,12 +186,12 @@
   }
 
   function decideLogFunction(options) {
-    return options.verbose ? angular.bind(console, console.log) : angular.noop;
+    return options.verbose ? root.angular.bind(console, console.log) : root.angular.noop;
   }
 
   function ngDescribe(options) {
     la(check.object(options), 'expected options object, see docs', options);
-    la(check.defined(angular), 'missing angular');
+    la(check.defined(root.angular), 'missing angular');
 
     var explicitInjectCopy = clone(options.inject);
 
@@ -214,7 +216,7 @@
     var log = decideLogFunction(options);
     la(check.fn(log), 'could not decide on log function', options);
 
-    var isValidNgDescribe = angular.bind(null, check.schema, ngDescribeSchema);
+    var isValidNgDescribe = root.angular.bind(null, check.schema, ngDescribeSchema);
     la(isValidNgDescribe(options), 'invalid input options', options);
 
     var bdd = bddCallbacks(options);
@@ -270,8 +272,8 @@
       }
 
       bdd.beforeEach(function checkEnvironment() {
-        la(check.object(angular), 'angular is undefined');
-        la(check.has(angular, 'mock'), 'angular.mock is undefined');
+        la(check.object(root.angular), 'angular is undefined');
+        la(check.has(root.angular, 'mock'), 'angular.mock is undefined');
       });
 
       bdd.beforeEach(function mockModules() {
@@ -280,14 +282,14 @@
 
         options.modules.forEach(function loadAngularModules(moduleName) {
           if (options.configs[moduleName]) {
-            var m = angular.module(moduleName);
+            var m = root.angular.module(moduleName);
             m.config([moduleName + 'Provider', function (provider) {
               var cloned = clone(options.configs[moduleName]);
               log('setting config', moduleName + 'Provider to', cloned);
               provider.set(cloned);
             }]);
           } else {
-            angular.mock.module(moduleName, function ($provide, $injector) {
+            root.angular.mock.module(moduleName, function ($provide, $injector) {
               var mocks = options.mocks[moduleName];
               if (mocks) {
                 log('mocking', Object.keys(mocks));
@@ -414,7 +416,7 @@
 
           if (Array.isArray(value) && value.length >= 3) {
             return dependencies.http.when(method, url).respond(function (method, url, data, headers) {
-              var compiledHeaders = value[2] ? angular.extend(headers, value[2]) : headers;
+              var compiledHeaders = value[2] ? root.angular.extend(headers, value[2]) : headers;
 
               return [value[0], value[1], compiledHeaders, value[3] || ''];
             });
@@ -467,7 +469,7 @@
       bdd.beforeEach(loadDynamicHttp);
       bdd.beforeEach(function injectDeps() {
         // defer using angular.mock
-        angular.mock.inject(injectDependencies);
+        root.angular.mock.inject(injectDependencies);
       });
       bdd.beforeEach(setupDigestCycleShortcut);
       bdd.beforeEach(setupHttpResponses);
@@ -476,10 +478,10 @@
         la(check.fn(dependencies.$compile), 'missing $compile', dependencies);
 
         var scope = dependencies.$rootScope.$new();
-        angular.extend(scope, angular.copy(options.parentScope));
+        root.angular.extend(scope, root.angular.copy(options.parentScope));
         log('created element scope with values', options.parentScope);
 
-        var element = angular.element(elementHtml);
+        var element = root.angular.element(elementHtml);
         var compiled = dependencies.$compile(element);
         compiled(scope);
         dependencies.$rootScope.$digest();

@@ -539,7 +539,7 @@ example that tests Angular without a browser, only a synthetic emulation.
 
 Most examples use use the `la` assertion from the
 [lazy-ass](https://github.com/bahmutov/lazy-ass) library and *done* callback argument
-from [Mocha](http://visionmedia.github.io/mocha/) testing framework.
+from [Mocha](http://mochajs.org/) testing framework.
 
 Also, note that the dependencies object is filled **only** inside the unit test callbacks `it` and
 setup helpers `beforeEach` and `afterEach`

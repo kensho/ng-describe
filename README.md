@@ -1,6 +1,8 @@
-# ng-describe
+# ng-describe [DEPRECATED]
 
-> Convenient BDD specs for Angular
+>This package has been deprecated as it is no longer used by Kensho internally and we do not plan to continue maintaining it. Feel free to fork it or continue to use it as-is!
+
+Convenient BDD specs for Angular.
 
 [![NPM][ng-describe-icon] ][ng-describe-url]
 [![Quality][quality-badge] ][quality-url]
